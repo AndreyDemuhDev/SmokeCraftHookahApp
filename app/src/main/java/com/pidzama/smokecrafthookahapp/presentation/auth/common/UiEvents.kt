@@ -1,0 +1,6 @@
+package com.pidzama.smokecrafthookahapp.presentation.auth.common
+
+sealed class UiEvents {
+    data class SnackBarEvent(val message : String) : UiEvents()
+    data class NavigateEvent(val route: String) : UiEvents()
+}
