@@ -242,7 +242,7 @@ fun AuthFieldSection(
         Button(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(MaterialTheme.dimens.large2+MaterialTheme.dimens.small2)
+                .height(MaterialTheme.dimens.large2 + MaterialTheme.dimens.small2)
                 .padding(top = (screenHeight / 42).dp),
             shape = RoundedCornerShape(10.dp),
             onClick = {
