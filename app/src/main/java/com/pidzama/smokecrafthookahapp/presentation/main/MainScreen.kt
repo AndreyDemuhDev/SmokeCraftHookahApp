@@ -40,9 +40,9 @@ fun MainScreen(navController: NavHostController = rememberNavController()) {
 @Composable
 fun BottomBarApp(navController: NavHostController) {
     val screens = listOf(
-        BottomBarScreens.Home,
-        BottomBarScreens.Favorite,
-        BottomBarScreens.Settings,
+        BottomBarScreens.Profile,
+        BottomBarScreens.CurrentOrders,
+        BottomBarScreens.OrderArchive,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination

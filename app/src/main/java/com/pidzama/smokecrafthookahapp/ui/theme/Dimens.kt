@@ -20,8 +20,8 @@ data class Dimens(
 
 val CompactSmallDimens = Dimens(
     extraSmall = 4.dp,
-    small1 = 6.dp,
-    small2 = 5.dp,
+    small1 = 5.dp,
+    small2 = 6.dp,
     small3 = 8.dp,
     medium1 = 15.dp,
     medium2 = 26.dp,
