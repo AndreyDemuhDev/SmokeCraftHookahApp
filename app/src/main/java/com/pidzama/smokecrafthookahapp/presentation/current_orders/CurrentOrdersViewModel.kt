@@ -1,24 +1,19 @@
-package com.pidzama.smokecrafthookahapp.presentation.home
+package com.pidzama.smokecrafthookahapp.presentation.current_orders
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pidzama.smokecrafthookahapp.data.model.RandomRecipe
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
-import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubListItem
 import com.pidzama.smokecrafthookahapp.data.model.WorkerItem
 import com.pidzama.smokecrafthookahapp.data.repository.SmokeCraftRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class CurrentOrdersViewModel @Inject constructor(
     private val smokeCraftRepository: SmokeCraftRepository
 ) : ViewModel() {
 

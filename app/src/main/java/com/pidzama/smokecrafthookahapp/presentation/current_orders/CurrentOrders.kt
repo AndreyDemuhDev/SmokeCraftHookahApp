@@ -1,24 +1,26 @@
-package com.pidzama.smokecrafthookahapp.presentation.choose_generate_recipe
+package com.pidzama.smokecrafthookahapp.presentation.current_orders
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.navigation.MainScreen
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 
+
 @Composable
-fun CreateRecipeScreen(
+fun CurrentOrders(
     navController: NavHostController = rememberNavController()
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
@@ -26,7 +28,7 @@ fun CreateRecipeScreen(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background,
         content = {
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Center) {
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                 Column(
                     modifier = Modifier.padding(horizontal = (screenWidth / 8).dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -81,11 +83,4 @@ fun CreateRecipeScreen(
             }
         }
     )
-}
-
-
-@Preview
-@Composable
-fun Preview() {
-    CreateRecipeScreen()
 }

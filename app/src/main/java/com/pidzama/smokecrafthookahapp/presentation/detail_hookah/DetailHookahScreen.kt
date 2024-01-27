@@ -75,7 +75,7 @@ fun DetailHookahScreen(navController: NavHostController = rememberNavController(
                 },
                 backgroundColor = MaterialTheme.colorScheme.primary,
                 navigationIcon = {
-                    IconButton(onClick = { navController.navigate(MainScreen.ChooseGenerateRecipe.route) }) {
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             painter = painterResource(id = R.drawable.arrow_left),
                             contentDescription = "arrow_left"
@@ -146,7 +146,7 @@ fun OrderInfo(navController: NavHostController) {
                     )
                 }
                 OutlinedButton(
-                    onClick = { navController.navigate(MainScreen.ChooseGenerateRecipe.route) },
+                    onClick = { navController.navigate(MainScreen.CurrentOrders.route) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = MaterialTheme.dimens.small1)

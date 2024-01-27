@@ -8,20 +8,20 @@ sealed class BottomBarScreens(
     val title: String,
     @DrawableRes val  icon: Int
 ) {
-    object Home : BottomBarScreens(
-        route = "HOME",
+    object Profile : BottomBarScreens(
+        route = "PROFILE",
         title = "Мой профиль",
         icon = R.drawable.profile
     )
 
-    object Favorite : BottomBarScreens(
-        route = "FAVORITE",
+    object CurrentOrders : BottomBarScreens(
+        route = "CURRENT_ORDERS",
         title = "Текущие заказы",
         icon = R.drawable.orders
     )
 
-    object Settings : BottomBarScreens(
-        route = "SETTINGS",
+    object OrderArchive : BottomBarScreens(
+        route = "ORDER_ARCHIVE",
         title = "Архив заказов",
         icon = R.drawable.archive
     )
