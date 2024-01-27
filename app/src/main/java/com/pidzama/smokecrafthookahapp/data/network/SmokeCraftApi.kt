@@ -2,6 +2,7 @@ package com.pidzama.smokecrafthookahapp.data.network
 
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipe
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
+import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubListItem
 import com.pidzama.smokecrafthookahapp.data.model.WorkerItem
 import com.pidzama.smokecrafthookahapp.data.remote.AuthRequest
 import com.pidzama.smokecrafthookahapp.data.remote.AuthResponse

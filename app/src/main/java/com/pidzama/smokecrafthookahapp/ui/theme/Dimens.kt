@@ -19,6 +19,7 @@ data class Dimens(
 )
 
 val CompactSmallDimens = Dimens(
+    extraSmall = 4.dp,
     small1 = 6.dp,
     small2 = 5.dp,
     small3 = 8.dp,
@@ -33,6 +34,7 @@ val CompactSmallDimens = Dimens(
 )
 
 val CompactMediumDimens = Dimens(
+    extraSmall = 5.dp,
     small1 = 8.dp,
     small2 = 13.dp,
     small3 = 17.dp,
@@ -45,6 +47,7 @@ val CompactMediumDimens = Dimens(
 )
 
 val CompactDimens = Dimens(
+    extraSmall = 6.dp,
     small1 = 10.dp,
     small2 = 15.dp,
     small3 = 20.dp,
@@ -57,6 +60,7 @@ val CompactDimens = Dimens(
 )
 
 val MediumDimens = Dimens(
+    extraSmall = 6.dp,
     small1 = 10.dp,
     small2 = 15.dp,
     small3 = 20.dp,
@@ -70,6 +74,7 @@ val MediumDimens = Dimens(
 )
 
 val ExpandedDimens = Dimens(
+    extraSmall = 8.dp,
     small1 = 15.dp,
     small2 = 20.dp,
     small3 = 25.dp,
