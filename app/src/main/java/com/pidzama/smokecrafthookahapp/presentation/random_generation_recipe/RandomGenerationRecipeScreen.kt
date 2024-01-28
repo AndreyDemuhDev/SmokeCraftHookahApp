@@ -1,5 +1,6 @@
 package com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -7,8 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.IconButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +20,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.R
-import com.pidzama.smokecrafthookahapp.navigation.MainScreen
 import com.pidzama.smokecrafthookahapp.presentation.current_orders.CurrentOrdersViewModel
 import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.common.MyPieDiagramm
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
@@ -75,9 +74,11 @@ fun RandomGenerationRecipeScreen(
 fun CustomData(navController: NavHostController) {
     val viewModel = hiltViewModel<CurrentOrdersViewModel>()
     val listRandomGenerateRecipe = viewModel.generateRecipeList.observeAsState(listOf()).value
+    val updateIndexRecipe = viewModel.data.collectAsState()
+    var indexRecipe = updateIndexRecipe.value
+    var updateRecipe = true
 
-    var indexRecipe = 0
-    LaunchedEffect(key1 = Unit) {
+    LaunchedEffect(key1 = updateRecipe) {
         viewModel.getListRandomGenerateRecipe()
     }
 
@@ -102,6 +103,7 @@ fun CustomData(navController: NavHostController) {
                         navController = navController,
                         indexRecipe = indexRecipe
                     )
+                    Log.d("MyLog", "indexRecipe++ --->${indexRecipe}")
                 }
             }
         }
@@ -109,7 +111,8 @@ fun CustomData(navController: NavHostController) {
             Button(
                 onClick = {
                     viewModel.getListRandomGenerateRecipe()
-
+                    updateRecipe = false
+                    viewModel.updateRecipesIndex(updateIndexRecipe.value)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -117,6 +120,7 @@ fun CustomData(navController: NavHostController) {
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
             ) {
+                Log.d("MyLog", "indexRecipe +=3 --->${indexRecipe}")
                 Text(
                     text = "Сгенерировать новый рецепт",
                     style = MaterialTheme.typography.titleMedium,
@@ -127,4 +131,5 @@ fun CustomData(navController: NavHostController) {
             }
         }
     }
+
 }

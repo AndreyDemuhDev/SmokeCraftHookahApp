@@ -119,11 +119,11 @@ fun AuthFieldSection(
 ) {
     val screenHeight = LocalConfiguration.current.screenHeightDp
     val screenWidth = LocalConfiguration.current.screenWidthDp
-    Log.d("MyLog", "screenHeight -> $screenHeight")
-    Log.d("MyLog", "screenHeight -> $screenHeight")
+    val localFocusManager = LocalFocusManager.current
     val loginState = viewModel.loginState.value
     val passwordState = viewModel.passwordState.value
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
+
 
     val scope = rememberCoroutineScope()
 
@@ -144,7 +144,6 @@ fun AuthFieldSection(
                 .padding(top = (screenHeight / 10).dp, bottom = (screenHeight / 24).dp)
         )
         Log.d("MyLog", "TExt вход в системы падинг -> ${(screenHeight / 10).dp}")
-        val focusManager = LocalFocusManager.current
         OutlinedTextField(
             value = loginState.text,
             onValueChange = {
@@ -159,9 +158,11 @@ fun AuthFieldSection(
                 )
             },
             colors = TextFieldDefaults.colors(disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer),
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next
+            ),
             singleLine = true,
-            keyboardActions = KeyboardActions(
-                onNext = { focusManager.moveFocus(FocusDirection.Down) }),
+            maxLines = 1,
             leadingIcon = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_login),
@@ -196,7 +197,6 @@ fun AuthFieldSection(
                     color = MaterialTheme.colorScheme.onTertiary
                 )
             },
-            singleLine = true,
             shape = RoundedCornerShape(10.dp),
             modifier = Modifier
                 .fillMaxWidth()
@@ -205,9 +205,12 @@ fun AuthFieldSection(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
             ),
+            singleLine = true,
+            maxLines = 1,
             colors = TextFieldDefaults.colors(disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer),
             keyboardActions = KeyboardActions(onNext = {
                 viewModel.loginUser()
+                localFocusManager.clearFocus()
             }),
             leadingIcon = {
                 Icon(
