@@ -1,5 +1,12 @@
 package com.pidzama.smokecrafthookahapp.data.model
 
+import android.os.Bundle
+import android.os.Parcelable
+import androidx.navigation.NavType
+import com.google.gson.Gson
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class RandomRecipeSubListItem(
     val best_before_date: String,
     val brand: String,
@@ -14,4 +21,17 @@ data class RandomRecipeSubListItem(
     val taste_group: String,
     val updated: String,
     val weight: Double
-)
+): Parcelable
+
+//class ListTaskTypeItem : NavType<Array<RandomRecipeSubListItem>>(isNullableAllowed = false) {
+//    override fun get(bundle: Bundle, key: String): Array<RandomRecipeSubListItem>? {
+//        return bundle.getParcelableArray(key) as Array<RandomRecipeSubListItem>?
+//    }
+//    override fun parseValue(value: String): Array<RandomRecipeSubListItem> {
+//        return Gson().fromJson(value, Array<RandomRecipeSubListItem>::class.java)
+//    }
+//    override fun put(bundle: Bundle, key: String, value: Array<RandomRecipeSubListItem>) {
+//        bundle.putParcelableArray(key, value)
+//    }
+//}
+

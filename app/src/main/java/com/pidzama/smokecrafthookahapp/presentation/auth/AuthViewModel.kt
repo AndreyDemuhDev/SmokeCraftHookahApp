@@ -20,28 +20,28 @@ class AuthViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 
-    private var _authState  = mutableStateOf(AuthState())
+    private var _authState = mutableStateOf(AuthState())
     val authState: State<AuthState> = _authState
 
-    private val  _eventFlow = MutableSharedFlow<UiEvents>()
+    private val _eventFlow = MutableSharedFlow<UiEvents>()
     val eventFlow = _eventFlow.asSharedFlow()
 
     private val _loginState = mutableStateOf(TextFieldState())
     val loginState: State<TextFieldState> = _loginState
 
-    fun setLogin(value:String){
+    fun setLogin(value: String) {
         _loginState.value = loginState.value.copy(text = value)
     }
 
     private val _passwordState = mutableStateOf(TextFieldState())
     val passwordState: State<TextFieldState> = _passwordState
 
-    fun setPassword(value:String){
+    fun setPassword(value: String) {
         _passwordState.value = passwordState.value.copy(text = value)
     }
 
 
-    fun loginUser(){
+    fun loginUser() {
         viewModelScope.launch {
             _authState.value = authState.value.copy(isLoading = false)
 
@@ -49,22 +49,21 @@ class AuthViewModel @Inject constructor(
                 login = loginState.value.text,
                 password = passwordState.value.text
             )
-            _authState.value = authState.value.copy(isLoading = false)
 
-            if (loginResult.emailError != null){
-                _loginState.value=loginState.value.copy(error = loginResult.emailError)
+            if (loginResult.emailError != null) {
+                _loginState.value = loginState.value.copy(error = loginResult.emailError)
             }
-            if (loginResult.passwordError != null){
+            if (loginResult.passwordError != null) {
                 _passwordState.value = passwordState.value.copy(error = loginResult.passwordError)
             }
 
-            when(loginResult.result){
-                is StatusAuth.Success->{
+            when (loginResult.result) {
+                is StatusAuth.Success -> {
                     _eventFlow.emit(
                         UiEvents.NavigateEvent(Graph.MAIN)
                     )
                 }
-                is StatusAuth.Error->{
+                is StatusAuth.Error -> {
                     _eventFlow.emit(
                         UiEvents.SnackBarEvent(
                             "Невозможно войти в систему с указанными учетными данными."
@@ -72,7 +71,11 @@ class AuthViewModel @Inject constructor(
                     )
                 }
                 else -> {
-
+                    _eventFlow.emit(
+                        UiEvents.SnackBarEvent(
+                            "Ошибка авторизации"
+                        )
+                    )
                 }
             }
         }
