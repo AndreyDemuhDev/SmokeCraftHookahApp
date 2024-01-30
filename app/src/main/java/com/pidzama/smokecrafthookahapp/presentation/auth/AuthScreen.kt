@@ -124,9 +124,7 @@ fun AuthFieldSection(
     val passwordState = viewModel.passwordState.value
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
-
     val scope = rememberCoroutineScope()
-
 
     Column(
         modifier = Modifier
@@ -137,13 +135,12 @@ fun AuthFieldSection(
         Text(
             text = "Вход в систему",
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.headlineMedium,
             color = Color.White,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = (screenHeight / 10).dp, bottom = (screenHeight / 24).dp)
         )
-        Log.d("MyLog", "TExt вход в системы падинг -> ${(screenHeight / 10).dp}")
         OutlinedTextField(
             value = loginState.text,
             onValueChange = {
@@ -181,7 +178,7 @@ fun AuthFieldSection(
                 textAlign = TextAlign.End,
                 modifier = Modifier.fillMaxWidth(),
                 style = MaterialTheme.typography.labelSmall,
-                color = Color.Red
+                color = MaterialTheme.colorScheme.error
             )
         }
         Spacer(modifier = Modifier.height(MaterialTheme.dimens.extraSmall))
@@ -241,17 +238,15 @@ fun AuthFieldSection(
                 color = Color.Red
             )
         }
-        Log.d("MyLog", "Button heiht -> ${(screenHeight / 13).dp}")
         Button(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(MaterialTheme.dimens.large2 + MaterialTheme.dimens.small2)
+                .height(MaterialTheme.dimens.large3)
                 .padding(top = (screenHeight / 42).dp),
             shape = RoundedCornerShape(10.dp),
             onClick = {
                 scope.launch {
                     viewModel.eventFlow.collectLatest { event ->
-                        Log.d("MyLog", "$event")
                         when (event) {
                             is UiEvents.SnackBarEvent -> {
                                 snackBar.showSnackbar(
@@ -273,18 +268,9 @@ fun AuthFieldSection(
         ) {
             Text(
                 text = "Войти",
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onBackground,
-                fontWeight = FontWeight.Bold,
-                fontSize = 17.sp
             )
         }
     }
-}
-
-
-@Preview
-@Composable
-fun PreviewAuthScreen() {
-    AuthScreens(navController = rememberNavController())
 }

@@ -43,10 +43,8 @@ fun CurrentOrders(
                     ) {
                         Text(
                             text = "Случайная генерация",
-                            fontSize = 17.sp,
-                            style = MaterialTheme.typography.titleMedium,
+                            style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onBackground,
-                            fontWeight = FontWeight.Bold
                         )
                     }
                     Button(
@@ -58,10 +56,8 @@ fun CurrentOrders(
                     ) {
                         Text(
                             text = "Фирменные миксы",
-                            fontSize = 17.sp,
-                            style = MaterialTheme.typography.titleMedium,
+                            style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onBackground,
-                            fontWeight = FontWeight.Bold
                         )
                     }
                     Button(
@@ -73,10 +69,8 @@ fun CurrentOrders(
                     ) {
                         Text(
                             text = "Генерация по ингредиенту",
-                            fontSize = 17.sp,
-                            style = MaterialTheme.typography.titleMedium,
+                            style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onBackground,
-                            fontWeight = FontWeight.Bold
                         )
                     }
                 }

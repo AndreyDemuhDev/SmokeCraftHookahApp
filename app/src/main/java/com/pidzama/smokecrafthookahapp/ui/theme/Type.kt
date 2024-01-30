@@ -26,6 +26,11 @@ val CompactSmallTypography = androidx.compose.material3.Typography(
         fontFamily = Manrope,
         fontWeight = FontWeight.Bold
     ),
+    titleLarge = TextStyle(
+        fontSize = 14.sp,
+        fontFamily = Manrope,
+        fontWeight = FontWeight.Bold
+    ),
     titleMedium = TextStyle(
         fontSize = 10.sp,
         fontFamily = Manrope,
@@ -46,6 +51,11 @@ val CompactMediumTypography = androidx.compose.material3.Typography(
     ),
     headlineMedium = TextStyle(
         fontSize = 22.sp,
+        fontFamily = Manrope,
+        fontWeight = FontWeight.Bold
+    ),
+    titleLarge = TextStyle(
+        fontSize = 17.sp,
         fontFamily = Manrope,
         fontWeight = FontWeight.Bold
     ),
@@ -72,6 +82,11 @@ val CompactTypography = androidx.compose.material3.Typography(
         fontFamily = Manrope,
         fontWeight = FontWeight.Bold
     ),
+    titleLarge = TextStyle(
+        fontSize = 24.sp,
+        fontFamily = Manrope,
+        fontWeight = FontWeight.Bold
+    ),
     titleMedium = TextStyle(
         fontSize = 20.sp,
         fontFamily = Manrope,
@@ -95,6 +110,11 @@ val MediumTypography = androidx.compose.material3.Typography(
         fontFamily = Manrope,
         fontWeight = FontWeight.Bold
     ),
+    titleLarge = TextStyle(
+        fontSize = 24.sp,
+        fontFamily = Manrope,
+        fontWeight = FontWeight.Bold
+    ),
     titleMedium = TextStyle(
         fontSize = 16.sp,
         fontFamily = Manrope,
@@ -115,6 +135,11 @@ val ExpandedTypography = androidx.compose.material3.Typography(
     ),
     headlineMedium = TextStyle(
         fontSize = 34.sp,
+        fontFamily = Manrope,
+        fontWeight = FontWeight.Bold
+    ),
+    titleLarge = TextStyle(
+        fontSize = 28.sp,
         fontFamily = Manrope,
         fontWeight = FontWeight.Bold
     ),

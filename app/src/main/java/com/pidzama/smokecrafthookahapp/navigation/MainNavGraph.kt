@@ -1,9 +1,13 @@
 package com.pidzama.smokecrafthookahapp.navigation
 
+import android.os.Bundle
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
+import androidx.core.net.toUri
+import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.pidzama.smokecrafthookahapp.data.model.ListTaskType
+import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.presentation.profile.ProfileScreen
 import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.DetailHookahScreen
 import com.pidzama.smokecrafthookahapp.presentation.current_orders.CurrentOrders
@@ -30,8 +34,11 @@ fun MainNavGraph(navController: NavHostController) {
         composable(MainScreen.ChooseGenerateRecipe.route) {
             RandomGenerationRecipeScreen(navController = navController)
         }
-        composable(MainScreen.DetailHookahScreen.route) {
-            DetailHookahScreen(navController = navController)
+        composable(route =MainScreen.DetailHookahScreen.route + "/{recipe}",
+            arguments = listOf(navArgument("recipe"){ type = ListTaskType() })
+            ) {
+            val recipe = it.arguments?.getParcelable<RandomRecipeSubList>("recipe")
+            DetailHookahScreen(navController = navController, recipe)
         }
     }
 }

@@ -1,9 +1,6 @@
 package com.pidzama.smokecrafthookahapp.data.network
 
-import com.pidzama.smokecrafthookahapp.data.model.RandomRecipe
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
-import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubListItem
-import com.pidzama.smokecrafthookahapp.data.model.WorkerItem
 import com.pidzama.smokecrafthookahapp.data.remote.AuthRequest
 import com.pidzama.smokecrafthookahapp.data.remote.AuthResponse
 import retrofit2.Response
@@ -17,9 +14,6 @@ interface SmokeCraftApi {
     suspend fun loginUser(
         @Body loginRequest: AuthRequest
     ): AuthResponse
-
-    @GET("api/v1/worker")
-    suspend fun getWorkers(): Response<List<WorkerItem>>
 
     @GET("api/v1/generator/get_random_recipes/")
     suspend fun getRandomGenerateRecipeList(): Response<List<RandomRecipeSubList>>

@@ -42,26 +42,21 @@ fun MyPieDiagramm(
     input: RandomRecipeSubList,
     animDuration: Int = 600,
     navController: NavHostController,
-    indexRecipe: Int
+    indexRecipe: Int,
+//    onClickRecipe: (RandomRecipeSubList) -> Unit
 ) {
     val density = LocalConfiguration.current.densityDpi
-    Log.d("MyLog", "DENSITY ---->$density")
-
     var circleCenter by remember {
         mutableStateOf(Offset.Zero)
     }
-
     val firstTasty = 12f
     val secondTasty = 6f
     val threeTasty = 2f
     val listTesty = listOf(firstTasty, secondTasty, threeTasty)
     val totalTasty = firstTasty + secondTasty + threeTasty
-
     val radius = density / 3.0f
-    val innerRadius = radius - ((MaterialTheme.dimens.small1*1.3f).value / 100) * 100
+    val innerRadius = radius - ((MaterialTheme.dimens.small1 * 1.3f).value / 100) * 100
     var animationPlayed by remember { mutableStateOf(false) }
-    Log.d("MyLog", "radius ----->$radius")
-    Log.d("MyLog", "InnerRadius ----->$innerRadius")
     val animateRotation by animateFloatAsState(
         targetValue = if (animationPlayed) 90f * 12f else 0f, animationSpec = tween(
             durationMillis = animDuration,
@@ -76,8 +71,8 @@ fun MyPieDiagramm(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = MaterialTheme.dimens.small1)
-            .clickable { navController.navigate(MainScreen.DetailHookahScreen.route) },
+            .padding(vertical = MaterialTheme.dimens.small1),
+//            .clickable { navController.navigate(MainScreen.DetailHookahScreen.route) },
         border = BorderStroke(2.dp, color = MaterialTheme.colorScheme.primary),
         shape = MaterialTheme.shapes.extraLarge,
         backgroundColor = MaterialTheme.colorScheme.background
@@ -104,18 +99,18 @@ fun MyPieDiagramm(
                         Text(
                             text = "Рецепт ",
                             color = MaterialTheme.colorScheme.inverseSurface,
-                            fontSize = 20.sp,
+                            style = MaterialTheme.typography.headlineMedium,
                         )
                         Text(
                             text = "№${indexRecipe}",
                             color = MaterialTheme.colorScheme.primary,
-                            fontSize = 20.sp
+                            style = MaterialTheme.typography.headlineMedium,
                         )
                     }
                     input.forEach {
                         Card(
                             modifier = Modifier
-                                .padding(vertical = 6.dp),
+                                .padding(vertical = MaterialTheme.dimens.extraSmall),
                             border = BorderStroke(
                                 width = 2.dp,
                                 color = setColorTaste(it.taste_group)
@@ -125,11 +120,10 @@ fun MyPieDiagramm(
                         ) {
                             Text(
                                 modifier = Modifier
-                                    .padding(horizontal = 8.dp, vertical = 6.dp)
+                                    .padding(horizontal = MaterialTheme.dimens.small2, vertical = MaterialTheme.dimens.extraSmall)
                                     .basicMarquee(),
                                 text = "${it.taste}, ${it.brand}",
-                                fontWeight = FontWeight.Normal,
-                                fontSize = 18.sp,
+                                style = MaterialTheme.typography.titleLarge,
                                 color = setColorTaste(it.taste_group)
                             )
                         }
@@ -141,7 +135,7 @@ fun MyPieDiagramm(
                     .weight(0.5f)
                     .height(height = MaterialTheme.dimens.large3 * 2)
                     .padding(
-                        top = MaterialTheme.dimens.large1,
+                        top = MaterialTheme.dimens.large2,
                         start = MaterialTheme.dimens.small2,
                         end = MaterialTheme.dimens.small2,
                     ),
@@ -191,7 +185,6 @@ fun MyPieDiagramm(
 
                         val percentage =
                             (testy / totalTasty * 100).toInt()
-                        Log.d("MyLog", " ПРОЦЕНТЫ -------->$percentage")
                         drawContext.canvas.nativeCanvas.apply {
                             if (percentage > 3) {
                                 rotate(rotateAngle) {

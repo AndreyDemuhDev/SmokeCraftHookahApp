@@ -4,7 +4,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 data class Dimens(
-    val extraSmall: Dp = 0.dp,
+    val extraSmall: Dp = 2.dp,
     val small1: Dp = 0.dp,
     val small2: Dp = 0.dp,
     val small3: Dp = 0.dp,
