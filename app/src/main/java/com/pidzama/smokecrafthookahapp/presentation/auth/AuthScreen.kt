@@ -35,6 +35,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.R
 import com.pidzama.smokecrafthookahapp.presentation.auth.common.UiEvents
+import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -47,38 +48,27 @@ fun AuthScreens(
     navController: NavHostController,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current!!
-    val viewModel = hiltViewModel<AuthViewModel>()
     val snackBarHostState = remember { SnackbarHostState() }
-
+    val viewModel = hiltViewModel<AuthViewModel>()
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
         content = {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(state = rememberScrollState())
-                    .clickable { keyboardController.hide() },
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-                LogoSection()
-                AuthFieldSection(
-                    keyboardController,
-                    snackBarHostState,
-                    viewModel,
-                    navController
+            if (ScreenOrientation == Configuration.ORIENTATION_PORTRAIT) {
+                PortraitAuthScreen(
+                    navController = navController,
+                    keyboardController = keyboardController,
+                    snackBar = snackBarHostState,
+                    viewModel = viewModel
                 )
-                Image(
-                    painter = painterResource(id = R.drawable.logo_wave),
-                    contentDescription = "logo",
-                    alignment = Alignment.BottomCenter,
-                    modifier = Modifier
-                        .weight(2f, false)
-                        .fillMaxSize()
+            } else {
+                LandscapeAuthScreen(
+                    navController = navController,
+                    keyboardController = keyboardController,
+                    snackBar = snackBarHostState,
+                    viewModel = viewModel
                 )
             }
-
         }
     )
 }
@@ -115,7 +105,7 @@ fun AuthFieldSection(
     keyboardController: SoftwareKeyboardController,
     snackBar: SnackbarHostState,
     viewModel: AuthViewModel,
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     val screenHeight = LocalConfiguration.current.screenHeightDp
     val screenWidth = LocalConfiguration.current.screenWidthDp
@@ -271,6 +261,217 @@ fun AuthFieldSection(
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onBackground,
             )
+        }
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun PortraitAuthScreen(
+    navController: NavHostController,
+    keyboardController: SoftwareKeyboardController,
+    snackBar: SnackbarHostState,
+    viewModel: AuthViewModel
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(state = rememberScrollState())
+            .clickable { keyboardController.hide() },
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        LogoSection()
+        AuthFieldSection(
+            keyboardController,
+            snackBar,
+            viewModel,
+            navController
+        )
+        Image(
+            painter = painterResource(id = R.drawable.logo_wave),
+            contentDescription = "logo",
+            alignment = Alignment.BottomCenter,
+            modifier = Modifier
+                .weight(2f, false)
+                .fillMaxSize()
+        )
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun LandscapeAuthScreen(
+    navController: NavHostController,
+    keyboardController: SoftwareKeyboardController,
+    snackBar: SnackbarHostState,
+    viewModel: AuthViewModel
+) {
+    val screenHeight = LocalConfiguration.current.screenHeightDp
+    val screenWidth = LocalConfiguration.current.screenWidthDp
+    val localFocusManager = LocalFocusManager.current
+    val loginState = viewModel.loginState.value
+    val passwordState = viewModel.passwordState.value
+    var passwordVisible by rememberSaveable { mutableStateOf(false) }
+
+    val scope = rememberCoroutineScope()
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(state = rememberScrollState())
+            .clickable { keyboardController.hide() },
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        LogoSection()
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = (screenWidth / 4).dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Вход в систему",
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.headlineMedium,
+                color = Color.White,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = (screenHeight / 10).dp, bottom = (screenHeight / 24).dp)
+            )
+            OutlinedTextField(
+                value = loginState.text,
+                onValueChange = {
+                    viewModel.setLogin(it)
+                },
+                isError = loginState.error != null,
+                placeholder = {
+                    Text(
+                        text = "Login",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onTertiary
+                    )
+                },
+                colors = TextFieldDefaults.colors(disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer),
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                ),
+                singleLine = true,
+                maxLines = 1,
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_login),
+                        contentDescription = "ic_login",
+                        tint = MaterialTheme.colorScheme.inverseSurface
+                    )
+                },
+                shape = RoundedCornerShape(10.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(MaterialTheme.dimens.buttonHeight)
+            )
+            if (loginState.error != "") {
+                Text(
+                    text = loginState.error ?: "",
+                    textAlign = TextAlign.End,
+                    modifier = Modifier.fillMaxWidth(),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.extraSmall))
+            OutlinedTextField(
+                value = passwordState.text,
+                onValueChange = {
+                    viewModel.setPassword(it)
+                },
+                placeholder = {
+                    Text(
+                        text = "Password",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onTertiary
+                    )
+                },
+                shape = RoundedCornerShape(10.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(MaterialTheme.dimens.buttonHeight),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
+                singleLine = true,
+                maxLines = 1,
+                colors = TextFieldDefaults.colors(disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer),
+                keyboardActions = KeyboardActions(onNext = {
+                    viewModel.loginUser()
+                    localFocusManager.clearFocus()
+                }),
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_password),
+                        contentDescription = "ic_password",
+                        tint = MaterialTheme.colorScheme.inverseSurface
+                    )
+                },
+                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                isError = passwordState.error != null,
+                trailingIcon = {
+                    val image = if (passwordVisible)
+                        painterResource(id = R.drawable.ic_visibility)
+                    else painterResource(id = R.drawable.ic_visibility_off)
+                    val description =
+                        if (passwordVisible) "Hide password" else "Show password"
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(painter = image, description)
+                    }
+                },
+            )
+            if (passwordState.error != "") {
+                Text(
+                    text = passwordState.error ?: "",
+                    textAlign = TextAlign.End,
+                    modifier = Modifier.fillMaxWidth(),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Color.Red
+                )
+            }
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(MaterialTheme.dimens.buttonHeight)
+                    .padding(top = (screenHeight / 42).dp),
+                shape = RoundedCornerShape(10.dp),
+                onClick = {
+                    scope.launch {
+                        viewModel.eventFlow.collectLatest { event ->
+                            when (event) {
+                                is UiEvents.SnackBarEvent -> {
+                                    snackBar.showSnackbar(
+                                        message = event.message,
+                                        actionLabel = "OK",
+                                        duration = SnackbarDuration.Short
+                                    )
+                                }
+                                is UiEvents.NavigateEvent -> {
+                                    navController.navigate(event.route)
+                                }
+                            }
+                        }
+                    }
+                    keyboardController.hide()
+                    navController.popBackStack()
+                    viewModel.loginUser()
+                },
+            ) {
+                Text(
+                    text = "Войти",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+            }
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.large1 / 2))
         }
     }
 }

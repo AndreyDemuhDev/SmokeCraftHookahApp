@@ -1,12 +1,15 @@
 package com.pidzama.smokecrafthookahapp.presentation.current_orders
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Alignment
@@ -16,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.navigation.MainScreen
+import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 
 
@@ -25,56 +29,138 @@ fun CurrentOrders(
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
     Surface(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(state = rememberScrollState()),
         color = MaterialTheme.colorScheme.background,
         content = {
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                Column(
-                    modifier = Modifier.padding(horizontal = (screenWidth / 8).dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(20.dp)
-                ) {
-                    Button(
-                        onClick = { navController.navigate(MainScreen.ChooseGenerateRecipe.route) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(MaterialTheme.dimens.large2),
-                        shape = RoundedCornerShape(10.dp)
-                    ) {
-                        Text(
-                            text = "Случайная генерация",
-                            style = MaterialTheme.typography.titleLarge,
-                            color = MaterialTheme.colorScheme.onBackground,
-                        )
-                    }
-                    Button(
-                        onClick = {/*TODO*/ },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(MaterialTheme.dimens.large2),
-                        shape = RoundedCornerShape(10.dp)
-                    ) {
-                        Text(
-                            text = "Фирменные миксы",
-                            style = MaterialTheme.typography.titleLarge,
-                            color = MaterialTheme.colorScheme.onBackground,
-                        )
-                    }
-                    Button(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(MaterialTheme.dimens.large2),
-                        shape = RoundedCornerShape(10.dp)
-                    ) {
-                        Text(
-                            text = "Генерация по ингредиенту",
-                            style = MaterialTheme.typography.titleLarge,
-                            color = MaterialTheme.colorScheme.onBackground,
-                        )
-                    }
-                }
+            if (ScreenOrientation == Configuration.ORIENTATION_PORTRAIT) {
+                PortraitCurrentOrderScreen(
+                    navController = navController,
+                    screenWidth = screenWidth
+                )
+            } else {
+                LandscapeCurrentOrderScreen(
+                    navController = navController,
+                    screenWidth = screenWidth
+                )
             }
         }
     )
+}
+
+@Composable
+fun PortraitCurrentOrderScreen(
+    navController: NavHostController,
+    screenWidth: Int = LocalConfiguration.current.screenWidthDp
+) {
+    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+        Column(
+            modifier = Modifier.padding(horizontal = (screenWidth / 8).dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(20.dp)
+        ) {
+            Button(
+                onClick = { navController.navigate(MainScreen.ChooseGenerateRecipe.route) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(MaterialTheme.dimens.buttonHeight),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Text(
+                    text = "Случайная генерация",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+            }
+            Button(
+                onClick = {/*TODO*/ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(MaterialTheme.dimens.buttonHeight),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Text(
+                    text = "Фирменные миксы",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+            }
+            Button(
+                onClick = { /*TODO*/ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(MaterialTheme.dimens.buttonHeight),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Text(
+                    text = "Генерация по ингредиенту",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun LandscapeCurrentOrderScreen(
+    navController: NavHostController,
+    screenWidth: Int = LocalConfiguration.current.screenWidthDp
+) {
+    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+//                .verticalScroll(state = rememberScrollState())
+                .padding(horizontal = (screenWidth / 4).dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.small3)
+        ) {
+            Button(
+                onClick = { navController.navigate(MainScreen.ChooseGenerateRecipe.route) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(MaterialTheme.dimens.buttonHeight),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Text(
+                    text = "Случайная генерация",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+            }
+            Button(
+                onClick = {/*TODO*/ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(MaterialTheme.dimens.buttonHeight),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Text(
+                    text = "Фирменные миксы",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+            }
+            Button(
+                onClick = { /*TODO*/ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(MaterialTheme.dimens.buttonHeight),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Text(
+                    text = "Генерация по ингредиенту",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+            }
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.large1 / 3))
+
+        }
+    }
 }
