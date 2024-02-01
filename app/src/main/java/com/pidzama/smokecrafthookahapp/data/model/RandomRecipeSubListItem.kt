@@ -23,15 +23,4 @@ data class RandomRecipeSubListItem(
     val weight: Double
 ): Parcelable
 
-//class ListTaskTypeItem : NavType<Array<RandomRecipeSubListItem>>(isNullableAllowed = false) {
-//    override fun get(bundle: Bundle, key: String): Array<RandomRecipeSubListItem>? {
-//        return bundle.getParcelableArray(key) as Array<RandomRecipeSubListItem>?
-//    }
-//    override fun parseValue(value: String): Array<RandomRecipeSubListItem> {
-//        return Gson().fromJson(value, Array<RandomRecipeSubListItem>::class.java)
-//    }
-//    override fun put(bundle: Bundle, key: String, value: Array<RandomRecipeSubListItem>) {
-//        bundle.putParcelableArray(key, value)
-//    }
-//}
 

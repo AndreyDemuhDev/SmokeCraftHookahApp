@@ -54,6 +54,13 @@ fun PieChartRecipe(
     val totalTasty = firstTasty + secondTasty + threeTasty
     val radius = density / 3.0f
     val innerRadius = radius - ((MaterialTheme.dimens.small1 * 1.3f).value / 100) * 100
+
+
+    Log.d("MyLog", "DENSITY =======>${density}")
+    Log.d("MyLog", "RADIUS =======>${radius}")
+    Log.d("MyLog", "INERRADIUS =======>${innerRadius}")
+
+
     var animationPlayed by remember { mutableStateOf(false) }
     val animateRotation by animateFloatAsState(
         targetValue = if (animationPlayed) 90f * 12f else 0f, animationSpec = tween(
@@ -70,7 +77,6 @@ fun PieChartRecipe(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = MaterialTheme.dimens.small1),
-//            .clickable { navController.navigate(MainScreen.DetailHookahScreen.route) },
         border = BorderStroke(2.dp, color = MaterialTheme.colorScheme.primary),
         shape = MaterialTheme.shapes.extraLarge,
         backgroundColor = MaterialTheme.colorScheme.background
@@ -134,7 +140,7 @@ fun PieChartRecipe(
             BoxWithConstraints(
                 modifier = Modifier
                     .weight(0.5f)
-                    .height(height = MaterialTheme.dimens.large3 * 2)
+                    .height(height = radius.dp)
                     .padding(
                         top = MaterialTheme.dimens.large2,
                         start = MaterialTheme.dimens.small2,
@@ -222,8 +228,6 @@ fun LandscapePieChartRecipe(
 ) {
     val screenHeight = LocalConfiguration.current.screenHeightDp
     val screenWidth = LocalConfiguration.current.screenWidthDp
-    Log.d("MyLog", "ScreenHight =======> ${screenHeight}")
-    Log.d("MyLog", "ScreenscreenWidth =======> ${screenWidth}")
     val density = LocalConfiguration.current.densityDpi
     var circleCenter by remember {
         mutableStateOf(Offset.Zero)
@@ -233,10 +237,13 @@ fun LandscapePieChartRecipe(
     val threeTasty = 2f
     val listTesty = listOf(firstTasty, secondTasty, threeTasty)
     val totalTasty = firstTasty + secondTasty + threeTasty
-    val radius = ((screenWidth / screenHeight) * 100) + (MaterialTheme.dimens.small3).value
-    Log.d("MyLog", "RADIUS =======> ${radius}")
-    Log.d("MyLog", "DENSITY =======> ${density}")
+    val radius = density / 2
     val innerRadius = radius - ((MaterialTheme.dimens.small1 * 1.3f).value / 100) * 100
+
+    Log.d("MyLog", "DENSITY =======>${density}")
+    Log.d("MyLog", "RADIUS =======>${radius}")
+    Log.d("MyLog", "INERRADIUS =======>${innerRadius}")
+
     var animationPlayed by remember { mutableStateOf(false) }
     val animateRotation by animateFloatAsState(
         targetValue = if (animationPlayed) 90f * 12f else 0f, animationSpec = tween(
@@ -253,7 +260,6 @@ fun LandscapePieChartRecipe(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = MaterialTheme.dimens.small1),
-//            .clickable { navController.navigate(MainScreen.DetailHookahScreen.route) },
         border = BorderStroke(2.dp, color = MaterialTheme.colorScheme.primary),
         shape = MaterialTheme.shapes.extraLarge,
         backgroundColor = MaterialTheme.colorScheme.background
@@ -272,7 +278,7 @@ fun LandscapePieChartRecipe(
             ) {
                 Column(
                     modifier = Modifier
-                        .padding(end = MaterialTheme.dimens.small1)
+                        .padding(end = MaterialTheme.dimens.extraSmall)
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
@@ -317,15 +323,15 @@ fun LandscapePieChartRecipe(
             BoxWithConstraints(
                 modifier = Modifier
                     .weight(0.5f)
-                    .height(height = (radius / 2).dp)
+                    .height(height = radius.dp)
                     .padding(
-                        top = (screenHeight / 3).dp,
+                        top = (screenHeight / 5).dp,
                         start = (radius / 3).dp,
                         end = (radius / 3).dp
                     ),
                 contentAlignment = Alignment.Center
             ) {
-
+                Log.d("MyLog", "TOP PADDING ${screenHeight/3.5}")
                 Canvas(
                     modifier = Modifier.rotate(animateRotation)
                 ) {
