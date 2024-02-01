@@ -118,7 +118,7 @@ val MediumTypography = androidx.compose.material3.Typography(
     titleMedium = TextStyle(
         fontSize = 16.sp,
         fontFamily = Manrope,
-        fontWeight = FontWeight.Medium
+        fontWeight = FontWeight.ExtraBold
     ),
     labelMedium = TextStyle(
         fontSize = 16.sp,
@@ -146,7 +146,7 @@ val ExpandedTypography = androidx.compose.material3.Typography(
     titleMedium = TextStyle(
         fontSize = 18.sp,
         fontFamily = Manrope,
-        fontWeight = FontWeight.Medium
+        fontWeight = FontWeight.ExtraBold
     ),
     labelMedium = TextStyle(
         fontSize = 18.sp,

@@ -6,7 +6,6 @@ import androidx.core.net.toUri
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.pidzama.smokecrafthookahapp.data.model.ListTaskType
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.presentation.profile.ProfileScreen
 import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.DetailHookahScreen
@@ -32,13 +31,22 @@ fun MainNavGraph(navController: NavHostController) {
             OrderArchiveScreen(navController = navController)
         }
         composable(MainScreen.ChooseGenerateRecipe.route) {
-            RandomGenerationRecipeScreen(navController = navController)
+            RandomGenerationRecipeScreen(navController = navController,
+                navigateToDetails = { recipe ->
+                    navigateToDetails(
+                        navController = navController,
+                        recipe = recipe
+                    )
+                })
         }
-        composable(route =MainScreen.DetailHookahScreen.route + "/{recipe}",
-            arguments = listOf(navArgument("recipe"){ type = ListTaskType() })
-            ) {
-            val recipe = it.arguments?.getParcelable<RandomRecipeSubList>("recipe")
-            DetailHookahScreen(navController = navController, recipe)
+        composable(route = MainScreen.DetailHookahScreen.route) {
+            navController.previousBackStackEntry?.savedStateHandle?.get<RandomRecipeSubList?>("recipe")
+                ?.let { recipe ->
+                    DetailHookahScreen(
+                        navController = navController,
+                        recipe = recipe
+                    )
+                }
         }
     }
 }
@@ -49,4 +57,11 @@ sealed class MainScreen(val route: String) {
     object OrderArchive : MainScreen("ORDER_ARCHIVE")
     object ChooseGenerateRecipe : MainScreen("CHOOSE_GENERATE_RECIPE")
     object DetailHookahScreen : MainScreen("DETAIL_HOOKAH_SCREEN")
+}
+
+private fun navigateToDetails(navController: NavController, recipe: RandomRecipeSubList) {
+    navController.currentBackStackEntry?.savedStateHandle?.set("recipe", recipe)
+    navController.navigate(
+        route = MainScreen.DetailHookahScreen.route
+    )
 }

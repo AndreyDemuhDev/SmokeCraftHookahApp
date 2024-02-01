@@ -1,5 +1,6 @@
 package com.pidzama.smokecrafthookahapp.presentation.detail_hookah
 
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.util.Log
@@ -8,6 +9,8 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
@@ -17,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
@@ -36,10 +40,10 @@ import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 @Composable
 fun DetailPieChart(
     input: RandomRecipeSubList,
-    animDuration: Int = 400,
-    navController: NavHostController
+    animDuration: Int = 400
 ) {
 
+    val screenWidth = LocalConfiguration.current.screenWidthDp
     val density = LocalConfiguration.current.densityDpi
 
     var circleCenter by remember {
@@ -68,28 +72,27 @@ fun DetailPieChart(
         animationPlayed = true
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
+    LazyColumn(
+        modifier = Modifier.fillMaxSize()
     ) {
+        item {
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.padding(bottom = MaterialTheme.dimens.small3),
             ) {
                 Text(
                     text = "Рецепт ",
                     color = MaterialTheme.colorScheme.inverseSurface,
-                    fontSize = 20.sp,
+                    style = MaterialTheme.typography.titleLarge,
                 )
                 Text(
                     text = "№1",
                     color = MaterialTheme.colorScheme.primary,
-                    fontSize = 20.sp
+                    style = MaterialTheme.typography.titleLarge,
                 )
             }
-            input.forEachIndexed {index, tasty ->
+            input.forEachIndexed { index, tasty ->
                 Card(
-                    modifier = Modifier
-                        .padding(vertical=MaterialTheme.dimens.small1),
+                    modifier = Modifier.padding(vertical = MaterialTheme.dimens.extraSmall),
                     border = BorderStroke(2.dp, color = setColorTaste(tasty.taste_group)),
                     shape = MaterialTheme.shapes.medium,
                     backgroundColor = MaterialTheme.colorScheme.background
@@ -97,101 +100,247 @@ fun DetailPieChart(
                     Row(modifier = Modifier.basicMarquee()) {
                         Text(
                             modifier = Modifier.padding(
-                                all = MaterialTheme.dimens.small1
+                                all = MaterialTheme.dimens.extraSmall
                             ),
-                            text = "${tasty.taste},",
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 18.sp,
+                            text = "${tasty.taste}, ${tasty.brand}",
+                            style = MaterialTheme.typography.titleLarge,
                             color = setColorTaste(tasty.taste_group)
                         )
                         Text(
                             modifier = Modifier.padding(
-                                all = MaterialTheme.dimens.small1
+                                all = MaterialTheme.dimens.extraSmall
                             ),
-                            text = "${tasty.brand},",
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 18.sp,
-                            color = setColorTaste(tasty.taste_group)
-                        )
-                        Text(
-                            modifier = Modifier.padding(
-                                all = MaterialTheme.dimens.small1
-                            ),
-                            text = "${listTesty[index]}г.",
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 18.sp,
+                            text = "${listTesty[index].toInt()} г.",
+                            style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onBackground
                         )
                     }
                 }
             }
-        BoxWithConstraints(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.5f)
-                .padding(MaterialTheme.dimens.small1),
-            contentAlignment = Alignment.Center
-        ) {
-
-            Canvas(
-                modifier = Modifier.rotate(animateRotation)
+            BoxWithConstraints(
+                modifier = Modifier
+                    .height(height = (screenWidth - (MaterialTheme.dimens.large2.value)).dp)
+                    .fillMaxWidth()
+                    .padding(
+                        top = MaterialTheme.dimens.large3,
+                        bottom = MaterialTheme.dimens.large3,
+                        start = MaterialTheme.dimens.small2,
+                        end = MaterialTheme.dimens.small2,
+                    ),
+                contentAlignment = Alignment.Center
             ) {
+                Canvas(
+                    modifier = Modifier.rotate(animateRotation)
+                ) {
 
-                val width = size.width
-                val height = size.height
-                circleCenter = Offset(x = width / 2, y = height / 2)
+                    val width = size.width
+                    val height = size.height
+                    val anglePerValue = 360f / totalTasty
+                    var currentStartAngle = 0f
+                    circleCenter = Offset(x = width / 2, y = height / 2)
 
+                    listTesty.forEachIndexed { index, testy ->
+                        val scale = 1.1f
+                        val angleToDraw = testy * anglePerValue
 
-                val anglePerValue = 360f / totalTasty
-                var currentStartAngle = 0f
+                        scale(scale) {
+                            drawArc(
+                                color = setColorTaste(input[index].taste_group),
+                                startAngle = currentStartAngle,
+                                sweepAngle = angleToDraw,
+                                useCenter = false,
+                                size = Size(
+                                    width = radius * 2f,
+                                    height = radius * 2f
+                                ),
+                                topLeft = Offset(
+                                    x = (width - radius * 2f) / 2f,
+                                    y = (height - radius * 2f) / 2f
+                                ),
+                                style = Stroke((radius - innerRadius) * 4f, cap = StrokeCap.Butt)
+                            )
+                            currentStartAngle += angleToDraw
+                        }
 
-                listTesty.forEachIndexed { index, testy ->
-                    val scale = 1.1f
-                    val angleToDraw = testy * anglePerValue
-
-                    scale(scale) {
-                        drawArc(
-                            color = setColorTaste(input[index].taste_group),
-                            startAngle = currentStartAngle,
-                            sweepAngle = angleToDraw,
-                            useCenter = false,
-                            size = Size(
-                                width = radius * 2f,
-                                height = radius * 2f
-                            ),
-                            topLeft = Offset(
-                                x = (width - radius * 2f) / 2f,
-                                y = (height - radius * 2f) / 2f
-                            ),
-                            style = Stroke((radius - innerRadius) * 4f, cap = StrokeCap.Butt)
-                        )
-                        currentStartAngle += angleToDraw
+                        var rotateAngle = currentStartAngle - angleToDraw / 2f - 90f
+                        var factor = 1f
+                        if (rotateAngle > 90f) {
+                            rotateAngle = (rotateAngle + 180).mod(360f)
+                            factor = -0.92f
+                        }
+                        val percentage =
+                            (testy / totalTasty * 100).toInt()
+                        drawContext.canvas.nativeCanvas.apply {
+                            if (percentage > 3) {
+                                rotate(rotateAngle) {
+                                    drawText(
+                                        "$percentage %",
+                                        circleCenter.x,
+                                        circleCenter.y + (radius + (density / 10) - (radius - innerRadius - (radius / 2f)) / 2f) * factor,
+                                        Paint().apply {
+                                            textSize = 15.sp.toPx()
+                                            color = setColorTaste(input[index].taste_group).toArgb()
+                                            textAlign = Paint.Align.CENTER
+                                            typeface = Typeface.DEFAULT_BOLD
+                                        }
+                                    )
+                                }
+                            }
+                        }
                     }
+                }
+            }
+        }
+    }
+}
+//}
 
-                    var rotateAngle = currentStartAngle - angleToDraw / 2f - 90f
-                    var factor = 1f
-                    if (rotateAngle > 90f) {
-                        rotateAngle = (rotateAngle + 180).mod(360f)
-                        factor = -0.92f
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun LandscapeDetailPieChart(
+    input: RandomRecipeSubList,
+    animDuration: Int = 400
+) {
+    val density = LocalConfiguration.current.densityDpi
+    var circleCenter by remember {
+        mutableStateOf(Offset.Zero)
+    }
+
+    val radius = density / 2.2f
+    val innerRadius = radius - ((MaterialTheme.dimens.small2).value / 100) * 100
+
+    val firstTasty = 12f
+    val secondTasty = 6f
+    val threeTasty = 2f
+    val listTesty = listOf(firstTasty, secondTasty, threeTasty)
+    val totalTasty = firstTasty + secondTasty + threeTasty
+
+    var animationPlayed by remember { mutableStateOf(false) }
+
+    val animateRotation by animateFloatAsState(
+        targetValue = if (animationPlayed) 90f * 12f else 0f, animationSpec = tween(
+            durationMillis = animDuration,
+            delayMillis = 100,
+            easing = LinearOutSlowInEasing
+        )
+    )
+    LaunchedEffect(key1 = true) {
+        animationPlayed = true
+    }
+
+    LazyRow(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        item {
+            Column() {
+                Row(
+                    modifier = Modifier.padding(bottom = MaterialTheme.dimens.extraSmall / 2),
+                ) {
+                    Text(
+                        text = "Рецепт ",
+                        color = MaterialTheme.colorScheme.inverseSurface,
+                        style = MaterialTheme.typography.titleLarge,
+                    )
+                    Text(
+                        text = "№1",
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.titleLarge,
+                    )
+                }
+                input.forEachIndexed { index, tasty ->
+                    Card(
+                        modifier = Modifier.padding(vertical = MaterialTheme.dimens.extraSmall / 2),
+                        border = BorderStroke(2.dp, color = setColorTaste(tasty.taste_group)),
+                        shape = MaterialTheme.shapes.medium,
+                        backgroundColor = MaterialTheme.colorScheme.background
+                    ) {
+                        Row(modifier = Modifier.basicMarquee()) {
+                            Text(
+                                modifier = Modifier.padding(
+                                    all = MaterialTheme.dimens.extraSmall
+                                ),
+                                text = "${tasty.taste}, ${tasty.brand}",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = setColorTaste(tasty.taste_group)
+                            )
+                            Text(
+                                modifier = Modifier.padding(
+                                    all = MaterialTheme.dimens.extraSmall
+                                ),
+                                text = "${listTesty[index].toInt()} г.",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.onBackground
+                            )
+                        }
                     }
+                }
+            }
+            BoxWithConstraints(
+                modifier = Modifier
+                    .width(width = (radius * 2).dp)
+                    .fillMaxWidth()
+                    .padding(
+                        top = (MaterialTheme.dimens.medium3.value * 2.2).dp
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Canvas(
+                    modifier = Modifier.rotate(animateRotation)
+                ) {
 
-                    val percentage =
-                        (testy / totalTasty * 100).toInt()
-                    Log.d("MyLog", " ПРОЦЕНТЫ -------->$percentage")
-                    drawContext.canvas.nativeCanvas.apply {
-                        if (percentage > 3) {
-                            rotate(rotateAngle) {
-                                drawText(
-                                    "$percentage %",
-                                    circleCenter.x,
-                                    circleCenter.y + (radius + (density / 10) - (radius - innerRadius - (radius / 2f)) / 2f) * factor,
-                                    Paint().apply {
-                                        textSize = 15.sp.toPx()
-                                        color = setColorTaste(input[index].taste_group).toArgb()
-                                        textAlign = Paint.Align.CENTER
-                                        typeface = Typeface.DEFAULT_BOLD
-                                    }
-                                )
+                    val width = size.width
+                    val height = size.height
+                    val anglePerValue = 360f / totalTasty
+                    var currentStartAngle = 0f
+                    circleCenter = Offset(x = width / 2, y = height / 2)
+
+                    listTesty.forEachIndexed { index, testy ->
+                        val scale = 1.1f
+                        val angleToDraw = testy * anglePerValue
+
+                        scale(scale) {
+                            drawArc(
+                                color = setColorTaste(input[index].taste_group),
+                                startAngle = currentStartAngle,
+                                sweepAngle = angleToDraw,
+                                useCenter = false,
+                                size = Size(
+                                    width = radius * 2f,
+                                    height = radius * 2f
+                                ),
+                                topLeft = Offset(
+                                    x = (width - radius * 2f) / 2f,
+                                    y = (height - radius * 2f) / 2f
+                                ),
+                                style = Stroke((radius - innerRadius) * 4f, cap = StrokeCap.Butt)
+                            )
+                            currentStartAngle += angleToDraw
+                        }
+
+                        var rotateAngle = currentStartAngle - angleToDraw / 2f - 90f
+                        var factor = 1f
+                        if (rotateAngle > 90f) {
+                            rotateAngle = (rotateAngle + 180).mod(360f)
+                            factor = -0.92f
+                        }
+                        val percentage =
+                            (testy / totalTasty * 100).toInt()
+                        drawContext.canvas.nativeCanvas.apply {
+                            if (percentage > 3) {
+                                rotate(rotateAngle) {
+                                    drawText(
+                                        "$percentage %",
+                                        circleCenter.x,
+                                        circleCenter.y + (radius + (density / 7) - (radius - innerRadius - (radius / 2f)) / 2f) * factor,
+                                        Paint().apply {
+                                            textSize = 17.sp.toPx()
+                                            color = setColorTaste(input[index].taste_group).toArgb()
+                                            textAlign = Paint.Align.CENTER
+                                            typeface = Typeface.DEFAULT_BOLD
+                                        }
+                                    )
+                                }
                             }
                         }
                     }

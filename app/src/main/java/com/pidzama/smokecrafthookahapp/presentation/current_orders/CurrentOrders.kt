@@ -1,6 +1,7 @@
 package com.pidzama.smokecrafthookahapp.presentation.current_orders
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Surface
@@ -52,13 +53,13 @@ fun CurrentOrders(
 @Composable
 fun PortraitCurrentOrderScreen(
     navController: NavHostController,
-    screenWidth: Int = LocalConfiguration.current.screenWidthDp
+    screenWidth: Int = LocalConfiguration.current.screenWidthDp,
 ) {
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         Column(
             modifier = Modifier.padding(horizontal = (screenWidth / 8).dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium1)
         ) {
             Button(
                 onClick = { navController.navigate(MainScreen.ChooseGenerateRecipe.route) },
@@ -126,8 +127,7 @@ fun LandscapeCurrentOrderScreen(
             ) {
                 Text(
                     text = "Случайная генерация",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground,
                 )
             }
@@ -140,8 +140,7 @@ fun LandscapeCurrentOrderScreen(
             ) {
                 Text(
                     text = "Фирменные миксы",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground,
                 )
             }
@@ -154,13 +153,11 @@ fun LandscapeCurrentOrderScreen(
             ) {
                 Text(
                     text = "Генерация по ингредиенту",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground,
                 )
             }
             Spacer(modifier = Modifier.height(MaterialTheme.dimens.large1 / 3))
-
         }
     }
 }

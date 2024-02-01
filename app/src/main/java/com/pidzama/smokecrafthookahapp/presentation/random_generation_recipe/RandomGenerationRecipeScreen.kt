@@ -1,7 +1,6 @@
 package com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe
 
 import android.content.res.Configuration
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -22,16 +21,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.R
-import com.pidzama.smokecrafthookahapp.navigation.MainScreen
+import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.presentation.current_orders.CurrentOrdersViewModel
 import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 
 @Composable
 fun RandomGenerationRecipeScreen(
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    navigateToDetails: (RandomRecipeSubList) -> Unit
 ) {
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -69,16 +68,25 @@ fun RandomGenerationRecipeScreen(
         },
         content = {
             if (ScreenOrientation == Configuration.ORIENTATION_PORTRAIT) {
-                RecipesContentView(navController = navController)
+                PortraitRecipesContentView(
+                    navController = navController,
+                    navigateToDetails = navigateToDetails
+                )
             } else {
-                LandscapeRecipesContentView(navController = navController)
+                LandscapeRecipesContentView(
+                    navController = navController,
+                    navigateToDetails = navigateToDetails
+                )
             }
         }
     )
 }
 
 @Composable
-fun RecipesContentView(navController: NavHostController) {
+fun PortraitRecipesContentView(
+    navController: NavHostController,
+    navigateToDetails: (RandomRecipeSubList) -> Unit
+) {
     val viewModel = hiltViewModel<CurrentOrdersViewModel>()
     val listRandomGenerateRecipe = viewModel.generateRecipeList.observeAsState(listOf()).value
     val updateIndexRecipe = viewModel.data.collectAsState()
@@ -105,20 +113,16 @@ fun RecipesContentView(navController: NavHostController) {
             ) {
                 itemsIndexed(listRandomGenerateRecipe) { index, list ->
                     indexRecipe++
-                    Card(modifier = Modifier
-                        .clickable {
-                            navController.navigate(
-                                route = MainScreen.DetailHookahScreen.route + "/$list"
-                            )
-                        }) {
+                    Card(
+                        modifier = Modifier.clickable { navigateToDetails(list) },
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+                    ) {
                         PieChartRecipe(
                             input = list,
                             navController = navController,
-                            indexRecipe = indexRecipe,
-//                            onClickRecipe = { listRandomGenerateRecipe[1] }
+                            indexRecipe = indexRecipe
                         )
                     }
-                    Log.d("MyLog", "LIST====================> $list")
                 }
             }
         }
@@ -146,9 +150,11 @@ fun RecipesContentView(navController: NavHostController) {
 }
 
 @Composable
-fun LandscapeRecipesContentView(navController: NavHostController) {
+fun LandscapeRecipesContentView(
+    navController: NavHostController,
+    navigateToDetails: (RandomRecipeSubList) -> Unit
+) {
     val screenHeight = LocalConfiguration.current.screenHeightDp
-
     val viewModel = hiltViewModel<CurrentOrdersViewModel>()
     val listRandomGenerateRecipe = viewModel.generateRecipeList.observeAsState(listOf()).value
     val updateIndexRecipe = viewModel.data.collectAsState()
@@ -176,20 +182,16 @@ fun LandscapeRecipesContentView(navController: NavHostController) {
             ) {
                 itemsIndexed(listRandomGenerateRecipe) { index, list ->
                     indexRecipe++
-                    Card(modifier = Modifier
-                        .clickable {
-                            navController.navigate(
-                                route = MainScreen.DetailHookahScreen.route + "/$list"
-                            )
-                        }) {
+                    Card(
+                        modifier = Modifier.clickable { navigateToDetails(list) },
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+                    ) {
                         LandscapePieChartRecipe(
                             input = list,
                             navController = navController,
-                            indexRecipe = indexRecipe,
-//                            onClickRecipe = { listRandomGenerateRecipe[1] }
+                            indexRecipe = indexRecipe
                         )
                     }
-                    Log.d("MyLog", "LIST====================> $list")
                 }
             }
         }
@@ -203,7 +205,7 @@ fun LandscapeRecipesContentView(navController: NavHostController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight)
-                    .padding(horizontal = (screenHeight/25).dp),
+                    .padding(horizontal = (screenHeight / 25).dp),
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
             ) {

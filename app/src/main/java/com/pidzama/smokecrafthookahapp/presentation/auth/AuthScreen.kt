@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalConfiguration
@@ -38,6 +39,7 @@ import com.pidzama.smokecrafthookahapp.presentation.auth.common.UiEvents
 import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -106,15 +108,15 @@ fun AuthFieldSection(
     snackBar: SnackbarHostState,
     viewModel: AuthViewModel,
     navController: NavHostController,
+    screenHeight: Int = LocalConfiguration.current.screenHeightDp,
+    screenWidth: Int = LocalConfiguration.current.screenWidthDp,
+    localFocusManager: FocusManager = LocalFocusManager.current,
+    scope: CoroutineScope = rememberCoroutineScope()
 ) {
-    val screenHeight = LocalConfiguration.current.screenHeightDp
-    val screenWidth = LocalConfiguration.current.screenWidthDp
-    val localFocusManager = LocalFocusManager.current
+
     val loginState = viewModel.loginState.value
     val passwordState = viewModel.passwordState.value
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
-
-    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -305,16 +307,16 @@ fun LandscapeAuthScreen(
     navController: NavHostController,
     keyboardController: SoftwareKeyboardController,
     snackBar: SnackbarHostState,
-    viewModel: AuthViewModel
+    viewModel: AuthViewModel,
+    screenHeight: Int = LocalConfiguration.current.screenHeightDp,
+    screenWidth: Int = LocalConfiguration.current.screenWidthDp,
+    localFocusManager: FocusManager = LocalFocusManager.current,
+    scope: CoroutineScope = rememberCoroutineScope()
 ) {
-    val screenHeight = LocalConfiguration.current.screenHeightDp
-    val screenWidth = LocalConfiguration.current.screenWidthDp
-    val localFocusManager = LocalFocusManager.current
+
     val loginState = viewModel.loginState.value
     val passwordState = viewModel.passwordState.value
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
-
-    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
