@@ -3,7 +3,6 @@ package com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe
 
 import android.graphics.Paint
 import android.graphics.Typeface
-import android.util.Log
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -29,38 +28,26 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.*
-import androidx.navigation.NavHostController
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.presentation.common.setColorTaste
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PieChartRecipe(
+fun PortraitPieChartRecipe(
     input: RandomRecipeSubList,
     animDuration: Int = 600,
-    navController: NavHostController,
     indexRecipe: Int,
-//    onClickRecipe: (RandomRecipeSubList) -> Unit
+    listTobaccoWeight:List<Float>
 ) {
     val density = LocalConfiguration.current.densityDpi
     var circleCenter by remember {
         mutableStateOf(Offset.Zero)
     }
-    val firstTasty = 12f
-    val secondTasty = 6f
-    val threeTasty = 2f
-    val listTesty = listOf(firstTasty, secondTasty, threeTasty)
-    val totalTasty = firstTasty + secondTasty + threeTasty
+
+    val totalTastyWeight = listTobaccoWeight.sum()
     val radius = density / 3.0f
     val innerRadius = radius - ((MaterialTheme.dimens.small1 * 1.3f).value / 100) * 100
-
-
-    Log.d("MyLog", "DENSITY =======>${density}")
-    Log.d("MyLog", "RADIUS =======>${radius}")
-    Log.d("MyLog", "INERRADIUS =======>${innerRadius}")
-
-
     var animationPlayed by remember { mutableStateOf(false) }
     val animateRotation by animateFloatAsState(
         targetValue = if (animationPlayed) 90f * 12f else 0f, animationSpec = tween(
@@ -137,12 +124,11 @@ fun PieChartRecipe(
                     }
                 }
             }
-            BoxWithConstraints(
+            Box(
                 modifier = Modifier
                     .weight(0.5f)
-                    .height(height = radius.dp)
                     .padding(
-                        top = MaterialTheme.dimens.large2,
+                        top = MaterialTheme.dimens.large1 * 2,
                         start = MaterialTheme.dimens.small2,
                         end = MaterialTheme.dimens.small2,
                     ),
@@ -155,12 +141,12 @@ fun PieChartRecipe(
 
                     val width = size.width
                     val height = size.height
-                    val anglePerValue = 360f / totalTasty
+                    val anglePerValue = 360f / totalTastyWeight
                     var currentStartAngle = 0f
 
                     circleCenter = Offset(x = width / 2, y = height / 2)
 
-                    listTesty.forEachIndexed { index, testy ->
+                    listTobaccoWeight.forEachIndexed { index, testy ->
                         val scale = 1.1f
                         val angleToDraw = testy * anglePerValue
 
@@ -191,7 +177,7 @@ fun PieChartRecipe(
                         }
 
                         val percentage =
-                            (testy / totalTasty * 100).toInt()
+                            (testy / totalTastyWeight * 100).toInt()
                         drawContext.canvas.nativeCanvas.apply {
                             if (percentage > 3) {
                                 rotate(rotateAngle) {
@@ -222,28 +208,17 @@ fun PieChartRecipe(
 fun LandscapePieChartRecipe(
     input: RandomRecipeSubList,
     animDuration: Int = 600,
-    navController: NavHostController,
     indexRecipe: Int,
-//    onClickRecipe: (RandomRecipeSubList) -> Unit
+    listTobaccoWeight: List<Float>,
 ) {
     val screenHeight = LocalConfiguration.current.screenHeightDp
-    val screenWidth = LocalConfiguration.current.screenWidthDp
     val density = LocalConfiguration.current.densityDpi
     var circleCenter by remember {
         mutableStateOf(Offset.Zero)
     }
-    val firstTasty = 12f
-    val secondTasty = 6f
-    val threeTasty = 2f
-    val listTesty = listOf(firstTasty, secondTasty, threeTasty)
-    val totalTasty = firstTasty + secondTasty + threeTasty
+    val totalTastyWeight = listTobaccoWeight.sum()
     val radius = density / 2
     val innerRadius = radius - ((MaterialTheme.dimens.small1 * 1.3f).value / 100) * 100
-
-    Log.d("MyLog", "DENSITY =======>${density}")
-    Log.d("MyLog", "RADIUS =======>${radius}")
-    Log.d("MyLog", "INERRADIUS =======>${innerRadius}")
-
     var animationPlayed by remember { mutableStateOf(false) }
     val animateRotation by animateFloatAsState(
         targetValue = if (animationPlayed) 90f * 12f else 0f, animationSpec = tween(
@@ -320,30 +295,28 @@ fun LandscapePieChartRecipe(
                     }
                 }
             }
-            BoxWithConstraints(
+            Box(
                 modifier = Modifier
                     .weight(0.5f)
-                    .height(height = radius.dp)
                     .padding(
-                        top = (screenHeight / 5).dp,
+                        top = (screenHeight / 3).dp,
                         start = (radius / 3).dp,
                         end = (radius / 3).dp
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                Log.d("MyLog", "TOP PADDING ${screenHeight/3.5}")
                 Canvas(
                     modifier = Modifier.rotate(animateRotation)
                 ) {
 
                     val width = size.width
                     val height = size.height
-                    val anglePerValue = 360f / totalTasty
+                    val anglePerValue = 360f / totalTastyWeight
                     var currentStartAngle = 0f
 
                     circleCenter = Offset(x = width / 2, y = height / 2)
 
-                    listTesty.forEachIndexed { index, testy ->
+                    listTobaccoWeight.forEachIndexed { index, testy ->
                         val scale = 1.1f
                         val angleToDraw = testy * anglePerValue
 
@@ -374,7 +347,7 @@ fun LandscapePieChartRecipe(
                         }
 
                         val percentage =
-                            (testy / totalTasty * 100).toInt()
+                            (testy / totalTastyWeight * 100).toInt()
                         drawContext.canvas.nativeCanvas.apply {
                             if (percentage > 3) {
                                 rotate(rotateAngle) {

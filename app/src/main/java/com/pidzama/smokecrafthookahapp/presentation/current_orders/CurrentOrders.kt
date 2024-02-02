@@ -1,7 +1,6 @@
 package com.pidzama.smokecrafthookahapp.presentation.current_orders
 
 import android.content.res.Configuration
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Surface
@@ -15,8 +14,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.navigation.MainScreen
@@ -66,7 +63,7 @@ fun PortraitCurrentOrderScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight),
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
             ) {
                 Text(
                     text = "Случайная генерация",
@@ -79,7 +76,7 @@ fun PortraitCurrentOrderScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight),
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
             ) {
                 Text(
                     text = "Фирменные миксы",
@@ -92,7 +89,7 @@ fun PortraitCurrentOrderScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight),
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
             ) {
                 Text(
                     text = "Генерация по ингредиенту",
@@ -113,7 +110,6 @@ fun LandscapeCurrentOrderScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-//                .verticalScroll(state = rememberScrollState())
                 .padding(horizontal = (screenWidth / 4).dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.small3)
@@ -123,7 +119,7 @@ fun LandscapeCurrentOrderScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight),
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
             ) {
                 Text(
                     text = "Случайная генерация",
@@ -136,7 +132,7 @@ fun LandscapeCurrentOrderScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight),
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
             ) {
                 Text(
                     text = "Фирменные миксы",
@@ -149,7 +145,7 @@ fun LandscapeCurrentOrderScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight),
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
             ) {
                 Text(
                     text = "Генерация по ингредиенту",

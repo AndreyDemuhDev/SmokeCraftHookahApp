@@ -1,6 +1,7 @@
 package com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -25,6 +26,7 @@ import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.presentation.current_orders.CurrentOrdersViewModel
 import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
+import com.pidzama.smokecrafthookahapp.utils.Constants.TastyWeight.ListTastyWeight
 
 @Composable
 fun RandomGenerationRecipeScreen(
@@ -69,12 +71,10 @@ fun RandomGenerationRecipeScreen(
         content = {
             if (ScreenOrientation == Configuration.ORIENTATION_PORTRAIT) {
                 PortraitRecipesContentView(
-                    navController = navController,
                     navigateToDetails = navigateToDetails
                 )
             } else {
                 LandscapeRecipesContentView(
-                    navController = navController,
                     navigateToDetails = navigateToDetails
                 )
             }
@@ -84,8 +84,8 @@ fun RandomGenerationRecipeScreen(
 
 @Composable
 fun PortraitRecipesContentView(
-    navController: NavHostController,
-    navigateToDetails: (RandomRecipeSubList) -> Unit
+    navigateToDetails: (RandomRecipeSubList) -> Unit,
+    listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
     val viewModel = hiltViewModel<CurrentOrdersViewModel>()
     val listRandomGenerateRecipe = viewModel.generateRecipeList.observeAsState(listOf()).value
@@ -111,16 +111,16 @@ fun PortraitRecipesContentView(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                itemsIndexed(listRandomGenerateRecipe) { index, list ->
+                itemsIndexed(listRandomGenerateRecipe) { _, list ->
                     indexRecipe++
                     Card(
                         modifier = Modifier.clickable { navigateToDetails(list) },
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
                     ) {
-                        PieChartRecipe(
+                        PortraitPieChartRecipe(
                             input = list,
-                            navController = navController,
-                            indexRecipe = indexRecipe
+                            indexRecipe = indexRecipe,
+                            listTobaccoWeight = listTobaccoWeight
                         )
                     }
                 }
@@ -136,7 +136,7 @@ fun PortraitRecipesContentView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight),
-                shape = RoundedCornerShape(10.dp),
+                shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
                 colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
             ) {
                 Text(
@@ -151,8 +151,8 @@ fun PortraitRecipesContentView(
 
 @Composable
 fun LandscapeRecipesContentView(
-    navController: NavHostController,
-    navigateToDetails: (RandomRecipeSubList) -> Unit
+    navigateToDetails: (RandomRecipeSubList) -> Unit,
+    listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
     val screenHeight = LocalConfiguration.current.screenHeightDp
     val viewModel = hiltViewModel<CurrentOrdersViewModel>()
@@ -180,7 +180,7 @@ fun LandscapeRecipesContentView(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                itemsIndexed(listRandomGenerateRecipe) { index, list ->
+                itemsIndexed(listRandomGenerateRecipe) { _, list ->
                     indexRecipe++
                     Card(
                         modifier = Modifier.clickable { navigateToDetails(list) },
@@ -188,8 +188,8 @@ fun LandscapeRecipesContentView(
                     ) {
                         LandscapePieChartRecipe(
                             input = list,
-                            navController = navController,
-                            indexRecipe = indexRecipe
+                            indexRecipe = indexRecipe,
+                            listTobaccoWeight = listTobaccoWeight
                         )
                     }
                 }
@@ -206,7 +206,7 @@ fun LandscapeRecipesContentView(
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight)
                     .padding(horizontal = (screenHeight / 25).dp),
-                shape = RoundedCornerShape(10.dp),
+                shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
                 colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
             ) {
                 Image(
