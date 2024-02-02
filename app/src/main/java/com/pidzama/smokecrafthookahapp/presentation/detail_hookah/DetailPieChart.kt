@@ -1,9 +1,7 @@
 package com.pidzama.smokecrafthookahapp.presentation.detail_hookah
 
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
-import android.util.Log
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -20,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
@@ -28,10 +25,8 @@ import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.presentation.common.setColorTaste
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
@@ -40,24 +35,18 @@ import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 @Composable
 fun DetailPieChart(
     input: RandomRecipeSubList,
-    animDuration: Int = 400
+    animDuration: Int = 400,
+    listTobaccoWeight: List<Float>
 ) {
 
     val screenWidth = LocalConfiguration.current.screenWidthDp
     val density = LocalConfiguration.current.densityDpi
-
     var circleCenter by remember {
         mutableStateOf(Offset.Zero)
     }
-
     val radius = density / 1.5f
     val innerRadius = radius - ((MaterialTheme.dimens.small2).value / 100) * 100
-
-    val firstTasty = 12f
-    val secondTasty = 6f
-    val threeTasty = 2f
-    val listTesty = listOf(firstTasty, secondTasty, threeTasty)
-    val totalTasty = firstTasty + secondTasty + threeTasty
+    val totalTastyWeight = listTobaccoWeight.sum()
 
     var animationPlayed by remember { mutableStateOf(false) }
 
@@ -82,12 +71,12 @@ fun DetailPieChart(
                 Text(
                     text = "Рецепт ",
                     color = MaterialTheme.colorScheme.inverseSurface,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.headlineMedium,
                 )
                 Text(
                     text = "№1",
                     color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.headlineMedium,
                 )
             }
             input.forEachIndexed { index, tasty ->
@@ -110,7 +99,7 @@ fun DetailPieChart(
                             modifier = Modifier.padding(
                                 all = MaterialTheme.dimens.extraSmall
                             ),
-                            text = "${listTesty[index].toInt()} г.",
+                            text = "${listTobaccoWeight[index].toInt()} г.",
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onBackground
                         )
@@ -135,11 +124,11 @@ fun DetailPieChart(
 
                     val width = size.width
                     val height = size.height
-                    val anglePerValue = 360f / totalTasty
+                    val anglePerValue = 360f / totalTastyWeight
                     var currentStartAngle = 0f
                     circleCenter = Offset(x = width / 2, y = height / 2)
 
-                    listTesty.forEachIndexed { index, testy ->
+                    listTobaccoWeight.forEachIndexed { index, testy ->
                         val scale = 1.1f
                         val angleToDraw = testy * anglePerValue
 
@@ -169,7 +158,7 @@ fun DetailPieChart(
                             factor = -0.92f
                         }
                         val percentage =
-                            (testy / totalTasty * 100).toInt()
+                            (testy / totalTastyWeight * 100).toInt()
                         drawContext.canvas.nativeCanvas.apply {
                             if (percentage > 3) {
                                 rotate(rotateAngle) {
@@ -193,29 +182,22 @@ fun DetailPieChart(
         }
     }
 }
-//}
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LandscapeDetailPieChart(
     input: RandomRecipeSubList,
-    animDuration: Int = 400
+    animDuration: Int = 400,
+    listTobaccoWeight: List<Float>
 ) {
     val density = LocalConfiguration.current.densityDpi
     var circleCenter by remember {
         mutableStateOf(Offset.Zero)
     }
-
     val radius = density / 2.2f
     val innerRadius = radius - ((MaterialTheme.dimens.small2).value / 100) * 100
-
-    val firstTasty = 12f
-    val secondTasty = 6f
-    val threeTasty = 2f
-    val listTesty = listOf(firstTasty, secondTasty, threeTasty)
-    val totalTasty = firstTasty + secondTasty + threeTasty
-
+    val totalTastyWeight = listTobaccoWeight.sum()
     var animationPlayed by remember { mutableStateOf(false) }
 
     val animateRotation by animateFloatAsState(
@@ -268,7 +250,7 @@ fun LandscapeDetailPieChart(
                                 modifier = Modifier.padding(
                                     all = MaterialTheme.dimens.extraSmall
                                 ),
-                                text = "${listTesty[index].toInt()} г.",
+                                text = "${listTobaccoWeight[index].toInt()} г.",
                                 style = MaterialTheme.typography.titleMedium,
                                 color = MaterialTheme.colorScheme.onBackground
                             )
@@ -281,7 +263,7 @@ fun LandscapeDetailPieChart(
                     .width(width = (radius * 2).dp)
                     .fillMaxWidth()
                     .padding(
-                        top = (MaterialTheme.dimens.medium3.value * 2.2).dp
+                        top = (MaterialTheme.dimens.medium3.value * 2.3).dp
                     ),
                 contentAlignment = Alignment.Center
             ) {
@@ -291,11 +273,11 @@ fun LandscapeDetailPieChart(
 
                     val width = size.width
                     val height = size.height
-                    val anglePerValue = 360f / totalTasty
+                    val anglePerValue = 360f / totalTastyWeight
                     var currentStartAngle = 0f
                     circleCenter = Offset(x = width / 2, y = height / 2)
 
-                    listTesty.forEachIndexed { index, testy ->
+                    listTobaccoWeight.forEachIndexed { index, testy ->
                         val scale = 1.1f
                         val angleToDraw = testy * anglePerValue
 
@@ -325,7 +307,7 @@ fun LandscapeDetailPieChart(
                             factor = -0.92f
                         }
                         val percentage =
-                            (testy / totalTasty * 100).toInt()
+                            (testy / totalTastyWeight * 100).toInt()
                         drawContext.canvas.nativeCanvas.apply {
                             if (percentage > 3) {
                                 rotate(rotateAngle) {
@@ -334,7 +316,7 @@ fun LandscapeDetailPieChart(
                                         circleCenter.x,
                                         circleCenter.y + (radius + (density / 7) - (radius - innerRadius - (radius / 2f)) / 2f) * factor,
                                         Paint().apply {
-                                            textSize = 17.sp.toPx()
+                                            textSize = 18.sp.toPx()
                                             color = setColorTaste(input[index].taste_group).toArgb()
                                             textAlign = Paint.Align.CENTER
                                             typeface = Typeface.DEFAULT_BOLD

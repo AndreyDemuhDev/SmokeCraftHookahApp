@@ -1,8 +1,6 @@
 package com.pidzama.smokecrafthookahapp.navigation
 
-import android.os.Bundle
 import androidx.compose.runtime.Composable
-import androidx.core.net.toUri
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable

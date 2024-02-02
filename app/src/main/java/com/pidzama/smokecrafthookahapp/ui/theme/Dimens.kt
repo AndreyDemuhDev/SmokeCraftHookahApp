@@ -4,6 +4,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 data class Dimens(
+    val nanoSmall: Dp = 2.dp,
     val extraSmall: Dp = 2.dp,
     val small1: Dp = 0.dp,
     val small2: Dp = 0.dp,
@@ -14,10 +15,13 @@ data class Dimens(
     val large1: Dp = 0.dp,
     val large2: Dp = 0.dp,
     val large3: Dp = 0.dp,
-    val buttonHeight: Dp = 56.dp
+    val buttonHeight: Dp = 56.dp,
+    val buttonWidth: Dp = 294.dp,
+    val cornerShape:Dp = 10.dp
 )
 
 val CompactSmallDimens = Dimens(
+    nanoSmall = 2.dp,
     extraSmall = 4.dp,
     small1 = 5.dp,
     small2 = 6.dp,
@@ -27,11 +31,11 @@ val CompactSmallDimens = Dimens(
     medium3 = 30.dp,
     large1 = 38.dp,
     large2 = 45.dp,
-    large3 = 55.dp,
-    buttonHeight = 56.dp
+    large3 = 55.dp
 )
 
 val CompactMediumDimens = Dimens(
+    nanoSmall = 2.dp,
     extraSmall = 5.dp,
     small1 = 8.dp,
     small2 = 13.dp,
@@ -41,11 +45,11 @@ val CompactMediumDimens = Dimens(
     medium3 = 35.dp,
     large1 = 42.dp,
     large2 = 55.dp,
-    large3 = 70.dp,
-    buttonHeight = 56.dp
+    large3 = 70.dp
 )
 
 val CompactDimens = Dimens(
+    nanoSmall = 2.dp,
     extraSmall = 6.dp,
     small1 = 10.dp,
     small2 = 15.dp,
@@ -55,11 +59,11 @@ val CompactDimens = Dimens(
     medium3 = 40.dp,
     large1 = 50.dp,
     large2 = 65.dp,
-    large3 = 80.dp,
-    buttonHeight = 56.dp
+    large3 = 80.dp
 )
 
 val MediumDimens = Dimens(
+    nanoSmall = 2.dp,
     extraSmall = 6.dp,
     small1 = 10.dp,
     small2 = 15.dp,
@@ -69,11 +73,11 @@ val MediumDimens = Dimens(
     medium3 = 40.dp,
     large1 = 55.dp,
     large2 = 72.dp,
-    large3 = 85.dp,
-    buttonHeight = 56.dp
+    large3 = 85.dp
 )
 
 val ExpandedDimens = Dimens(
+    nanoSmall = 2.dp,
     extraSmall = 8.dp,
     small1 = 15.dp,
     small2 = 20.dp,
@@ -83,6 +87,5 @@ val ExpandedDimens = Dimens(
     medium3 = 45.dp,
     large1 = 130.dp,
     large2 = 150.dp,
-    large3 = 170.dp,
-    buttonHeight = 56.dp,
+    large3 = 170.dp
 )

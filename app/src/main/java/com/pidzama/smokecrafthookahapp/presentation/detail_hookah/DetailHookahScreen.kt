@@ -1,40 +1,31 @@
 package com.pidzama.smokecrafthookahapp.presentation.detail_hookah
 
 import android.content.res.Configuration
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.R
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.navigation.MainScreen
-import com.pidzama.smokecrafthookahapp.presentation.current_orders.CurrentOrdersViewModel
-import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.LandscapePieChartRecipe
 import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
+import com.pidzama.smokecrafthookahapp.utils.Constants.TastyWeight.ListTastyWeight
 
 
 @Composable
@@ -98,7 +89,8 @@ fun DetailHookahScreen(
 @Composable
 fun PortraitDetailView(
     navController: NavHostController,
-    recipe: RandomRecipeSubList?
+    recipe: RandomRecipeSubList?,
+    listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
     val context = LocalContext.current
     val screenWidth = LocalConfiguration.current.screenWidthDp
@@ -130,7 +122,12 @@ fun PortraitDetailView(
                     color = MaterialTheme.colorScheme.inverseSurface,
                     style = MaterialTheme.typography.headlineMedium,
                 )
-                DetailPieChart(input = recipe!!)
+                recipe?.let {
+                    DetailPieChart(
+                        input = it,
+                        listTobaccoWeight = listTobaccoWeight
+                    )
+                }
             }
         }
         BoxWithConstraints(modifier = Modifier.weight(0.2f)) {
@@ -140,7 +137,7 @@ fun PortraitDetailView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height((screenWidth / 8).dp),
-                    shape = RoundedCornerShape(10.dp),
+                    shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
                 ) {
                     Text(
@@ -155,7 +152,7 @@ fun PortraitDetailView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height((screenWidth / 8).dp),
-                    shape = RoundedCornerShape(10.dp),
+                    shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
                     border = BorderStroke(2.dp, color = MaterialTheme.colorScheme.primary),
                 ) {
                     Text(
@@ -173,7 +170,8 @@ fun PortraitDetailView(
 @Composable
 fun LandscapeDetailView(
     navController: NavHostController,
-    recipe: RandomRecipeSubList?
+    recipe: RandomRecipeSubList?,
+    listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
     val context = LocalContext.current
 
@@ -203,7 +201,12 @@ fun LandscapeDetailView(
                     color = MaterialTheme.colorScheme.inverseSurface,
                     style = MaterialTheme.typography.titleLarge,
                 )
-                LandscapeDetailPieChart(input = recipe!!)
+                recipe?.let {
+                    LandscapeDetailPieChart(
+                        input = it,
+                        listTobaccoWeight = listTobaccoWeight
+                    )
+                }
             }
         }
         Box(
@@ -218,7 +221,7 @@ fun LandscapeDetailView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(MaterialTheme.dimens.buttonHeight),
-                    shape = RoundedCornerShape(10.dp),
+                    shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
                 ) {
                     Image(
@@ -233,7 +236,7 @@ fun LandscapeDetailView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(MaterialTheme.dimens.buttonHeight),
-                    shape = RoundedCornerShape(10.dp),
+                    shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
                     border = BorderStroke(2.dp, color = MaterialTheme.colorScheme.primary),
                 ) {
                     Image(

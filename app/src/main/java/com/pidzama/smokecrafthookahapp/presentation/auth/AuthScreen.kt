@@ -1,7 +1,6 @@
 package com.pidzama.smokecrafthookahapp.presentation.auth
 
 import android.content.res.Configuration
-import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,7 +12,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -22,23 +20,18 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.R
 import com.pidzama.smokecrafthookahapp.presentation.auth.common.UiEvents
 import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -103,7 +96,7 @@ fun LogoSection() {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun AuthFieldSection(
+fun PortraitAuthFieldSection(
     keyboardController: SoftwareKeyboardController,
     snackBar: SnackbarHostState,
     viewModel: AuthViewModel,
@@ -159,10 +152,11 @@ fun AuthFieldSection(
                     tint = MaterialTheme.colorScheme.inverseSurface
                 )
             },
-            shape = RoundedCornerShape(10.dp),
+            shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(MaterialTheme.dimens.large2)
+                .height(MaterialTheme.dimens.buttonHeight)
+                .width(MaterialTheme.dimens.buttonWidth)
         )
         if (loginState.error != "") {
             Text(
@@ -186,10 +180,11 @@ fun AuthFieldSection(
                     color = MaterialTheme.colorScheme.onTertiary
                 )
             },
-            shape = RoundedCornerShape(10.dp),
+            shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(MaterialTheme.dimens.large2),
+                .height(MaterialTheme.dimens.buttonHeight)
+                .width(MaterialTheme.dimens.buttonWidth),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
@@ -234,8 +229,9 @@ fun AuthFieldSection(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(MaterialTheme.dimens.large3)
+                .width(MaterialTheme.dimens.buttonWidth)
                 .padding(top = (screenHeight / 42).dp),
-            shape = RoundedCornerShape(10.dp),
+            shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
             onClick = {
                 scope.launch {
                     viewModel.eventFlow.collectLatest { event ->
@@ -284,11 +280,11 @@ fun PortraitAuthScreen(
     ) {
 
         LogoSection()
-        AuthFieldSection(
-            keyboardController,
-            snackBar,
-            viewModel,
-            navController
+        PortraitAuthFieldSection(
+            navController = navController,
+            keyboardController = keyboardController,
+            snackBar = snackBar,
+            viewModel = viewModel
         )
         Image(
             painter = painterResource(id = R.drawable.logo_wave),
@@ -304,6 +300,30 @@ fun PortraitAuthScreen(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LandscapeAuthScreen(
+    navController: NavHostController,
+    keyboardController: SoftwareKeyboardController,
+    snackBar: SnackbarHostState,
+    viewModel: AuthViewModel
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable { keyboardController.hide() },
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        LogoSection()
+        LandscapeAuthFieldSection(
+            navController = navController,
+            keyboardController = keyboardController,
+            snackBar = snackBar,
+            viewModel = viewModel
+        )
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun LandscapeAuthFieldSection(
     navController: NavHostController,
     keyboardController: SoftwareKeyboardController,
     snackBar: SnackbarHostState,
@@ -326,7 +346,6 @@ fun LandscapeAuthScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        LogoSection()
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -368,7 +387,7 @@ fun LandscapeAuthScreen(
                         tint = MaterialTheme.colorScheme.inverseSurface
                     )
                 },
-                shape = RoundedCornerShape(10.dp),
+                shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight)
@@ -395,7 +414,7 @@ fun LandscapeAuthScreen(
                         color = MaterialTheme.colorScheme.onTertiary
                     )
                 },
-                shape = RoundedCornerShape(10.dp),
+                shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight),
@@ -444,7 +463,7 @@ fun LandscapeAuthScreen(
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight)
                     .padding(top = (screenHeight / 42).dp),
-                shape = RoundedCornerShape(10.dp),
+                shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
                 onClick = {
                     scope.launch {
                         viewModel.eventFlow.collectLatest { event ->

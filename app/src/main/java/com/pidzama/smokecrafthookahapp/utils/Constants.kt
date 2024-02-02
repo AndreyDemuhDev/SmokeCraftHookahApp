@@ -14,4 +14,12 @@ class Constants {
     object Network {
         const val BASE_URL = "http://188.68.221.107/"
     }
+
+    object TastyWeight {
+        private const val firstTasty = 12f
+        private const val secondTasty = 6f
+        private const val threeTasty = 2f
+        val ListTastyWeight =  listOf(firstTasty, secondTasty, threeTasty)
+
+    }
 }
