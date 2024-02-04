@@ -1,7 +1,6 @@
 package com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe
 
 import android.content.res.Configuration
-import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -25,6 +24,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.R
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
+import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
 import com.pidzama.smokecrafthookahapp.presentation.current_orders.CurrentOrdersViewModel
 import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
@@ -159,6 +159,7 @@ fun PortraitRecipesContentView(
                     viewModel.updateRecipesIndex(updateIndexRecipe.value)
                 },
                 modifier = Modifier
+                    .bounceClick()
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight),
                 shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
@@ -253,6 +254,7 @@ fun LandscapeRecipesContentView(
                     viewModel.updateRecipesIndex(updateIndexRecipe.value)
                 },
                 modifier = Modifier
+                    .bounceClick()
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight)
                     .padding(horizontal = (screenHeight / 25).dp),
