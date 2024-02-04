@@ -2,10 +2,12 @@ package com.pidzama.smokecrafthookahapp.presentation.auth
 
 import android.content.res.Configuration
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -30,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.pidzama.smokecrafthookahapp.R
 import com.pidzama.smokecrafthookahapp.presentation.auth.common.UiEvents
+import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
 import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 import kotlinx.coroutines.CoroutineScope
@@ -227,6 +230,7 @@ fun PortraitAuthFieldSection(
         }
         Button(
             modifier = Modifier
+                .bounceClick()
                 .fillMaxWidth()
                 .height(MaterialTheme.dimens.large3)
                 .width(MaterialTheme.dimens.buttonWidth)
@@ -263,63 +267,6 @@ fun PortraitAuthFieldSection(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
-fun PortraitAuthScreen(
-    navController: NavHostController,
-    keyboardController: SoftwareKeyboardController,
-    snackBar: SnackbarHostState,
-    viewModel: AuthViewModel
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(state = rememberScrollState())
-            .clickable { keyboardController.hide() },
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        LogoSection()
-        PortraitAuthFieldSection(
-            navController = navController,
-            keyboardController = keyboardController,
-            snackBar = snackBar,
-            viewModel = viewModel
-        )
-        Image(
-            painter = painterResource(id = R.drawable.logo_wave),
-            contentDescription = "logo",
-            alignment = Alignment.BottomCenter,
-            modifier = Modifier
-                .weight(2f, false)
-                .fillMaxSize()
-        )
-    }
-}
-
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
-fun LandscapeAuthScreen(
-    navController: NavHostController,
-    keyboardController: SoftwareKeyboardController,
-    snackBar: SnackbarHostState,
-    viewModel: AuthViewModel
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .clickable { keyboardController.hide() },
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        LogoSection()
-        LandscapeAuthFieldSection(
-            navController = navController,
-            keyboardController = keyboardController,
-            snackBar = snackBar,
-            viewModel = viewModel
-        )
-    }
-}
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -460,6 +407,7 @@ fun LandscapeAuthFieldSection(
             }
             Button(
                 modifier = Modifier
+                    .bounceClick()
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight)
                     .padding(top = (screenHeight / 42).dp),
@@ -494,5 +442,71 @@ fun LandscapeAuthFieldSection(
             }
             Spacer(modifier = Modifier.height(MaterialTheme.dimens.large1 / 2))
         }
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun PortraitAuthScreen(
+    navController: NavHostController,
+    keyboardController: SoftwareKeyboardController,
+    snackBar: SnackbarHostState,
+    viewModel: AuthViewModel
+) {
+    val screenHeight = LocalConfiguration.current.screenHeightDp
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(state = rememberScrollState())
+            .clickable(
+                interactionSource = MutableInteractionSource(),
+                indication = null,
+                onClick = { keyboardController.hide() }),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        LogoSection()
+        PortraitAuthFieldSection(
+            navController = navController,
+            keyboardController = keyboardController,
+            snackBar = snackBar,
+            viewModel = viewModel
+        )
+        if (screenHeight > 500) {
+            Image(
+                painter = painterResource(id = R.drawable.logo_wave),
+                contentDescription = "logo",
+                alignment = Alignment.BottomCenter,
+                modifier = Modifier
+                    .weight(2f, false)
+                    .fillMaxSize()
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun LandscapeAuthScreen(
+    navController: NavHostController,
+    keyboardController: SoftwareKeyboardController,
+    snackBar: SnackbarHostState,
+    viewModel: AuthViewModel
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable(
+                interactionSource = MutableInteractionSource(),
+                indication = null,
+                onClick = { keyboardController.hide() }),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        LogoSection()
+        LandscapeAuthFieldSection(
+            navController = navController,
+            keyboardController = keyboardController,
+            snackBar = snackBar,
+            viewModel = viewModel
+        )
     }
 }

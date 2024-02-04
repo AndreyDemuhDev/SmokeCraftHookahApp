@@ -23,6 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.R
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.navigation.MainScreen
+import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
 import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 import com.pidzama.smokecrafthookahapp.utils.Constants.TastyWeight.ListTastyWeight
@@ -135,6 +136,7 @@ fun PortraitDetailView(
                 Button(
                     onClick = { Toast.makeText(context, "try later", Toast.LENGTH_SHORT).show() },
                     modifier = Modifier
+                        .bounceClick()
                         .fillMaxWidth()
                         .height((screenWidth / 8).dp),
                     shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
@@ -219,6 +221,7 @@ fun LandscapeDetailView(
                 Button(
                     onClick = { Toast.makeText(context, "try later", Toast.LENGTH_SHORT).show() },
                     modifier = Modifier
+                        .bounceClick()
                         .fillMaxWidth()
                         .height(MaterialTheme.dimens.buttonHeight),
                     shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),

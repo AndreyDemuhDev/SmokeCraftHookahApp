@@ -17,6 +17,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.navigation.MainScreen
+import com.pidzama.smokecrafthookahapp.presentation.common.NoRippleEffect
+import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
 import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 
@@ -61,6 +63,7 @@ fun PortraitCurrentOrderScreen(
             Button(
                 onClick = { navController.navigate(MainScreen.ChooseGenerateRecipe.route) },
                 modifier = Modifier
+                    .bounceClick()
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight),
                 shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
@@ -77,6 +80,7 @@ fun PortraitCurrentOrderScreen(
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight),
                 shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
+                interactionSource = remember { NoRippleEffect() }
             ) {
                 Text(
                     text = "Фирменные миксы",
@@ -90,6 +94,7 @@ fun PortraitCurrentOrderScreen(
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight),
                 shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
+                interactionSource = remember { NoRippleEffect() }
             ) {
                 Text(
                     text = "Генерация по ингредиенту",
@@ -117,6 +122,7 @@ fun LandscapeCurrentOrderScreen(
             Button(
                 onClick = { navController.navigate(MainScreen.ChooseGenerateRecipe.route) },
                 modifier = Modifier
+                    .bounceClick()
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight),
                 shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
@@ -133,6 +139,7 @@ fun LandscapeCurrentOrderScreen(
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight),
                 shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
+                interactionSource = remember { NoRippleEffect() }
             ) {
                 Text(
                     text = "Фирменные миксы",
@@ -146,6 +153,7 @@ fun LandscapeCurrentOrderScreen(
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight),
                 shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
+                interactionSource = remember { NoRippleEffect() }
             ) {
                 Text(
                     text = "Генерация по ингредиенту",
