@@ -15,6 +15,9 @@ class MainViewModel @Inject constructor(
     private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
 
+    private val _isLoading: MutableState<Boolean> = mutableStateOf(false)
+    val isLoading: State<Boolean> = _isLoading
+
     private val _isDarkMode: MutableState<Boolean> = mutableStateOf(false)
     val isDarkMode: State<Boolean> = _isDarkMode
 
@@ -29,6 +32,7 @@ class MainViewModel @Inject constructor(
             dataStoreRepository.getThemeDataStore().collect { isDark ->
                 _isDarkMode.value = isDark
             }
+            _isLoading.value = false
         }
     }
 

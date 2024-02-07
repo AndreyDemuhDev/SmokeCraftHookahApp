@@ -9,7 +9,6 @@ import com.pidzama.smokecrafthookahapp.presentation.main.MainViewModel
 
 @Composable
 fun RootNavGraph(
-//    startDestination: String,
     viewModelMain: MainViewModel,
     navController: NavHostController,
     darkTheme: Boolean, onThemeUpdated: () -> Unit
@@ -19,7 +18,6 @@ fun RootNavGraph(
         route = Graph.ROOT,
         startDestination = Graph.AUTH
     ) {
-//        onBoardingGraph(navController = navController)
         authNavGraph(navController = navController)
         composable(route = Graph.MAIN) {
             MainScreen(darkTheme = darkTheme, onThemeUpdated = onThemeUpdated, viewModelMain=viewModelMain)
@@ -29,8 +27,6 @@ fun RootNavGraph(
 
 object Graph {
     const val ROOT = "root_graph"
-
-    //    const val ON_BOARDING = "on_boarding_graph"
     const val AUTH = "auth_graph"
     const val MAIN = "main_graph"
 }
