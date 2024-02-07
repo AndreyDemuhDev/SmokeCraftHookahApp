@@ -34,7 +34,8 @@ import com.pidzama.smokecrafthookahapp.utils.Constants.TastyWeight.ListTastyWeig
 @Composable
 fun DetailHookahScreen(
     navController: NavHostController = rememberNavController(),
-    recipe: RandomRecipeSubList
+    recipe: RandomRecipeSubList,
+    darkTheme: Boolean, onThemeUpdated: () -> Unit
 ) {
 
     Scaffold(
@@ -76,12 +77,16 @@ fun DetailHookahScreen(
             if (ScreenOrientation == Configuration.ORIENTATION_PORTRAIT) {
                 PortraitDetailView(
                     navController = navController,
-                    recipe = recipe
+                    recipe = recipe,
+                    darkTheme = darkTheme,
+                    onThemeUpdated = onThemeUpdated
                 )
             } else {
                 LandscapeDetailView(
                     navController = navController,
-                    recipe = recipe
+                    recipe = recipe,
+                    darkTheme = darkTheme,
+                    onThemeUpdated = onThemeUpdated
                 )
             }
         }
@@ -93,6 +98,7 @@ fun DetailHookahScreen(
 fun PortraitDetailView(
     navController: NavHostController,
     recipe: RandomRecipeSubList,
+    darkTheme: Boolean, onThemeUpdated: () -> Unit,
     listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
     val context = LocalContext.current
@@ -101,7 +107,6 @@ fun PortraitDetailView(
 
     val viewModel = hiltViewModel<DetailHookahViewModel>()
     val rediceRecipe = viewModel.reduceRecipe.value
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -150,10 +155,9 @@ fun PortraitDetailView(
                     shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
                 ) {
-                    Log.d("MyLog", "СПИСАНИЕ===>${viewModel.reduceRecipe.value} ")
                     Log.d("MyLog", "Списанный рецепт===>${viewModel.reduceRecipe.value} ")
                     Log.d("MyLog", "РЕЦЕПТ===>${recipe} ")
-                    Log.d("MyLog", "Списание===>${viewModel.reduceRecipe(recipe!!)} ")
+                    Log.d("MyLog", "Списание===>${viewModel.reduceRecipe(recipe)} ")
                     Text(
                         text = "Списать со склада",
                         style = MaterialTheme.typography.titleLarge,
@@ -185,6 +189,7 @@ fun PortraitDetailView(
 fun LandscapeDetailView(
     navController: NavHostController,
     recipe: RandomRecipeSubList,
+    darkTheme: Boolean, onThemeUpdated: () -> Unit,
     listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
     val context = LocalContext.current

@@ -27,7 +27,8 @@ import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 @Composable
 fun MainScreen(
     navController: NavHostController = rememberNavController(),
-    darkTheme: Boolean, onThemeUpdated: () -> Unit
+    darkTheme: Boolean, onThemeUpdated: () -> Unit,
+    viewModelMain:MainViewModel
 ) {
 
     Scaffold(
@@ -37,7 +38,8 @@ fun MainScreen(
         Column {
             MainNavGraph(
                 navController = navController,
-                darkTheme = darkTheme, onThemeUpdated = onThemeUpdated
+                darkTheme = darkTheme, onThemeUpdated = onThemeUpdated,
+                viewModelMain=viewModelMain
             )
         }
     }

@@ -50,7 +50,7 @@ fun AuthScreens(
     val viewModel = hiltViewModel<AuthViewModel>()
     var showBottomBar by rememberSaveable { mutableStateOf(true) }
     Scaffold(
-        topBar = {showBottomBar},
+        topBar = { showBottomBar },
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
         content = {
             if (ScreenOrientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -85,7 +85,7 @@ fun LogoSection() {
             Image(
                 painter = painterResource(id = R.drawable.logo_smokecraft),
                 contentDescription = "logo",
-                colorFilter = ColorFilter.tint(color = Color.White),
+                colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.inverseSurface),
             )
             Divider(
                 modifier = Modifier
@@ -125,7 +125,7 @@ fun PortraitAuthFieldSection(
             text = "Вход в систему",
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.headlineMedium,
-            color = Color.White,
+            color = MaterialTheme.colorScheme.inverseSurface,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = (screenHeight / 10).dp, bottom = (screenHeight / 24).dp)
@@ -135,6 +135,7 @@ fun PortraitAuthFieldSection(
             onValueChange = {
                 viewModel.setLogin(it)
             },
+            textStyle = LocalTextStyle.current.copy(color = MaterialTheme.colorScheme.inverseSurface),
             isError = loginState.error != null,
             placeholder = {
                 Text(
@@ -143,7 +144,10 @@ fun PortraitAuthFieldSection(
                     color = MaterialTheme.colorScheme.onTertiary
                 )
             },
-            colors = TextFieldDefaults.colors(disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.onSecondary,
+                unfocusedContainerColor = MaterialTheme.colorScheme.tertiaryContainer
+            ),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next
             ),
@@ -177,6 +181,7 @@ fun PortraitAuthFieldSection(
             onValueChange = {
                 viewModel.setPassword(it)
             },
+            textStyle = LocalTextStyle.current.copy(color = MaterialTheme.colorScheme.inverseSurface),
             placeholder = {
                 Text(
                     text = "Password",
@@ -195,7 +200,10 @@ fun PortraitAuthFieldSection(
             ),
             singleLine = true,
             maxLines = 1,
-            colors = TextFieldDefaults.colors(disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.onSecondary,
+                unfocusedContainerColor = MaterialTheme.colorScheme.tertiaryContainer
+            ),
             keyboardActions = KeyboardActions(onNext = {
                 viewModel.loginUser()
                 localFocusManager.clearFocus()
@@ -314,6 +322,7 @@ fun LandscapeAuthFieldSection(
                 onValueChange = {
                     viewModel.setLogin(it)
                 },
+                textStyle = LocalTextStyle.current.copy(color = MaterialTheme.colorScheme.inverseSurface),
                 isError = loginState.error != null,
                 placeholder = {
                     Text(
@@ -322,7 +331,9 @@ fun LandscapeAuthFieldSection(
                         color = MaterialTheme.colorScheme.onTertiary
                     )
                 },
-                colors = TextFieldDefaults.colors(disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.onSecondary,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.tertiaryContainer),
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
                 ),
@@ -355,6 +366,7 @@ fun LandscapeAuthFieldSection(
                 onValueChange = {
                     viewModel.setPassword(it)
                 },
+                textStyle = LocalTextStyle.current.copy(color = MaterialTheme.colorScheme.inverseSurface),
                 placeholder = {
                     Text(
                         text = "Password",
@@ -372,7 +384,9 @@ fun LandscapeAuthFieldSection(
                 ),
                 singleLine = true,
                 maxLines = 1,
-                colors = TextFieldDefaults.colors(disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.onSecondary,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.tertiaryContainer),
                 keyboardActions = KeyboardActions(onNext = {
                     viewModel.loginUser()
                     localFocusManager.clearFocus()

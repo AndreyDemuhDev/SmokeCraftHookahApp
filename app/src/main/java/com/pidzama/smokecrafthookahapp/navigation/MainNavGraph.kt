@@ -10,12 +10,14 @@ import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.DetailHookahSc
 import com.pidzama.smokecrafthookahapp.presentation.current_orders.CurrentOrders
 import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.RandomGenerationRecipeScreen
 import com.pidzama.smokecrafthookahapp.presentation.archive_orders.OrderArchiveScreen
+import com.pidzama.smokecrafthookahapp.presentation.main.MainViewModel
 
 
 @Composable
 fun MainNavGraph(
     navController: NavHostController,
-    darkTheme: Boolean, onThemeUpdated: () -> Unit
+    darkTheme: Boolean, onThemeUpdated: () -> Unit,
+    viewModelMain:MainViewModel
 ) {
     NavHost(
         navController = navController,
@@ -24,18 +26,21 @@ fun MainNavGraph(
     ) {
         composable(MainScreen.Profile.route) {
             ProfileScreen(
-                navController = navController,
-                darkTheme = darkTheme, onThemeUpdated = onThemeUpdated
+                darkTheme = darkTheme, onThemeUpdated = onThemeUpdated,
+                onBoardingViewModel=viewModelMain
             )
         }
         composable(MainScreen.CurrentOrders.route) {
-            CurrentOrders(navController = navController)
+            CurrentOrders(navController = navController,
+                darkTheme = darkTheme, onThemeUpdated = onThemeUpdated)
         }
         composable(MainScreen.OrderArchive.route) {
-            OrderArchiveScreen(navController = navController)
+            OrderArchiveScreen(navController = navController,
+                darkTheme = darkTheme, onThemeUpdated = onThemeUpdated)
         }
         composable(MainScreen.ChooseGenerateRecipe.route) {
             RandomGenerationRecipeScreen(navController = navController,
+                darkTheme = darkTheme, onThemeUpdated = onThemeUpdated,
                 navigateToDetails = { recipe ->
                     navigateToDetails(
                         navController = navController,
@@ -43,12 +48,13 @@ fun MainNavGraph(
                     )
                 })
         }
-        composable(route = MainScreen.DetailHookahScreen.route) {
+        composable(route = MainScreen.DetailHookahScreen.route,) {
             navController.previousBackStackEntry?.savedStateHandle?.get<RandomRecipeSubList?>("recipe")
                 ?.let { recipe ->
                     DetailHookahScreen(
                         navController = navController,
-                        recipe = recipe
+                        recipe = recipe,
+                        darkTheme = darkTheme, onThemeUpdated = onThemeUpdated
                     )
                 }
         }

@@ -24,7 +24,7 @@ import androidx.compose.material.icons.filled.Star
 
 @Composable
 fun ThemeSwitcher(
-    darkTheme: Boolean = false,
+    darkTheme: Boolean,
     size: Dp = 40.dp,
     iconSize: Dp = size / 2,
     padding: Dp = 4.dp,
@@ -34,6 +34,7 @@ fun ThemeSwitcher(
     animationSpec: AnimationSpec<Dp> = tween(durationMillis = 500),
     onClick: () -> Unit
 ) {
+
     val offset by animateDpAsState(
         targetValue = if (darkTheme) 0.dp else size,
         animationSpec = animationSpec

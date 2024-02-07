@@ -5,22 +5,24 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.pidzama.smokecrafthookahapp.presentation.main.MainScreen
+import com.pidzama.smokecrafthookahapp.presentation.main.MainViewModel
 
 @Composable
 fun RootNavGraph(
 //    startDestination: String,
+    viewModelMain: MainViewModel,
     navController: NavHostController,
     darkTheme: Boolean, onThemeUpdated: () -> Unit
 ) {
     NavHost(
         navController = navController,
         route = Graph.ROOT,
-        startDestination = Graph.MAIN
+        startDestination = Graph.AUTH
     ) {
 //        onBoardingGraph(navController = navController)
         authNavGraph(navController = navController)
         composable(route = Graph.MAIN) {
-            MainScreen(darkTheme = darkTheme, onThemeUpdated = onThemeUpdated)
+            MainScreen(darkTheme = darkTheme, onThemeUpdated = onThemeUpdated, viewModelMain=viewModelMain)
         }
     }
 }

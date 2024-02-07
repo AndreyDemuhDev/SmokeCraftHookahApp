@@ -1,5 +1,6 @@
 package com.pidzama.smokecrafthookahapp.utils
 
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 
 class Constants {
@@ -9,6 +10,7 @@ class Constants {
         const val ON_BOARDING_KEY = "on_boarding_key"
         const val AUTH_PREFERENCES = "AUTH_PREF"
         val AUTH_KEY = stringSetPreferencesKey("auth_key")
+        val THEME_MODE = booleanPreferencesKey("theme_mode")
     }
 
     object Network {
