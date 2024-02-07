@@ -8,15 +8,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class OnBoardingViewModel @Inject constructor(
-    private val dataStoreRepository: DataStoreRepository
-) : ViewModel() {
-
-    fun saveOnBoardingState(completed: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
-            dataStoreRepository.saveOnBoardingState(completed = completed)
-        }
-    }
-
-}
+//@HiltViewModel
+//class OnBoardingViewModel @Inject constructor(
+//    private val dataStoreRepository: DataStoreRepository
+//) : ViewModel() {
+//
+//    fun saveOnBoardingState(completed: Boolean) {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            dataStoreRepository.saveOnBoardingState(completed = completed)
+//        }
+//    }
+//
+//}

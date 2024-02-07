@@ -25,14 +25,20 @@ import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreen(navController: NavHostController = rememberNavController()) {
+fun MainScreen(
+    navController: NavHostController = rememberNavController(),
+    darkTheme: Boolean, onThemeUpdated: () -> Unit
+) {
 
     Scaffold(
         bottomBar = { BottomBarApp(navController = navController) },
         backgroundColor = MaterialTheme.colorScheme.background
     ) {
         Column {
-            MainNavGraph(navController = navController)
+            MainNavGraph(
+                navController = navController,
+                darkTheme = darkTheme, onThemeUpdated = onThemeUpdated
+            )
         }
     }
 }
@@ -59,7 +65,6 @@ fun BottomBarApp(navController: NavHostController) {
                     .height((MaterialTheme.dimens.small1 / 3)),
                 color = MaterialTheme.colorScheme.primary
             )
-            Log.d("MyLog", "${(MaterialTheme.dimens.small1 / 3)}")
             BottomNavigation {
                 screens.forEach { screen ->
                     AddItem(
@@ -110,7 +115,9 @@ fun RowScope.AddItem(
                 launchSingleTop = true
             }
         },
-        colors = NavigationBarItemDefaults.colors(indicatorColor = MaterialTheme.colorScheme.surface,
-        selectedTextColor = MaterialTheme.colorScheme.surface)
+        colors = NavigationBarItemDefaults.colors(
+            indicatorColor = MaterialTheme.colorScheme.surface,
+            selectedTextColor = MaterialTheme.colorScheme.surface
+        )
     )
 }

@@ -101,7 +101,7 @@ fun DetailPieChart(
                             ),
                             text = "${listTobaccoWeight[index].toInt()} г.",
                             style = MaterialTheme.typography.titleLarge,
-                            color = MaterialTheme.colorScheme.onBackground
+                            color = MaterialTheme.colorScheme.outlineVariant
                         )
                     }
                 }
@@ -125,12 +125,12 @@ fun DetailPieChart(
                     val width = size.width
                     val height = size.height
                     val anglePerValue = 360f / totalTastyWeight
-                    var currentStartAngle = 0f
+                    var currentStartAngle = 270f
                     circleCenter = Offset(x = width / 2, y = height / 2)
 
-                    listTobaccoWeight.forEachIndexed { index, testy ->
+                    listTobaccoWeight.forEachIndexed { index, tobacco ->
                         val scale = 1.1f
-                        val angleToDraw = testy * anglePerValue
+                        val angleToDraw = tobacco * anglePerValue
 
                         scale(scale) {
                             drawArc(
@@ -158,7 +158,7 @@ fun DetailPieChart(
                             factor = -0.92f
                         }
                         val percentage =
-                            (testy / totalTastyWeight * 100).toInt()
+                            (tobacco / totalTastyWeight * 100).toInt()
                         drawContext.canvas.nativeCanvas.apply {
                             if (percentage > 3) {
                                 rotate(rotateAngle) {
@@ -230,10 +230,10 @@ fun LandscapeDetailPieChart(
                         style = MaterialTheme.typography.titleLarge,
                     )
                 }
-                input.forEachIndexed { index, tasty ->
+                input.forEachIndexed { index, tobacco ->
                     Card(
                         modifier = Modifier.padding(vertical = MaterialTheme.dimens.extraSmall / 2),
-                        border = BorderStroke(2.dp, color = setColorTaste(tasty.taste_group)),
+                        border = BorderStroke(2.dp, color = setColorTaste(tobacco.taste_group)),
                         shape = MaterialTheme.shapes.medium,
                         backgroundColor = MaterialTheme.colorScheme.background
                     ) {
@@ -242,9 +242,9 @@ fun LandscapeDetailPieChart(
                                 modifier = Modifier.padding(
                                     all = MaterialTheme.dimens.extraSmall
                                 ),
-                                text = "${tasty.taste}, ${tasty.brand}",
+                                text = "${tobacco.taste}, ${tobacco.brand}",
                                 style = MaterialTheme.typography.titleMedium,
-                                color = setColorTaste(tasty.taste_group)
+                                color = setColorTaste(tobacco.taste_group)
                             )
                             Text(
                                 modifier = Modifier.padding(
@@ -252,7 +252,7 @@ fun LandscapeDetailPieChart(
                                 ),
                                 text = "${listTobaccoWeight[index].toInt()} г.",
                                 style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onBackground
+                                color = MaterialTheme.colorScheme.outlineVariant
                             )
                         }
                     }

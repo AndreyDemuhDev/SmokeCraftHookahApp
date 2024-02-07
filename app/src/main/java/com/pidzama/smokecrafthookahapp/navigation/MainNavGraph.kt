@@ -13,14 +13,20 @@ import com.pidzama.smokecrafthookahapp.presentation.archive_orders.OrderArchiveS
 
 
 @Composable
-fun MainNavGraph(navController: NavHostController) {
+fun MainNavGraph(
+    navController: NavHostController,
+    darkTheme: Boolean, onThemeUpdated: () -> Unit
+) {
     NavHost(
         navController = navController,
         route = Graph.MAIN,
         startDestination = MainScreen.CurrentOrders.route
     ) {
         composable(MainScreen.Profile.route) {
-            ProfileScreen(navController = navController)
+            ProfileScreen(
+                navController = navController,
+                darkTheme = darkTheme, onThemeUpdated = onThemeUpdated
+            )
         }
         composable(MainScreen.CurrentOrders.route) {
             CurrentOrders(navController = navController)
