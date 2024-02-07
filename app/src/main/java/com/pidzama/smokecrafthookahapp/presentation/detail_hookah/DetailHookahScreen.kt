@@ -1,6 +1,7 @@
 package com.pidzama.smokecrafthookahapp.presentation.detail_hookah
 
 import android.content.res.Configuration
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -18,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.R
@@ -32,7 +34,7 @@ import com.pidzama.smokecrafthookahapp.utils.Constants.TastyWeight.ListTastyWeig
 @Composable
 fun DetailHookahScreen(
     navController: NavHostController = rememberNavController(),
-    recipe: RandomRecipeSubList?
+    recipe: RandomRecipeSubList
 ) {
 
     Scaffold(
@@ -90,12 +92,15 @@ fun DetailHookahScreen(
 @Composable
 fun PortraitDetailView(
     navController: NavHostController,
-    recipe: RandomRecipeSubList?,
+    recipe: RandomRecipeSubList,
     listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
     val context = LocalContext.current
     val screenWidth = LocalConfiguration.current.screenWidthDp
     val screenHeight = LocalConfiguration.current.screenHeightDp
+
+    val viewModel = hiltViewModel<DetailHookahViewModel>()
+    val rediceRecipe = viewModel.reduceRecipe.value
 
     Column(
         modifier = Modifier
@@ -118,23 +123,26 @@ fun PortraitDetailView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(MaterialTheme.dimens.small3),
-                    text = "Заказ №12/ стол №3",
+                    text = "Заказ №${(1..20).random()}/ стол №${(1..8).random()}",
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.inverseSurface,
                     style = MaterialTheme.typography.headlineMedium,
                 )
-                recipe?.let {
-                    DetailPieChart(
-                        input = it,
-                        listTobaccoWeight = listTobaccoWeight
-                    )
-                }
+                DetailPieChart(
+                    input = recipe,
+                    listTobaccoWeight = listTobaccoWeight
+                )
             }
         }
         BoxWithConstraints(modifier = Modifier.weight(0.2f)) {
             Column(modifier = Modifier.padding(vertical = MaterialTheme.dimens.extraSmall)) {
                 Button(
-                    onClick = { Toast.makeText(context, "try later", Toast.LENGTH_SHORT).show() },
+                    onClick = {
+                        navController.navigate(MainScreen.CurrentOrders.route)
+                        viewModel.reduceRecipe(recipe)
+                        Toast.makeText(context, "${rediceRecipe?.result}", Toast.LENGTH_SHORT)
+                            .show()
+                    },
                     modifier = Modifier
                         .bounceClick()
                         .fillMaxWidth()
@@ -142,6 +150,10 @@ fun PortraitDetailView(
                     shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
                 ) {
+                    Log.d("MyLog", "СПИСАНИЕ===>${viewModel.reduceRecipe.value} ")
+                    Log.d("MyLog", "Списанный рецепт===>${viewModel.reduceRecipe.value} ")
+                    Log.d("MyLog", "РЕЦЕПТ===>${recipe} ")
+                    Log.d("MyLog", "Списание===>${viewModel.reduceRecipe(recipe!!)} ")
                     Text(
                         text = "Списать со склада",
                         style = MaterialTheme.typography.titleLarge,
@@ -172,7 +184,7 @@ fun PortraitDetailView(
 @Composable
 fun LandscapeDetailView(
     navController: NavHostController,
-    recipe: RandomRecipeSubList?,
+    recipe: RandomRecipeSubList,
     listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
     val context = LocalContext.current
@@ -198,17 +210,16 @@ fun LandscapeDetailView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(MaterialTheme.dimens.small3),
-                    text = "Заказ №12/ стол №3",
+                    text = "Заказ №${(1..20).random()}/ стол №${(1..8).random()}",
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.inverseSurface,
                     style = MaterialTheme.typography.titleLarge,
                 )
-                recipe?.let {
-                    LandscapeDetailPieChart(
-                        input = it,
-                        listTobaccoWeight = listTobaccoWeight
-                    )
-                }
+                LandscapeDetailPieChart(
+                    input = recipe,
+                    listTobaccoWeight = listTobaccoWeight
+                )
+
             }
         }
         Box(

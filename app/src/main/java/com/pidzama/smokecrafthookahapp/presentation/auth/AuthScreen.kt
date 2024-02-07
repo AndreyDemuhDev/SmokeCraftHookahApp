@@ -48,8 +48,9 @@ fun AuthScreens(
     val keyboardController = LocalSoftwareKeyboardController.current!!
     val snackBarHostState = remember { SnackbarHostState() }
     val viewModel = hiltViewModel<AuthViewModel>()
-
+    var showBottomBar by rememberSaveable { mutableStateOf(true) }
     Scaffold(
+        topBar = {showBottomBar},
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
         content = {
             if (ScreenOrientation == Configuration.ORIENTATION_PORTRAIT) {

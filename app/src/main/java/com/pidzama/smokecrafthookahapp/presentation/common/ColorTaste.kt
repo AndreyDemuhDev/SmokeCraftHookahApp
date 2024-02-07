@@ -27,7 +27,7 @@ fun setColorTaste(colorTaste: String): Color {
         ColorTaste.GRASSY.taste -> Color(0xFF6CA314)
         ColorTaste.WALNUT.taste -> Color(0xFFBF6614)
         ColorTaste.FLORAL.taste -> Color(0xFFCB7DE1)
-        else -> {Color(0xFFFFFFFF)
+        else -> {Color(0xFFFF1255)
         }
     }
 }

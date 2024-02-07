@@ -1,8 +1,9 @@
 package com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.animation.*
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -94,7 +95,11 @@ fun PortraitRecipesContentView(
     val listRandomGenerateRecipe = viewModel.generateRecipeList.observeAsState(listOf()).value
     val updateIndexRecipe = viewModel.data.collectAsState()
     var indexRecipe = updateIndexRecipe.value
-    LaunchedEffect(key1 = true) {
+
+    var count by remember {
+        mutableStateOf(0)
+    }
+    LaunchedEffect(key1 = count) {
         viewModel.getListRandomGenerateRecipe()
     }
 
@@ -107,46 +112,41 @@ fun PortraitRecipesContentView(
                 end = MaterialTheme.dimens.small3
             )
     ) {
-        var isVisible by remember {
-            mutableStateOf(true)
-        }
+
         Box(modifier = Modifier.weight(0.9f)) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                itemsIndexed(listRandomGenerateRecipe) { _, list ->
-                    indexRecipe++
+                itemsIndexed(items = listRandomGenerateRecipe) { _, list ->
                     Card(
                         modifier = Modifier.clickable { navigateToDetails(list) },
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
                     ) {
-                        AnimatedContent(
-                            targetState = isVisible,
-                            content = { isVisible2 ->
-                                if (isVisible2) {
-                                    PortraitPieChartRecipe(
-                                        input = list,
-                                        indexRecipe = indexRecipe,
-                                        listTobaccoWeight = listTobaccoWeight
-                                    )
-                                } else {
-                                    PortraitPieChartRecipe(
-                                        input = list,
-                                        indexRecipe = indexRecipe,
-                                        listTobaccoWeight = listTobaccoWeight
-                                    )
-                                }
-                            },
-                            transitionSpec = {
-                                scaleIn(
-                                    animationSpec = tween(
-                                        300,
-                                        200
-                                    )
-                                ) with scaleOut(animationSpec = tween(150))
-                            }
-                        )
+                        indexRecipe++
+                        Log.d("MyLog","IndexRecipe ${indexRecipe}")
+//                        AnimatedContent(
+//                            targetState = count,
+//                            content = {
+//                                indexRecipe++
+//                                Log.d("MyLog","IndexRecipe ${indexRecipe}")
+//                                Log.d("MyLog","COUNT ${count}")
+                                PortraitPieChartRecipe(
+                                    input = list,
+                                    indexRecipe = indexRecipe,
+                                    listTobaccoWeight = listTobaccoWeight,
+
+                                )
+//                            },
+//                            transitionSpec = {
+//                                scaleIn(
+//                                    animationSpec = tween(
+//                                        300,
+//                                        200
+//                                    )
+//                                ) with scaleOut(animationSpec = tween(150))
+//                            }
+//                        )
                     }
                 }
             }
@@ -154,7 +154,7 @@ fun PortraitRecipesContentView(
         Box(modifier = Modifier.weight(0.1f)) {
             Button(
                 onClick = {
-                    isVisible=!isVisible
+                    count++
                     viewModel.getListRandomGenerateRecipe()
                     viewModel.updateRecipesIndex(updateIndexRecipe.value)
                 },
@@ -201,7 +201,7 @@ fun LandscapeRecipesContentView(
         verticalAlignment = Alignment.CenterVertically
     ) {
         var isVisible by remember {
-            mutableStateOf(true)
+            mutableStateOf(0)
         }
 
 
@@ -211,27 +211,19 @@ fun LandscapeRecipesContentView(
                     .fillMaxSize()
             ) {
                 itemsIndexed(listRandomGenerateRecipe) { _, list ->
-                    indexRecipe++
                     Card(
                         modifier = Modifier.clickable { navigateToDetails(list) },
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
                     ) {
+                        indexRecipe++
                         AnimatedContent(
                             targetState = isVisible,
-                            content = { isVisible2 ->
-                                if (isVisible2) {
+                            content = {
                                     LandscapePieChartRecipe(
                                         input = list,
                                         indexRecipe = indexRecipe,
                                         listTobaccoWeight = listTobaccoWeight
                                     )
-                                } else {
-                                    LandscapePieChartRecipe(
-                                        input = list,
-                                        indexRecipe = indexRecipe,
-                                        listTobaccoWeight = listTobaccoWeight
-                                    )
-                                }
                             },
                             transitionSpec = {
                                 scaleIn(
@@ -249,7 +241,7 @@ fun LandscapeRecipesContentView(
         Box(modifier = Modifier.weight(0.2f)) {
             Button(
                 onClick = {
-                    isVisible = !isVisible
+                    isVisible++
                     viewModel.getListRandomGenerateRecipe()
                     viewModel.updateRecipesIndex(updateIndexRecipe.value)
                 },

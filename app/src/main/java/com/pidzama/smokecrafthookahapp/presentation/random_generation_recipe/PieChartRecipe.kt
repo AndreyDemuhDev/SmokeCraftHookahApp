@@ -38,7 +38,7 @@ fun PortraitPieChartRecipe(
     input: RandomRecipeSubList,
     animDuration: Int = 600,
     indexRecipe: Int,
-    listTobaccoWeight:List<Float>
+    listTobaccoWeight: List<Float>
 ) {
     val density = LocalConfiguration.current.densityDpi
     var circleCenter by remember {
@@ -52,7 +52,7 @@ fun PortraitPieChartRecipe(
     val animateRotation by animateFloatAsState(
         targetValue = if (animationPlayed) 90f * 12f else 0f, animationSpec = tween(
             durationMillis = animDuration,
-            delayMillis = 100,
+            delayMillis = 200,
             easing = LinearOutSlowInEasing
         )
     )
@@ -107,7 +107,7 @@ fun PortraitPieChartRecipe(
                                 color = setColorTaste(it.taste_group)
                             ),
                             shape = MaterialTheme.shapes.medium,
-                            backgroundColor = Color.Black
+                            backgroundColor = MaterialTheme.colorScheme.background
                         ) {
                             Text(
                                 modifier = Modifier
@@ -142,13 +142,13 @@ fun PortraitPieChartRecipe(
                     val width = size.width
                     val height = size.height
                     val anglePerValue = 360f / totalTastyWeight
-                    var currentStartAngle = 0f
+                    var currentStartAngle = 270f
 
                     circleCenter = Offset(x = width / 2, y = height / 2)
 
-                    listTobaccoWeight.forEachIndexed { index, testy ->
+                    listTobaccoWeight.forEachIndexed { index, tobacco ->
                         val scale = 1.1f
-                        val angleToDraw = testy * anglePerValue
+                        val angleToDraw = tobacco * anglePerValue
 
                         scale(scale) {
                             drawArc(
@@ -177,7 +177,7 @@ fun PortraitPieChartRecipe(
                         }
 
                         val percentage =
-                            (testy / totalTastyWeight * 100).toInt()
+                            (tobacco / totalTastyWeight * 100).toInt()
                         drawContext.canvas.nativeCanvas.apply {
                             if (percentage > 3) {
                                 rotate(rotateAngle) {
@@ -223,7 +223,7 @@ fun LandscapePieChartRecipe(
     val animateRotation by animateFloatAsState(
         targetValue = if (animationPlayed) 90f * 12f else 0f, animationSpec = tween(
             durationMillis = animDuration,
-            delayMillis = 100,
+            delayMillis = 200,
             easing = LinearOutSlowInEasing
         )
     )
@@ -316,9 +316,9 @@ fun LandscapePieChartRecipe(
 
                     circleCenter = Offset(x = width / 2, y = height / 2)
 
-                    listTobaccoWeight.forEachIndexed { index, testy ->
+                    listTobaccoWeight.forEachIndexed { index, tobacco ->
                         val scale = 1.1f
-                        val angleToDraw = testy * anglePerValue
+                        val angleToDraw = tobacco * anglePerValue
 
                         scale(scale) {
                             drawArc(
@@ -347,7 +347,7 @@ fun LandscapePieChartRecipe(
                         }
 
                         val percentage =
-                            (testy / totalTastyWeight * 100).toInt()
+                            (tobacco / totalTastyWeight * 100).toInt()
                         drawContext.canvas.nativeCanvas.apply {
                             if (percentage > 3) {
                                 rotate(rotateAngle) {
