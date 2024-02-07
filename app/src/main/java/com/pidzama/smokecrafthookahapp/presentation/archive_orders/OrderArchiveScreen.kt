@@ -8,8 +8,9 @@ import androidx.navigation.NavHostController
 @Composable
 fun OrderArchiveScreen(
     navController: NavHostController,
+    darkTheme: Boolean, onThemeUpdated: () -> Unit
 ) {
-   Text(text = "Archive Orders Screen", color = MaterialTheme.colors.primary)
+    Text(text = "Archive Orders Screen", color = MaterialTheme.colors.primary)
 }
 
 

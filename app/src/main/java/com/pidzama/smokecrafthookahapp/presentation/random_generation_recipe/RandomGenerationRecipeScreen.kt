@@ -34,7 +34,8 @@ import com.pidzama.smokecrafthookahapp.utils.Constants.TastyWeight.ListTastyWeig
 @Composable
 fun RandomGenerationRecipeScreen(
     navController: NavHostController = rememberNavController(),
-    navigateToDetails: (RandomRecipeSubList) -> Unit
+    navigateToDetails: (RandomRecipeSubList) -> Unit,
+    darkTheme: Boolean, onThemeUpdated: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -74,11 +75,13 @@ fun RandomGenerationRecipeScreen(
         content = {
             if (ScreenOrientation == Configuration.ORIENTATION_PORTRAIT) {
                 PortraitRecipesContentView(
-                    navigateToDetails = navigateToDetails
+                    navigateToDetails = navigateToDetails,
+                    darkTheme = darkTheme, onThemeUpdated = onThemeUpdated,
                 )
             } else {
                 LandscapeRecipesContentView(
-                    navigateToDetails = navigateToDetails
+                    navigateToDetails = navigateToDetails,
+                    darkTheme = darkTheme, onThemeUpdated = onThemeUpdated,
                 )
             }
         }
@@ -89,6 +92,7 @@ fun RandomGenerationRecipeScreen(
 @Composable
 fun PortraitRecipesContentView(
     navigateToDetails: (RandomRecipeSubList) -> Unit,
+    darkTheme: Boolean, onThemeUpdated: () -> Unit,
     listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
     val viewModel = hiltViewModel<CurrentOrdersViewModel>()
@@ -179,6 +183,7 @@ fun PortraitRecipesContentView(
 @Composable
 fun LandscapeRecipesContentView(
     navigateToDetails: (RandomRecipeSubList) -> Unit,
+    darkTheme: Boolean, onThemeUpdated: () -> Unit,
     listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
     val screenHeight = LocalConfiguration.current.screenHeightDp

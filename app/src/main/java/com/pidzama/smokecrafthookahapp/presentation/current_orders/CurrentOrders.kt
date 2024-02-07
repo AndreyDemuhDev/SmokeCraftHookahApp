@@ -25,7 +25,8 @@ import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 
 @Composable
 fun CurrentOrders(
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    darkTheme: Boolean, onThemeUpdated: () -> Unit
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
     Surface(
@@ -37,12 +38,14 @@ fun CurrentOrders(
             if (ScreenOrientation == Configuration.ORIENTATION_PORTRAIT) {
                 PortraitCurrentOrderScreen(
                     navController = navController,
-                    screenWidth = screenWidth
+                    screenWidth = screenWidth,
+                    darkTheme = darkTheme, onThemeUpdated = onThemeUpdated
                 )
             } else {
                 LandscapeCurrentOrderScreen(
                     navController = navController,
-                    screenWidth = screenWidth
+                    screenWidth = screenWidth,
+                    darkTheme = darkTheme, onThemeUpdated = onThemeUpdated
                 )
             }
         }
@@ -52,6 +55,7 @@ fun CurrentOrders(
 @Composable
 fun PortraitCurrentOrderScreen(
     navController: NavHostController,
+    darkTheme: Boolean, onThemeUpdated: () -> Unit,
     screenWidth: Int = LocalConfiguration.current.screenWidthDp,
 ) {
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -109,6 +113,7 @@ fun PortraitCurrentOrderScreen(
 @Composable
 fun LandscapeCurrentOrderScreen(
     navController: NavHostController,
+    darkTheme: Boolean, onThemeUpdated: () -> Unit,
     screenWidth: Int = LocalConfiguration.current.screenWidthDp
 ) {
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {

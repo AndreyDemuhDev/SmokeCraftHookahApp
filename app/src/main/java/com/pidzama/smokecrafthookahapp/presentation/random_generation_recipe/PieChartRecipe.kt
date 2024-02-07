@@ -278,7 +278,7 @@ fun LandscapePieChartRecipe(
                                 color = setColorTaste(it.taste_group)
                             ),
                             shape = MaterialTheme.shapes.medium,
-                            backgroundColor = Color.Black
+                            backgroundColor = MaterialTheme.colorScheme.background
                         ) {
                             Text(
                                 modifier = Modifier
