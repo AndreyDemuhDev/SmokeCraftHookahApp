@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
+import com.pidzama.smokecrafthookahapp.utils.Constants
 import com.pidzama.smokecrafthookahapp.utils.Constants.DataStorePreferences.AUTH_KEY
 import com.pidzama.smokecrafthookahapp.utils.Constants.DataStorePreferences.DATA_STORE_NAME
 import com.pidzama.smokecrafthookahapp.utils.Constants.DataStorePreferences.THEME_MODE
@@ -22,6 +23,11 @@ class DataStoreRepository(context: Context) {
             pref[AUTH_KEY] = setOf(loginToken)
         }
     }
+    fun getAuthToken() = dataStore.data.map { preferences ->
+        val authToken = preferences[AUTH_KEY] ?: ""
+        authToken
+    }
+
 
     suspend fun saveThemeMode(isDarkMode: Boolean) {
         dataStore.edit { pref ->

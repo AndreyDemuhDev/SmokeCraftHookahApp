@@ -12,6 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -29,13 +30,14 @@ import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
 import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 import com.pidzama.smokecrafthookahapp.utils.Constants.TastyWeight.ListTastyWeight
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun DetailHookahScreen(
     navController: NavHostController = rememberNavController(),
     recipe: RandomRecipeSubList,
-    darkTheme: Boolean, onThemeUpdated: () -> Unit
+//    darkTheme: Boolean, onThemeUpdated: () -> Unit
 ) {
 
     Scaffold(
@@ -78,15 +80,15 @@ fun DetailHookahScreen(
                 PortraitDetailView(
                     navController = navController,
                     recipe = recipe,
-                    darkTheme = darkTheme,
-                    onThemeUpdated = onThemeUpdated
+//                    darkTheme = darkTheme,
+//                    onThemeUpdated = onThemeUpdated
                 )
             } else {
                 LandscapeDetailView(
                     navController = navController,
                     recipe = recipe,
-                    darkTheme = darkTheme,
-                    onThemeUpdated = onThemeUpdated
+//                    darkTheme = darkTheme,
+//                    onThemeUpdated = onThemeUpdated
                 )
             }
         }
@@ -98,7 +100,7 @@ fun DetailHookahScreen(
 fun PortraitDetailView(
     navController: NavHostController,
     recipe: RandomRecipeSubList,
-    darkTheme: Boolean, onThemeUpdated: () -> Unit,
+//    darkTheme: Boolean, onThemeUpdated: () -> Unit,
     listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
     val context = LocalContext.current
@@ -106,7 +108,16 @@ fun PortraitDetailView(
     val screenHeight = LocalConfiguration.current.screenHeightDp
 
     val viewModel = hiltViewModel<DetailHookahViewModel>()
-    val rediceRecipe = viewModel.reduceRecipe.value
+    val reduceRecipe = viewModel.reduceRecipe.observeAsState()
+
+    LaunchedEffect(key1 = reduceRecipe, block = {
+        launch {
+            viewModel.reduceRecipe(recipe)
+            Log.d("MyLog", "Списанный рецепт (REDUCE RECIPE view model)===>${reduceRecipe} ")
+            Log.d("MyLog", "РЕЦЕПТ=========Detail=>${recipe} ")
+        }
+    })
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -144,8 +155,8 @@ fun PortraitDetailView(
                 Button(
                     onClick = {
                         navController.navigate(MainScreen.CurrentOrders.route)
-                        viewModel.reduceRecipe(recipe)
-                        Toast.makeText(context, "${rediceRecipe?.result}", Toast.LENGTH_SHORT)
+                      reduceRecipe.value
+                        Toast.makeText(context, "${reduceRecipe}", Toast.LENGTH_SHORT)
                             .show()
                     },
                     modifier = Modifier
@@ -155,9 +166,8 @@ fun PortraitDetailView(
                     shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
                 ) {
-                    Log.d("MyLog", "Списанный рецепт===>${viewModel.reduceRecipe.value} ")
-                    Log.d("MyLog", "РЕЦЕПТ===>${recipe} ")
-                    Log.d("MyLog", "Списание===>${viewModel.reduceRecipe(recipe)} ")
+
+
                     Text(
                         text = "Списать со склада",
                         style = MaterialTheme.typography.titleLarge,
@@ -189,7 +199,7 @@ fun PortraitDetailView(
 fun LandscapeDetailView(
     navController: NavHostController,
     recipe: RandomRecipeSubList,
-    darkTheme: Boolean, onThemeUpdated: () -> Unit,
+//    darkTheme: Boolean, onThemeUpdated: () -> Unit,
     listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
     val context = LocalContext.current

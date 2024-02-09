@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -24,18 +25,22 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.R
+import com.pidzama.smokecrafthookahapp.data.DataStoreRepository
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
 import com.pidzama.smokecrafthookahapp.presentation.current_orders.CurrentOrdersViewModel
+import com.pidzama.smokecrafthookahapp.presentation.current_orders.addEnthusiasm
 import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 import com.pidzama.smokecrafthookahapp.utils.Constants.TastyWeight.ListTastyWeight
+import kotlinx.coroutines.launch
 
 @Composable
 fun RandomGenerationRecipeScreen(
     navController: NavHostController = rememberNavController(),
     navigateToDetails: (RandomRecipeSubList) -> Unit,
-    darkTheme: Boolean, onThemeUpdated: () -> Unit
+    viewModel: CurrentOrdersViewModel
+//    darkTheme: Boolean, onThemeUpdated: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -76,13 +81,14 @@ fun RandomGenerationRecipeScreen(
             if (ScreenOrientation == Configuration.ORIENTATION_PORTRAIT) {
                 PortraitRecipesContentView(
                     navigateToDetails = navigateToDetails,
-                    darkTheme = darkTheme, onThemeUpdated = onThemeUpdated,
+                    viewModel = viewModel
+//                    darkTheme = darkTheme, onThemeUpdated = onThemeUpdated,
                 )
             } else {
-                LandscapeRecipesContentView(
-                    navigateToDetails = navigateToDetails,
-                    darkTheme = darkTheme, onThemeUpdated = onThemeUpdated,
-                )
+//                LandscapeRecipesContentView(
+//                    navigateToDetails = navigateToDetails,
+////                    darkTheme = darkTheme, onThemeUpdated = onThemeUpdated,
+//                )
             }
         }
     )
@@ -92,21 +98,28 @@ fun RandomGenerationRecipeScreen(
 @Composable
 fun PortraitRecipesContentView(
     navigateToDetails: (RandomRecipeSubList) -> Unit,
-    darkTheme: Boolean, onThemeUpdated: () -> Unit,
+//    darkTheme: Boolean, onThemeUpdated: () -> Unit,
+    viewModel: CurrentOrdersViewModel = hiltViewModel(),
     listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
-    val viewModel = hiltViewModel<CurrentOrdersViewModel>()
+    viewModel.getUserToken()
     val listRandomGenerateRecipe = viewModel.generateRecipeList.observeAsState(listOf()).value
+    val userToken = viewModel.token.value
     val updateIndexRecipe = viewModel.data.collectAsState()
     var indexRecipe = updateIndexRecipe.value
+    var count by remember {mutableStateOf(0)}
 
-    var count by remember {
-        mutableStateOf(0)
-    }
-    LaunchedEffect(key1 = count) {
-        viewModel.getListRandomGenerateRecipe()
-    }
-
+    LaunchedEffect(key1 = count, block = {
+        launch {
+            viewModel.getListRandomGenerateRecipe("Token ${
+                viewModel.token.value.addEnthusiasm(
+                    userToken
+                )
+            }")
+            Log.d("MyLog", "LAUNCHEFFECT")
+            Log.d("MyLog", "TOKEN ${viewModel.token.value.addEnthusiasm(userToken)}")
+        }
+    })
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -116,6 +129,7 @@ fun PortraitRecipesContentView(
                 end = MaterialTheme.dimens.small3
             )
     ) {
+
 
         Box(modifier = Modifier.weight(0.9f)) {
             LazyColumn(
@@ -128,29 +142,30 @@ fun PortraitRecipesContentView(
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
                     ) {
                         indexRecipe++
-                        Log.d("MyLog","IndexRecipe ${indexRecipe}")
-//                        AnimatedContent(
-//                            targetState = count,
-//                            content = {
-//                                indexRecipe++
-//                                Log.d("MyLog","IndexRecipe ${indexRecipe}")
-//                                Log.d("MyLog","COUNT ${count}")
+                        Log.d("MyLog", "IndexRecipe ${indexRecipe}")
+                        Log.d("MyLog", "РЕЦЕПТ----> ${list}")
+                        AnimatedContent(
+                            targetState = count,
+                            content = {
+                                indexRecipe++
+                                Log.d("MyLog", "IndexRecipe ${indexRecipe}")
+                                Log.d("MyLog", "COUNT ${count}")
                                 PortraitPieChartRecipe(
                                     input = list,
                                     indexRecipe = indexRecipe,
                                     listTobaccoWeight = listTobaccoWeight,
 
-                                )
-//                            },
-//                            transitionSpec = {
-//                                scaleIn(
-//                                    animationSpec = tween(
-//                                        300,
-//                                        200
-//                                    )
-//                                ) with scaleOut(animationSpec = tween(150))
-//                            }
-//                        )
+                                    )
+                            },
+                            transitionSpec = {
+                                scaleIn(
+                                    animationSpec = tween(
+                                        300,
+                                        200
+                                    )
+                                ) with scaleOut(animationSpec = tween(150))
+                            }
+                        )
                     }
                 }
             }
@@ -159,7 +174,6 @@ fun PortraitRecipesContentView(
             Button(
                 onClick = {
                     count++
-                    viewModel.getListRandomGenerateRecipe()
                     viewModel.updateRecipesIndex(updateIndexRecipe.value)
                 },
                 modifier = Modifier
@@ -179,20 +193,26 @@ fun PortraitRecipesContentView(
     }
 }
 
+
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun LandscapeRecipesContentView(
     navigateToDetails: (RandomRecipeSubList) -> Unit,
-    darkTheme: Boolean, onThemeUpdated: () -> Unit,
+//    darkTheme: Boolean, onThemeUpdated: () -> Unit,
     listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
     val screenHeight = LocalConfiguration.current.screenHeightDp
     val viewModel = hiltViewModel<CurrentOrdersViewModel>()
-    val listRandomGenerateRecipe = viewModel.generateRecipeList.observeAsState(listOf()).value
+    val listRandomGenerateRecipe = viewModel.generateRecipeList.observeAsState().value
     val updateIndexRecipe = viewModel.data.collectAsState()
     var indexRecipe = updateIndexRecipe.value
-    LaunchedEffect(key1 = true) {
-        viewModel.getListRandomGenerateRecipe()
+
+    var count by remember {
+        mutableStateOf(0)
+    }
+    LaunchedEffect(key1 = count) {
+//        viewModel.getListRandomGenerateRecipe("Token 3d3d1527f722c271e123816778222b97873805c1")
+//        viewModel.getListRandomGenerateRecipe("Token 3d3d1527f722c271e123816778222b97873805c1")
     }
 
     Row(
@@ -205,49 +225,48 @@ fun LandscapeRecipesContentView(
             ),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        var isVisible by remember {
-            mutableStateOf(0)
-        }
 
 
-        Box(modifier = Modifier.weight(0.9f)) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                itemsIndexed(listRandomGenerateRecipe) { _, list ->
-                    Card(
-                        modifier = Modifier.clickable { navigateToDetails(list) },
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
-                    ) {
-                        indexRecipe++
-                        AnimatedContent(
-                            targetState = isVisible,
-                            content = {
-                                    LandscapePieChartRecipe(
-                                        input = list,
-                                        indexRecipe = indexRecipe,
-                                        listTobaccoWeight = listTobaccoWeight
-                                    )
-                            },
-                            transitionSpec = {
-                                scaleIn(
-                                    animationSpec = tween(
-                                        300,
-                                        200
-                                    )
-                                ) with scaleOut(animationSpec = tween(150))
-                            }
-                        )
-                    }
-                }
-            }
-        }
+//        Box(modifier = Modifier.weight(0.9f)) {
+//            LazyColumn(
+//                modifier = Modifier
+//                    .fillMaxSize()
+//            ) {
+//                if (listRandomGenerateRecipe != null) {
+//                    itemsIndexed(listRandomGenerateRecipe.listRandomRecipe) { _, list ->
+//                        Card(
+        //                        modifier = Modifier.clickable { navigateToDetails(list) },
+//                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+//                        ) {
+//                            indexRecipe++
+//                            AnimatedContent(
+//                                targetState = count,
+//                                content = {
+        //                                LandscapePieChartRecipe(
+        //                                    input = list,
+        //                                    indexRecipe = indexRecipe,
+        //                                    listTobaccoWeight = listTobaccoWeight
+        //                                )
+//                                },
+//                                transitionSpec = {
+//                                    scaleIn(
+//                                        animationSpec = tween(
+//                                            300,
+//                                            200
+//                                        )
+//                                    ) with scaleOut(animationSpec = tween(150))
+//                                }
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+//        }
         Box(modifier = Modifier.weight(0.2f)) {
             Button(
                 onClick = {
-                    isVisible++
-                    viewModel.getListRandomGenerateRecipe()
+                    count++
+//                    viewModel.getListRandomGenerateRecipe()
                     viewModel.updateRecipesIndex(updateIndexRecipe.value)
                 },
                 modifier = Modifier
