@@ -24,4 +24,8 @@ class Constants {
         val ListTastyWeight =  listOf(firstTasty, secondTasty, threeTasty)
 
     }
+
+    object Database {
+        const val NAME_DATABASE = "recipe_data_base"
+    }
 }

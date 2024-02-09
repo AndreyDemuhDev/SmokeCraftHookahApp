@@ -1,10 +1,11 @@
 package com.pidzama.smokecrafthookahapp.data.repository
 
 import com.pidzama.smokecrafthookahapp.data.DataStoreRepository
+import com.pidzama.smokecrafthookahapp.data.model.NewRandomRecipeSubList
+import com.pidzama.smokecrafthookahapp.data.model.RandomRecipe
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.data.network.SmokeCraftApi
 import com.pidzama.smokecrafthookahapp.data.remote.AuthRequest
-import com.pidzama.smokecrafthookahapp.data.remote.reduce.ReduceRecipeRequest
 import com.pidzama.smokecrafthookahapp.data.remote.reduce.ReduceRecipeResponse
 import com.pidzama.smokecrafthookahapp.utils.StatusAuth
 import retrofit2.HttpException
@@ -31,14 +32,12 @@ class SmokeCraftRepository @Inject constructor(
     }
 
     //список сгенерированных рецептов
-    suspend fun getRandomRecipe(): Response<List<RandomRecipeSubList>> {
-        return smokeCraftApi.getRandomGenerateRecipeList()
+    suspend fun getRandomRecipe(token: String): Response<List<RandomRecipeSubList>> {
+        return smokeCraftApi.getRandomGenerateRecipeList(token)
     }
 
     //списание табака при выборе рецепта
     suspend fun reduceRecipe(recipe: RandomRecipeSubList): Response<ReduceRecipeResponse> {
         return smokeCraftApi.reduceRecipe(recipe)
     }
-
-
 }

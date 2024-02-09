@@ -1,5 +1,6 @@
 package com.pidzama.smokecrafthookahapp.navigation
 
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -13,16 +14,18 @@ fun RootNavGraph(
     navController: NavHostController,
     darkTheme: Boolean, onThemeUpdated: () -> Unit
 ) {
-    NavHost(
-        navController = navController,
-        route = Graph.ROOT,
-        startDestination = Graph.AUTH
-    ) {
-        authNavGraph(navController = navController)
-        composable(route = Graph.MAIN) {
-            MainScreen(darkTheme = darkTheme, onThemeUpdated = onThemeUpdated, viewModelMain=viewModelMain)
+    Surface(content = {
+        NavHost(
+            navController = navController,
+            route = Graph.ROOT,
+            startDestination = Graph.AUTH
+        ) {
+            authNavGraph(navController = navController)
+            composable(route = Graph.MAIN) {
+                MainScreen(darkTheme = darkTheme, onThemeUpdated = onThemeUpdated, viewModelMain=viewModelMain)
+            }
         }
-    }
+    })
 }
 
 object Graph {

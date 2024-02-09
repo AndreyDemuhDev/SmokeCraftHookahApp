@@ -28,20 +28,24 @@ import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 fun MainScreen(
     navController: NavHostController = rememberNavController(),
     darkTheme: Boolean, onThemeUpdated: () -> Unit,
-    viewModelMain:MainViewModel
+    viewModelMain: MainViewModel
 ) {
 
     Scaffold(
         bottomBar = { BottomBarApp(navController = navController) },
         backgroundColor = MaterialTheme.colorScheme.background
     ) {
-        Column {
-            MainNavGraph(
-                navController = navController,
-                darkTheme = darkTheme, onThemeUpdated = onThemeUpdated,
-                viewModelMain=viewModelMain
-            )
-        }
+        Surface(
+            content = {
+                Column {
+                    MainNavGraph(
+                        navController = navController,
+                        darkTheme = darkTheme, onThemeUpdated = onThemeUpdated,
+                        viewModelMain = viewModelMain
+                    )
+                }
+            }
+        )
     }
 }
 
