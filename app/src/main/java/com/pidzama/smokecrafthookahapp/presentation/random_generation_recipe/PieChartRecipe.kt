@@ -37,7 +37,7 @@ import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 @Composable
 fun PortraitPieChartRecipe(
     input: RandomRecipeSubList,
-//    animDuration: Int = 600,
+    animDuration: Int = 600,
     indexRecipe: Int,
     listTobaccoWeight: List<Float>
 ) {
@@ -49,17 +49,17 @@ fun PortraitPieChartRecipe(
     val totalTastyWeight = listTobaccoWeight.sum()
     val radius = density / 3.0f
     val innerRadius = radius - ((MaterialTheme.dimens.small1 * 1.3f).value / 100) * 100
-//    var animationPlayed by remember { mutableStateOf(false) }
-//    val animateRotation by animateFloatAsState(
-//        targetValue = if (animationPlayed) 90f * 12f else 0f, animationSpec = tween(
-//            durationMillis = animDuration,
-//            delayMillis = 200,
-//            easing = LinearOutSlowInEasing
-//        )
-//    )
-//    LaunchedEffect(key1 = true) {
-//        animationPlayed = true
-//    }
+    var animationPlayed by remember { mutableStateOf(false) }
+    val animateRotation by animateFloatAsState(
+        targetValue = if (animationPlayed) 90f * 12f else 0f, animationSpec = tween(
+            durationMillis = animDuration,
+            delayMillis = 200,
+            easing = LinearOutSlowInEasing
+        )
+    )
+    LaunchedEffect(key1 = true) {
+        animationPlayed = true
+    }
 
     Card(
         modifier = Modifier
@@ -138,7 +138,7 @@ fun PortraitPieChartRecipe(
 
                 Canvas(
                     modifier = Modifier
-//                        .rotate(animateRotation)
+                        .rotate(animateRotation)
                 ) {
 
                     val width = size.width
@@ -209,7 +209,7 @@ fun PortraitPieChartRecipe(
 @Composable
 fun LandscapePieChartRecipe(
     input: RandomRecipeSubList,
-//    animDuration: Int = 600,
+    animDuration: Int = 600,
     indexRecipe: Int,
     listTobaccoWeight: List<Float>,
 ) {
@@ -222,16 +222,16 @@ fun LandscapePieChartRecipe(
     val radius = density / 2
     val innerRadius = radius - ((MaterialTheme.dimens.small1 * 1.3f).value / 100) * 100
     var animationPlayed by remember { mutableStateOf(false) }
-//    val animateRotation by animateFloatAsState(
-//        targetValue = if (animationPlayed) 90f * 12f else 0f, animationSpec = tween(
-//            durationMillis = animDuration,
-//            delayMillis = 200,
-//            easing = LinearOutSlowInEasing
-//        )
-//    )
-//    LaunchedEffect(key1 = true) {
-//        animationPlayed = true
-//    }
+    val animateRotation by animateFloatAsState(
+        targetValue = if (animationPlayed) 90f * 12f else 0f, animationSpec = tween(
+            durationMillis = animDuration,
+            delayMillis = 200,
+            easing = LinearOutSlowInEasing
+        )
+    )
+    LaunchedEffect(key1 = true) {
+        animationPlayed = true
+    }
 
     Card(
         modifier = Modifier
@@ -309,7 +309,7 @@ fun LandscapePieChartRecipe(
             ) {
                 Canvas(
                     modifier = Modifier
-//                        .rotate(animateRotation)
+                        .rotate(animateRotation)
                 ) {
 
                     val width = size.width

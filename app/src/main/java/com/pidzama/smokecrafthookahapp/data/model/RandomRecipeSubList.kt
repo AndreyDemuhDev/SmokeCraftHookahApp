@@ -1,13 +1,12 @@
 package com.pidzama.smokecrafthookahapp.data.model
 
-import android.os.Bundle
-import android.os.Parcelable
-import androidx.navigation.NavType
-import com.google.gson.Gson
-import kotlinx.parcelize.Parcelize
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
 
-class RandomRecipeSubList : ArrayList<RandomRecipeSubListItem>()
+class RandomRecipeSubList: ArrayList<RandomRecipeSubListItem>()
 
 //@Parcelize
 data class RandomRecipeSubListItem(
@@ -25,4 +24,6 @@ data class RandomRecipeSubListItem(
     val updated: String,
     val weight: Double
 )
+
+
 
