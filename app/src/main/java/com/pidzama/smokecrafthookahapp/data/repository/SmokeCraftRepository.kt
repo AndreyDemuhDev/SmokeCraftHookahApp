@@ -31,10 +31,6 @@ class SmokeCraftRepository @Inject constructor(
         }
     }
 
-    //список сгенерированных рецептов
-    suspend fun getRandomRecipe(token: String): Response<List<RandomRecipeSubList>> {
-        return smokeCraftApi.getRandomGenerateRecipeList(token)
-    }
 
     //списание табака при выборе рецепта
     suspend fun reduceRecipe(recipe: RandomRecipeSubList): Response<ReduceRecipeResponse> {

@@ -6,12 +6,14 @@ import com.pidzama.smokecrafthookahapp.data.network.SmokeCraftApi
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class MovieRepositoryImpl @Inject constructor(
+class RecipeRepositoryImpl @Inject constructor(
     private val apiService: SmokeCraftApi
-) : MovieRepository, BaseRepository() {
+) : RecipeRepository, BaseRepository() {
 
-    override suspend fun getMovie(token: String): Flow<ApiState<List<RandomRecipeSubList>>> =
-        safeAPiCall {
+    override suspend fun getListRecipes(token: String): Flow<ApiState<List<RandomRecipeSubList>>> =
+        safeApiCall {
             apiService.getRandomGenerateRecipeList(token = token)
         }
+
+
 }

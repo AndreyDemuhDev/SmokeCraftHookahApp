@@ -1,12 +1,10 @@
 package com.pidzama.smokecrafthookahapp.domain.mapper
 
 import com.pidzama.smokecrafthookahapp.data.common.base.Mapper
-import com.pidzama.smokecrafthookahapp.data.model.RandomRecipe
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
-import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubListItem
 import javax.inject.Inject
 
-class MovieMapper @Inject constructor() :
+class RecipeMapper @Inject constructor() :
     Mapper<List<RandomRecipeSubList>, List<RandomRecipeSubList>> {
 
 

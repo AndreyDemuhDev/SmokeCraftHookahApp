@@ -37,8 +37,8 @@ import kotlinx.coroutines.launch
 fun DetailHookahScreen(
     navController: NavHostController = rememberNavController(),
     recipe: RandomRecipeSubList,
-    viewModel: DetailHookahViewModel = hiltViewModel()
-//    darkTheme: Boolean, onThemeUpdated: () -> Unit
+    numberRecipe: Int,
+    viewModel: DetailHookahViewModel
 ) {
 
     Scaffold(
@@ -81,17 +81,15 @@ fun DetailHookahScreen(
                 PortraitDetailView(
                     navController = navController,
                     recipe = recipe,
+                    numberRecipe = numberRecipe,
                     viewModel = viewModel
-//                    darkTheme = darkTheme,
-//                    onThemeUpdated = onThemeUpdated
                 )
             } else {
                 LandscapeDetailView(
                     navController = navController,
                     recipe = recipe,
+                    numberRecipe=numberRecipe,
                     viewModel = viewModel
-//                    darkTheme = darkTheme,
-//                    onThemeUpdated = onThemeUpdated
                 )
             }
         }
@@ -102,23 +100,21 @@ fun DetailHookahScreen(
 @Composable
 fun PortraitDetailView(
     navController: NavHostController,
+    numberRecipe: Int,
     recipe: RandomRecipeSubList,
     viewModel: DetailHookahViewModel,
-//    darkTheme: Boolean, onThemeUpdated: () -> Unit,
     listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
     val context = LocalContext.current
     val screenWidth = LocalConfiguration.current.screenWidthDp
     val screenHeight = LocalConfiguration.current.screenHeightDp
-    val reduceRecipe = viewModel.reduceRecipe.observeAsState()
+    val reduceRecipe = viewModel.reduceRecipe.observeAsState().value
 
-    LaunchedEffect(key1 = reduceRecipe, block = {
-        launch {
-            viewModel.reduceRecipe(recipe)
-            Log.d("MyLog", "Списанный рецепт (REDUCE RECIPE view model)===>${reduceRecipe} ")
+    LaunchedEffect(key1 = reduceRecipe){
+        viewModel.reduceRecipe(recipe)
+            Log.d("MyLog", "Списанный рецепт (REDUCE RECIPE view model)===>${reduceRecipe?.result} ")
             Log.d("MyLog", "РЕЦЕПТ=========Detail=>${recipe} ")
-        }
-    })
+    }
 
     Column(
         modifier = Modifier
@@ -148,6 +144,7 @@ fun PortraitDetailView(
                 )
                 PortraitDetailPieChart(
                     input = recipe,
+                    numberRecipe= numberRecipe,
                     listTobaccoWeight = listTobaccoWeight
                 )
             }
@@ -156,10 +153,12 @@ fun PortraitDetailView(
             Column(modifier = Modifier.padding(vertical = MaterialTheme.dimens.extraSmall)) {
                 Button(
                     onClick = {
+                        Log.d("MyLog", "РЕЦЕПТ=========Detail=>${recipe} ")
                         navController.navigate(MainScreen.CurrentOrders.route)
-                        reduceRecipe.value
-                        Toast.makeText(context, "${reduceRecipe}", Toast.LENGTH_SHORT)
+                        viewModel.reduceRecipe(recipe)
+                        Toast.makeText(context, "${reduceRecipe?.result}", Toast.LENGTH_SHORT)
                             .show()
+                        Log.d("MyLog", "СПИСАЛ ?????-----_____--___=>${recipe} ")
                     },
                     modifier = Modifier
                         .bounceClick()
@@ -199,8 +198,8 @@ fun PortraitDetailView(
 fun LandscapeDetailView(
     navController: NavHostController,
     recipe: RandomRecipeSubList,
+    numberRecipe: Int,
     viewModel: DetailHookahViewModel,
-//    darkTheme: Boolean, onThemeUpdated: () -> Unit,
     listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
     val context = LocalContext.current
@@ -233,6 +232,7 @@ fun LandscapeDetailView(
                 )
                 LandscapeDetailPieChart(
                     input = recipe,
+                    numberRecipe=numberRecipe,
                     listTobaccoWeight = listTobaccoWeight
                 )
 

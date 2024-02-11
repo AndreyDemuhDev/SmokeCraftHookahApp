@@ -11,7 +11,7 @@ import java.io.IOException
 
 abstract class BaseRepository {
 
-    suspend fun <T> safeAPiCall(
+    suspend fun <T> safeApiCall(
         apiCall: suspend () -> Response<T>
     ): Flow<ApiState<T>> = flow {
         emit(ApiState.Loading)

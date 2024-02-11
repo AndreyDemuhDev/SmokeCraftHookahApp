@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
@@ -38,6 +39,7 @@ import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 fun PortraitPieChartRecipe(
     input: RandomRecipeSubList,
     animDuration: Int = 600,
+    onClickToDetailsScreen: () -> Unit,
     indexRecipe: Int,
     listTobaccoWeight: List<Float>
 ) {
@@ -64,7 +66,8 @@ fun PortraitPieChartRecipe(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = MaterialTheme.dimens.small1),
+            .padding(vertical = MaterialTheme.dimens.small1)
+            .clickable { onClickToDetailsScreen() },
         border = BorderStroke(2.dp, color = MaterialTheme.colorScheme.primary),
         shape = MaterialTheme.shapes.extraLarge,
         backgroundColor = MaterialTheme.colorScheme.background
@@ -154,7 +157,11 @@ fun PortraitPieChartRecipe(
 
                         scale(scale) {
                             drawArc(
-                                color = setColorTaste(input[index].taste_group),
+                                color = if (input.size >= 3) {
+                                    setColorTaste(input[index].taste_group)
+                                } else {
+                                    Color.Red
+                                },
                                 startAngle = currentStartAngle,
                                 sweepAngle = angleToDraw,
                                 useCenter = false,
@@ -189,7 +196,11 @@ fun PortraitPieChartRecipe(
                                         circleCenter.y + (radius + (density / 10) - (radius - innerRadius - (radius / 2f)) / 2f) * factor,
                                         Paint().apply {
                                             textSize = 15.sp.toPx()
-                                            color = setColorTaste(input[index].taste_group).toArgb()
+                                            color = if (input.size >= 3) {
+                                                setColorTaste(input[index].taste_group).toArgb()
+                                            } else {
+                                                Color.Red.toArgb()
+                                            }
                                             textAlign = Paint.Align.CENTER
                                             typeface = Typeface.DEFAULT_BOLD
                                         }
@@ -210,6 +221,7 @@ fun PortraitPieChartRecipe(
 fun LandscapePieChartRecipe(
     input: RandomRecipeSubList,
     animDuration: Int = 600,
+    onClickToDetailsScreen: () -> Unit,
     indexRecipe: Int,
     listTobaccoWeight: List<Float>,
 ) {
@@ -236,7 +248,8 @@ fun LandscapePieChartRecipe(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = MaterialTheme.dimens.small1),
+            .padding(vertical = MaterialTheme.dimens.small1)
+            .clickable { onClickToDetailsScreen() },
         border = BorderStroke(2.dp, color = MaterialTheme.colorScheme.primary),
         shape = MaterialTheme.shapes.extraLarge,
         backgroundColor = MaterialTheme.colorScheme.background

@@ -4,7 +4,7 @@ import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.data.network.ApiState
 import kotlinx.coroutines.flow.Flow
 
-interface MovieRepository {
+interface RecipeRepository {
 
-    suspend fun getMovie(token: String): Flow<ApiState<List<RandomRecipeSubList>>>
+    suspend fun getListRecipes(token: String): Flow<ApiState<List<RandomRecipeSubList>>>
 }
