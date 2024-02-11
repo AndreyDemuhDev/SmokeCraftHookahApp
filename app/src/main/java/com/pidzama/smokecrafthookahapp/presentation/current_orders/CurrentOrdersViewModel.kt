@@ -59,10 +59,6 @@ class CurrentOrdersViewModel @Inject constructor(
                     _res.value = MovieState(
                         error = it.message!!
                     )
-                }.doOnLoading {
-                    _res.value = MovieState(
-                        isLoading = true
-                    )
                 }.collect()
         }
     }
@@ -77,6 +73,5 @@ fun String.substringToken(token: String) =
 
 data class MovieState(
     val data: List<RandomRecipeSubList> = emptyList(),
-    val error: String = "",
-    val isLoading: Boolean = false
+    val error: String = ""
 )

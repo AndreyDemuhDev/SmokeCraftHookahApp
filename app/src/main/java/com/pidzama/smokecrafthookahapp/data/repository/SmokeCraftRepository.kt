@@ -31,9 +31,4 @@ class SmokeCraftRepository @Inject constructor(
         }
     }
 
-
-    //списание табака при выборе рецепта
-    suspend fun reduceRecipe(recipe: RandomRecipeSubList): Response<ReduceRecipeResponse> {
-        return smokeCraftApi.reduceRecipe(recipe)
-    }
 }
