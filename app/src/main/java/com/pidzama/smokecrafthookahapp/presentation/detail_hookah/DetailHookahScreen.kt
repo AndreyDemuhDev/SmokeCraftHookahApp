@@ -13,6 +13,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -26,10 +27,12 @@ import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.R
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.navigation.MainScreen
+import com.pidzama.smokecrafthookahapp.presentation.auth.common.UiEvents
 import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
 import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 import com.pidzama.smokecrafthookahapp.utils.Constants.TastyWeight.ListTastyWeight
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
@@ -40,7 +43,6 @@ fun DetailHookahScreen(
     numberRecipe: Int,
     viewModel: DetailHookahViewModel
 ) {
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -88,7 +90,7 @@ fun DetailHookahScreen(
                 LandscapeDetailView(
                     navController = navController,
                     recipe = recipe,
-                    numberRecipe=numberRecipe,
+                    numberRecipe = numberRecipe,
                     viewModel = viewModel
                 )
             }
@@ -108,13 +110,6 @@ fun PortraitDetailView(
     val context = LocalContext.current
     val screenWidth = LocalConfiguration.current.screenWidthDp
     val screenHeight = LocalConfiguration.current.screenHeightDp
-    val reduceRecipe = viewModel.reduceRecipe.observeAsState().value
-
-    LaunchedEffect(key1 = reduceRecipe){
-        viewModel.reduceRecipe(recipe)
-            Log.d("MyLog", "Списанный рецепт (REDUCE RECIPE view model)===>${reduceRecipe?.result} ")
-            Log.d("MyLog", "РЕЦЕПТ=========Detail=>${recipe} ")
-    }
 
     Column(
         modifier = Modifier
@@ -144,7 +139,7 @@ fun PortraitDetailView(
                 )
                 PortraitDetailPieChart(
                     input = recipe,
-                    numberRecipe= numberRecipe,
+                    numberRecipe = numberRecipe,
                     listTobaccoWeight = listTobaccoWeight
                 )
             }
@@ -154,11 +149,15 @@ fun PortraitDetailView(
                 Button(
                     onClick = {
                         Log.d("MyLog", "РЕЦЕПТ=========Detail=>${recipe} ")
-                        navController.navigate(MainScreen.CurrentOrders.route)
                         viewModel.reduceRecipe(recipe)
-                        Toast.makeText(context, "${reduceRecipe?.result}", Toast.LENGTH_SHORT)
+                        navController.navigate(MainScreen.CurrentOrders.route)
+                        Toast.makeText(
+                            context,
+                            "Табак успешно списан со склада",
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
-                        Log.d("MyLog", "СПИСАЛ ?????-----_____--___=>${recipe} ")
+                        Log.d("MyLog", "СПИСАЛ")
                     },
                     modifier = Modifier
                         .bounceClick()
@@ -203,7 +202,7 @@ fun LandscapeDetailView(
     listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
     val context = LocalContext.current
-    val reduceRecipe = viewModel.reduceRecipe.observeAsState()
+
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -232,10 +231,9 @@ fun LandscapeDetailView(
                 )
                 LandscapeDetailPieChart(
                     input = recipe,
-                    numberRecipe=numberRecipe,
+                    numberRecipe = numberRecipe,
                     listTobaccoWeight = listTobaccoWeight
                 )
-
             }
         }
         Box(
@@ -247,8 +245,14 @@ fun LandscapeDetailView(
             Column(modifier = Modifier.padding(all = MaterialTheme.dimens.extraSmall)) {
                 Button(
                     onClick = {
+                        viewModel.reduceRecipe(recipe)
                         navController.navigate(MainScreen.CurrentOrders.route)
-                        reduceRecipe.value
+                        Toast.makeText(
+                            context,
+                            "Табак успешно списан со склада",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
                     },
                     modifier = Modifier
                         .bounceClick()

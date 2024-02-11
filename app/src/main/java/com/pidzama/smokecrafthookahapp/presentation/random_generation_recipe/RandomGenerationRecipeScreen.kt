@@ -113,11 +113,6 @@ fun PortraitRecipesContentView(
 //        )
 //    })
 
-//    if (result.isLoading) {
-//        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-//            CircularProgressIndicator()
-//        }
-//    }
     if (result.error.isNotEmpty()) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text(text = result.error)
