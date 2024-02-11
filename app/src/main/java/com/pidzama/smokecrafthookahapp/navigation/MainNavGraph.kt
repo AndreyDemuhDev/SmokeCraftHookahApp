@@ -1,6 +1,5 @@
 package com.pidzama.smokecrafthookahapp.navigation
 
-import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.*
@@ -13,6 +12,7 @@ import com.pidzama.smokecrafthookahapp.presentation.current_orders.CurrentOrders
 import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.RandomGenerationRecipeScreen
 import com.pidzama.smokecrafthookahapp.presentation.archive_orders.OrderArchiveScreen
 import com.pidzama.smokecrafthookahapp.presentation.current_orders.CurrentOrdersViewModel
+import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.DetailHookahViewModel
 import com.pidzama.smokecrafthookahapp.presentation.main.MainViewModel
 
 
@@ -36,36 +36,39 @@ fun MainNavGraph(
         composable(MainScreen.CurrentOrders.route) {
             CurrentOrders(
                 navController = navController,
-//                darkTheme = darkTheme, onThemeUpdated = onThemeUpdated
             )
         }
         composable(MainScreen.OrderArchive.route) {
             OrderArchiveScreen(
                 navController = navController,
-//                darkTheme = darkTheme, onThemeUpdated = onThemeUpdated
             )
         }
         composable(MainScreen.ChooseGenerateRecipe.route) {
             val viewModel = hiltViewModel<CurrentOrdersViewModel>()
             RandomGenerationRecipeScreen(navController = navController,
                 viewModel = viewModel,
-//                darkTheme = darkTheme, onThemeUpdated = onThemeUpdated,
-                navigateToDetails = { recipe ->
+                navigateToDetails = { recipe, numberRecipe ->
                     navigateToDetails(
                         navController = navController,
-                        recipe = recipe
+                        recipe = recipe,
+                        numberRecipe = numberRecipe
                     )
                 })
         }
-        composable(route = MainScreen.DetailHookahScreen.route) {
-            navController.previousBackStackEntry?.savedStateHandle?.get<RandomRecipeSubList?>("recipe")
-                ?.let { recipe ->
-                    DetailHookahScreen(
-                        navController = navController,
-                        recipe = recipe,
-//                        darkTheme = darkTheme, onThemeUpdated = onThemeUpdated
-                    )
-                }
+        composable(route = MainScreen.DetailHookahScreen.route) { backStackEntry ->
+            val viewModel = hiltViewModel<DetailHookahViewModel>()
+            val recipe =
+                navController.previousBackStackEntry?.savedStateHandle?.get<RandomRecipeSubList?>("recipe")
+            val recipeNumber =
+                navController.previousBackStackEntry?.savedStateHandle?.get<Int?>("numberRecipe")
+            if (recipe != null && recipeNumber != null) {
+                DetailHookahScreen(
+                    navController = navController,
+                    recipe = recipe,
+                    numberRecipe = recipeNumber,
+                    viewModel = viewModel
+                )
+            }
         }
     }
 }
@@ -78,8 +81,13 @@ sealed class MainScreen(val route: String) {
     object DetailHookahScreen : MainScreen("DETAIL_HOOKAH_SCREEN")
 }
 
-private fun navigateToDetails(navController: NavController, recipe: RandomRecipeSubList) {
+private fun navigateToDetails(
+    navController: NavController,
+    recipe: RandomRecipeSubList,
+    numberRecipe: Int
+) {
     navController.currentBackStackEntry?.savedStateHandle?.set("recipe", recipe)
+    navController.currentBackStackEntry?.savedStateHandle?.set("numberRecipe", numberRecipe)
     navController.navigate(
         route = MainScreen.DetailHookahScreen.route
     )

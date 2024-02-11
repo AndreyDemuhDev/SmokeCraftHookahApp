@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
@@ -35,6 +36,7 @@ import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 @Composable
 fun PortraitDetailPieChart(
     input: RandomRecipeSubList,
+    numberRecipe: Int,
     animDuration: Int = 400,
     listTobaccoWeight: List<Float>
 ) {
@@ -74,7 +76,7 @@ fun PortraitDetailPieChart(
                     style = MaterialTheme.typography.headlineMedium,
                 )
                 Text(
-                    text = "№1",
+                    text = "№$numberRecipe",
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.headlineMedium,
                 )
@@ -140,7 +142,11 @@ fun PortraitDetailPieChart(
 
                         scale(scale) {
                             drawArc(
-                                color = setColorTaste(input[index].taste_group),
+                                color = if (input.size >= 3) {
+                                    setColorTaste(input[index].taste_group)
+                                } else {
+                                    Color.Red
+                                },
                                 startAngle = currentStartAngle,
                                 sweepAngle = angleToDraw,
                                 useCenter = false,
@@ -174,7 +180,11 @@ fun PortraitDetailPieChart(
                                         circleCenter.y + (radius + (density / 10) - (radius - innerRadius - (radius / 2f)) / 2f) * factor,
                                         Paint().apply {
                                             textSize = 15.sp.toPx()
-                                            color = setColorTaste(input[index].taste_group).toArgb()
+                                            color = if (input.size >= 3) {
+                                                setColorTaste(input[index].taste_group).toArgb()
+                                            } else {
+                                                Color.Yellow.toArgb()
+                                            }
                                             textAlign = Paint.Align.CENTER
                                             typeface = Typeface.DEFAULT_BOLD
                                         }
@@ -194,6 +204,7 @@ fun PortraitDetailPieChart(
 @Composable
 fun LandscapeDetailPieChart(
     input: RandomRecipeSubList,
+    numberRecipe: Int,
     animDuration: Int = 400,
     listTobaccoWeight: List<Float>
 ) {
@@ -231,7 +242,7 @@ fun LandscapeDetailPieChart(
                         style = MaterialTheme.typography.titleLarge,
                     )
                     Text(
-                        text = "№1",
+                        text = "№${numberRecipe}",
                         color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.titleLarge,
                     )
