@@ -37,6 +37,7 @@ import kotlinx.coroutines.launch
 fun DetailHookahScreen(
     navController: NavHostController = rememberNavController(),
     recipe: RandomRecipeSubList,
+    viewModel: DetailHookahViewModel = hiltViewModel()
 //    darkTheme: Boolean, onThemeUpdated: () -> Unit
 ) {
 
@@ -80,6 +81,7 @@ fun DetailHookahScreen(
                 PortraitDetailView(
                     navController = navController,
                     recipe = recipe,
+                    viewModel = viewModel
 //                    darkTheme = darkTheme,
 //                    onThemeUpdated = onThemeUpdated
                 )
@@ -87,6 +89,7 @@ fun DetailHookahScreen(
                 LandscapeDetailView(
                     navController = navController,
                     recipe = recipe,
+                    viewModel = viewModel
 //                    darkTheme = darkTheme,
 //                    onThemeUpdated = onThemeUpdated
                 )
@@ -100,14 +103,13 @@ fun DetailHookahScreen(
 fun PortraitDetailView(
     navController: NavHostController,
     recipe: RandomRecipeSubList,
+    viewModel: DetailHookahViewModel,
 //    darkTheme: Boolean, onThemeUpdated: () -> Unit,
     listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
     val context = LocalContext.current
     val screenWidth = LocalConfiguration.current.screenWidthDp
     val screenHeight = LocalConfiguration.current.screenHeightDp
-
-    val viewModel = hiltViewModel<DetailHookahViewModel>()
     val reduceRecipe = viewModel.reduceRecipe.observeAsState()
 
     LaunchedEffect(key1 = reduceRecipe, block = {
@@ -144,7 +146,7 @@ fun PortraitDetailView(
                     color = MaterialTheme.colorScheme.inverseSurface,
                     style = MaterialTheme.typography.headlineMedium,
                 )
-                DetailPieChart(
+                PortraitDetailPieChart(
                     input = recipe,
                     listTobaccoWeight = listTobaccoWeight
                 )
@@ -155,7 +157,7 @@ fun PortraitDetailView(
                 Button(
                     onClick = {
                         navController.navigate(MainScreen.CurrentOrders.route)
-                      reduceRecipe.value
+                        reduceRecipe.value
                         Toast.makeText(context, "${reduceRecipe}", Toast.LENGTH_SHORT)
                             .show()
                     },
@@ -166,8 +168,6 @@ fun PortraitDetailView(
                     shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
                 ) {
-
-
                     Text(
                         text = "Списать со склада",
                         style = MaterialTheme.typography.titleLarge,
@@ -199,11 +199,12 @@ fun PortraitDetailView(
 fun LandscapeDetailView(
     navController: NavHostController,
     recipe: RandomRecipeSubList,
+    viewModel: DetailHookahViewModel,
 //    darkTheme: Boolean, onThemeUpdated: () -> Unit,
     listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
     val context = LocalContext.current
-
+    val reduceRecipe = viewModel.reduceRecipe.observeAsState()
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -245,7 +246,10 @@ fun LandscapeDetailView(
         ) {
             Column(modifier = Modifier.padding(all = MaterialTheme.dimens.extraSmall)) {
                 Button(
-                    onClick = { Toast.makeText(context, "try later", Toast.LENGTH_SHORT).show() },
+                    onClick = {
+                        navController.navigate(MainScreen.CurrentOrders.route)
+                        reduceRecipe.value
+                    },
                     modifier = Modifier
                         .bounceClick()
                         .fillMaxWidth()

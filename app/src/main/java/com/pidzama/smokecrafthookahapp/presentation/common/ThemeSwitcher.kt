@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.ui.res.painterResource
+import com.pidzama.smokecrafthookahapp.R
 
 @Composable
 fun ThemeSwitcher(
@@ -71,8 +73,8 @@ fun ThemeSwitcher(
             ) {
                 Icon(
                     modifier = Modifier.size(iconSize),
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "Theme Icon",
+                    painter = painterResource(id = R.drawable.ic_light_mode),
+                    contentDescription = "light_theme_icon",
                     tint = if (darkTheme) MaterialTheme.colorScheme.secondaryContainer
                     else MaterialTheme.colorScheme.primary
                 )
@@ -83,8 +85,8 @@ fun ThemeSwitcher(
             ) {
                 Icon(
                     modifier = Modifier.size(iconSize),
-                    imageVector = Icons.Default.Star,
-                    contentDescription = "Theme Icon",
+                    painter = painterResource(id = R.drawable.ic_dark_mode),
+                    contentDescription = "dark_theme_icon",
                     tint = if (darkTheme) MaterialTheme.colorScheme.primary
                     else MaterialTheme.colorScheme.secondaryContainer
                 )

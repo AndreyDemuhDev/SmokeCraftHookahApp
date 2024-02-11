@@ -20,59 +20,54 @@ import com.pidzama.smokecrafthookahapp.presentation.main.MainViewModel
 fun MainNavGraph(
     navController: NavHostController,
     darkTheme: Boolean, onThemeUpdated: () -> Unit,
-    viewModelMain:MainViewModel
+    viewModelMain: MainViewModel
 ) {
-    Surface(
-        content = {
-            NavHost(
-                navController = navController,
-                route = Graph.MAIN,
-                startDestination = MainScreen.CurrentOrders.route
-            ) {
-                composable(MainScreen.Profile.route) {
-                    ProfileScreen(
-                        darkTheme = darkTheme, onThemeUpdated = onThemeUpdated,
-                        onBoardingViewModel = viewModelMain
-                    )
-                }
-                composable(MainScreen.CurrentOrders.route) {
-                    CurrentOrders(
-                        navController = navController,
-//                darkTheme = darkTheme, onThemeUpdated = onThemeUpdated
-                    )
-                }
-                composable(MainScreen.OrderArchive.route) {
-                    OrderArchiveScreen(
-                        navController = navController,
-//                darkTheme = darkTheme, onThemeUpdated = onThemeUpdated
-                    )
-                }
-                composable(MainScreen.ChooseGenerateRecipe.route) {
-                    val viewModel = hiltViewModel<CurrentOrdersViewModel>()
-                    RandomGenerationRecipeScreen(navController = navController,
-
-                        viewModel=viewModel,
-//                darkTheme = darkTheme, onThemeUpdated = onThemeUpdated,
-                        navigateToDetails = { recipe ->
-                            navigateToDetails(
-                                navController = navController,
-                                recipe = recipe
-                            )
-                        })
-                }
-                composable(route = MainScreen.DetailHookahScreen.route,) {
-                    navController.previousBackStackEntry?.savedStateHandle?.get<RandomRecipeSubList?>("recipe")
-                        ?.let { recipe ->
-                            DetailHookahScreen(
-                                navController = navController,
-                                recipe = recipe,
-//                        darkTheme = darkTheme, onThemeUpdated = onThemeUpdated
-                            )
-                        }
-                }
-            }
+    NavHost(
+        navController = navController,
+        route = Graph.MAIN,
+        startDestination = MainScreen.CurrentOrders.route
+    ) {
+        composable(MainScreen.Profile.route) {
+            ProfileScreen(
+                darkTheme = darkTheme, onThemeUpdated = onThemeUpdated,
+                onBoardingViewModel = viewModelMain
+            )
         }
-    )
+        composable(MainScreen.CurrentOrders.route) {
+            CurrentOrders(
+                navController = navController,
+//                darkTheme = darkTheme, onThemeUpdated = onThemeUpdated
+            )
+        }
+        composable(MainScreen.OrderArchive.route) {
+            OrderArchiveScreen(
+                navController = navController,
+//                darkTheme = darkTheme, onThemeUpdated = onThemeUpdated
+            )
+        }
+        composable(MainScreen.ChooseGenerateRecipe.route) {
+            val viewModel = hiltViewModel<CurrentOrdersViewModel>()
+            RandomGenerationRecipeScreen(navController = navController,
+                viewModel = viewModel,
+//                darkTheme = darkTheme, onThemeUpdated = onThemeUpdated,
+                navigateToDetails = { recipe ->
+                    navigateToDetails(
+                        navController = navController,
+                        recipe = recipe
+                    )
+                })
+        }
+        composable(route = MainScreen.DetailHookahScreen.route) {
+            navController.previousBackStackEntry?.savedStateHandle?.get<RandomRecipeSubList?>("recipe")
+                ?.let { recipe ->
+                    DetailHookahScreen(
+                        navController = navController,
+                        recipe = recipe,
+//                        darkTheme = darkTheme, onThemeUpdated = onThemeUpdated
+                    )
+                }
+        }
+    }
 }
 
 sealed class MainScreen(val route: String) {

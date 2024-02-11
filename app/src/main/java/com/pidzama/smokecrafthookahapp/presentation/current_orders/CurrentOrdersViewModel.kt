@@ -1,6 +1,5 @@
 package com.pidzama.smokecrafthookahapp.presentation.current_orders
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -9,20 +8,25 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pidzama.smokecrafthookahapp.data.DataStoreRepository
-import com.pidzama.smokecrafthookahapp.data.model.NewRandomRecipeSubList
-import com.pidzama.smokecrafthookahapp.data.model.RandomRecipe
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
+import com.pidzama.smokecrafthookahapp.data.network.doOnFailure
+import com.pidzama.smokecrafthookahapp.data.network.doOnLoading
+import com.pidzama.smokecrafthookahapp.data.network.doOnSuccess
 import com.pidzama.smokecrafthookahapp.data.repository.SmokeCraftRepository
+import com.pidzama.smokecrafthookahapp.domain.use_case.MovieUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CurrentOrdersViewModel @Inject constructor(
     private val smokeCraftRepository: SmokeCraftRepository,
-    private val dataStoreRepository: DataStoreRepository
+    private val dataStoreRepository: DataStoreRepository,
+    private val useCase: MovieUseCase
 ) : ViewModel() {
 
     private val _data = MutableStateFlow(0)
@@ -36,32 +40,62 @@ class CurrentOrdersViewModel @Inject constructor(
     private val _token: MutableState<String> = mutableStateOf("")
     val token: State<String> = _token
 
-    fun getUserToken(){
+
+    /***/
+    private val _res: MutableState<MovieState> = mutableStateOf(MovieState())
+    val res: State<MovieState> = _res
+
+    fun getMapperRecipe(token: String) {
         viewModelScope.launch {
-            dataStoreRepository.getAuthToken().collect{ getToken->
+            useCase.getMovies(token)
+                .doOnSuccess {
+                    _res.value = MovieState(
+                        data = it
+                    )
+                }.doOnFailure {
+                    _res.value = MovieState(
+                        error = it.message!!
+                    )
+                }.doOnLoading {
+                    _res.value = MovieState(
+                        isLoading = true
+                    )
+                }.collect()
+        }
+    }
+
+
+    fun getUserToken() {
+        viewModelScope.launch {
+            dataStoreRepository.getAuthToken().collect { getToken ->
                 _token.value = getToken.toString()
             }
         }
     }
 
-    fun getListRandomGenerateRecipe(token: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            smokeCraftRepository.getRandomRecipe(token).let {
-                if (it.isSuccessful) {
-                    _generateRecipeList.postValue(it.body())
-                } else {
-                    it.errorBody()
-                }
-            }
-        }
-    }
+
+//    fun getListRandomGenerateRecipe(token: String) {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            smokeCraftRepository.getRandomRecipe(token).let {
+//                if (it.isSuccessful) {
+//                    _generateRecipeList.postValue(it.body())
+//                } else {
+//                    it.errorBody()
+//                }
+//            }
+//        }
+//    }
 
     fun updateRecipesIndex(newData: Int) {
         _data.value = newData + 3
-
     }
-
 }
 
-fun String.addEnthusiasm(token: String) =
+fun String.substringToken(token: String) =
     this.substring(1, token.length - 1)
+
+data class MovieState(
+    val data: List<RandomRecipeSubList> = emptyList(),
+    val error: String = "",
+    val isLoading: Boolean = false
+)

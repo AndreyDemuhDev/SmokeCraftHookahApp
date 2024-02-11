@@ -23,6 +23,27 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+//
+//    @Provides
+//    @Singleton
+//    fun provideMoshi(): Moshi = Moshi
+//        .Builder()
+//        .run {
+//            add(KotlinJsonAdapterFactory())
+//            build()
+//        }
+//
+//    @Provides
+//    @Singleton
+//    fun provideHookahApi(moshi: Moshi): SmokeCraftApi =
+//        Retrofit.Builder()
+//            .run {
+//                baseUrl(BASE_URL)
+//                addConverterFactory(MoshiConverterFactory.create(moshi))
+//                build()
+//            }.create(SmokeCraftApi::class.java)
+
+
 
     @Provides
     @Singleton
@@ -40,23 +61,24 @@ object AppModule {
             .create(SmokeCraftApi::class.java)
     }
 
-    @Provides
-    @Singleton
-    fun provideSmokeCraftRepository(
-        smokeCraftApi: SmokeCraftApi,
-        preferences: DataStoreRepository
-    ): SmokeCraftRepository {
-        return SmokeCraftRepository(
-            smokeCraftApi = smokeCraftApi,
-            preferences = preferences
-        )
-    }
-
-    @Provides
-    @Singleton
-    fun providesLoginUseCase(repository: SmokeCraftRepository): LoginUseCase {
-        return LoginUseCase(repository)
-    }
-
-
+@Provides
+@Singleton
+fun provideSmokeCraftRepository(
+    smokeCraftApi: SmokeCraftApi,
+    preferences: DataStoreRepository
+): SmokeCraftRepository {
+    return SmokeCraftRepository(
+        smokeCraftApi = smokeCraftApi,
+        preferences = preferences
+    )
 }
+
+@Provides
+@Singleton
+fun providesLoginUseCase(repository: SmokeCraftRepository): LoginUseCase {
+    return LoginUseCase(repository)
+}
+}
+
+
+//}

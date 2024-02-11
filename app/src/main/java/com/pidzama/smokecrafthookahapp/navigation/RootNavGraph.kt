@@ -14,18 +14,20 @@ fun RootNavGraph(
     navController: NavHostController,
     darkTheme: Boolean, onThemeUpdated: () -> Unit
 ) {
-    Surface(content = {
-        NavHost(
-            navController = navController,
-            route = Graph.ROOT,
-            startDestination = Graph.AUTH
-        ) {
-            authNavGraph(navController = navController)
-            composable(route = Graph.MAIN) {
-                MainScreen(darkTheme = darkTheme, onThemeUpdated = onThemeUpdated, viewModelMain=viewModelMain)
-            }
+    NavHost(
+        navController = navController,
+        route = Graph.ROOT,
+        startDestination = Graph.AUTH
+    ) {
+        authNavGraph(navController = navController)
+        composable(route = Graph.MAIN) {
+            MainScreen(
+                darkTheme = darkTheme,
+                onThemeUpdated = onThemeUpdated,
+                viewModelMain = viewModelMain
+            )
         }
-    })
+    }
 }
 
 object Graph {

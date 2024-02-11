@@ -33,7 +33,7 @@ import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DetailPieChart(
+fun PortraitDetailPieChart(
     input: RandomRecipeSubList,
     animDuration: Int = 400,
     listTobaccoWeight: List<Float>
@@ -89,7 +89,10 @@ fun DetailPieChart(
                     Row(modifier = Modifier.basicMarquee()) {
                         Text(
                             modifier = Modifier.padding(
-                                all = MaterialTheme.dimens.extraSmall
+                                top = MaterialTheme.dimens.extraSmall,
+                                bottom = MaterialTheme.dimens.extraSmall,
+                                start = MaterialTheme.dimens.small2,
+                                end = MaterialTheme.dimens.small2
                             ),
                             text = "${tasty.taste}, ${tasty.brand}",
                             style = MaterialTheme.typography.titleLarge,
@@ -97,7 +100,10 @@ fun DetailPieChart(
                         )
                         Text(
                             modifier = Modifier.padding(
-                                all = MaterialTheme.dimens.extraSmall
+                                top = MaterialTheme.dimens.extraSmall,
+                                bottom = MaterialTheme.dimens.extraSmall,
+                                start = MaterialTheme.dimens.extraSmall,
+                                end = MaterialTheme.dimens.small2
                             ),
                             text = "${listTobaccoWeight[index].toInt()} г.",
                             style = MaterialTheme.typography.titleLarge,
