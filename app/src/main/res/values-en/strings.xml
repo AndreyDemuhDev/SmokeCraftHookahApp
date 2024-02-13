@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SmokeCraftHookahApp</string>
+    <string name="enter_to_app">Вход в систему</string>
+    <string name="sign_in">Войти</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="recipe">Рецепт</string>
+    <string name="recipes">Рецепты</string>
+    <string name="cancel">Отменить</string>
+    <string name="write_off">Списать со склада</string>
+    <string name="order">Заказ</string>
+    <string name="orders">Заказы</string>
+    <string name="table">стол</string>
+    <string name="logout">Выйти</string>
+    <string name="account">Аккаунт</string>
+    <string name="storage">Склад</string>
+    <string name="theme">Тема</string>
+    <string name="language">Язык</string>
+    <string name="help">Помощь</string>
+    <string name="ok">Принять</string>
+    <string name="choose_language">Выберите язык</string>
+    <string name="russian">Русский</string>
+    <string name="english">Английский</string>
+    <string name="faq">Вопросы и тех.поддержка</string>
+    <string name="change_language">Изменить язык</string>
+    <string name="change_theme">Изменить темы</string>
+    <string name="info_storage">Информация о продукции</string>
+    <string name="settings_profile">Настройки профиля</string>
+    <string name="profile">Мой профиль</string>
+    <string name="current_orders">Текущие заказы</string>
+    <string name="order_archive">Архив заказов</string>
+    <string name="random_generation">Случайная генерация</string>
+    <string name="branded_mixes">Фирменные миксы</string>
+    <string name="generation_by_ingredient">Генерация по ингредиенту</string>
+    <string name="generate_new_recipe">Сгенерировать новый рецепт</string>
+    <string name="successfully_written_off">Табак успешно списан со склада!</string>
+
+</resources>

@@ -26,8 +26,10 @@ import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.pidzama.smokecrafthookahapp.R
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.presentation.common.setColorTaste
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
@@ -71,12 +73,12 @@ fun PortraitDetailPieChart(
                 modifier = Modifier.padding(bottom = MaterialTheme.dimens.small3),
             ) {
                 Text(
-                    text = "Рецепт ",
+                    text = stringResource(id = R.string.recipe),
                     color = MaterialTheme.colorScheme.inverseSurface,
                     style = MaterialTheme.typography.headlineMedium,
                 )
                 Text(
-                    text = "№$numberRecipe",
+                    text = " №$numberRecipe",
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.headlineMedium,
                 )
@@ -237,12 +239,12 @@ fun LandscapeDetailPieChart(
                     modifier = Modifier.padding(bottom = MaterialTheme.dimens.extraSmall / 2),
                 ) {
                     Text(
-                        text = "Рецепт ",
+                        text = stringResource(id = R.string.recipe),
                         color = MaterialTheme.colorScheme.inverseSurface,
                         style = MaterialTheme.typography.titleLarge,
                     )
                     Text(
-                        text = "№${numberRecipe}",
+                        text = " №${numberRecipe}",
                         color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.titleLarge,
                     )
@@ -291,7 +293,7 @@ fun LandscapeDetailPieChart(
                     val width = size.width
                     val height = size.height
                     val anglePerValue = 360f / totalTastyWeight
-                    var currentStartAngle = 0f
+                    var currentStartAngle = 270f
                     circleCenter = Offset(x = width / 2, y = height / 2)
 
                     listTobaccoWeight.forEachIndexed { index, testy ->
