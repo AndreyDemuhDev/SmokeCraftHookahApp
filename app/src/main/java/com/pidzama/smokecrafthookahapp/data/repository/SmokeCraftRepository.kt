@@ -1,15 +1,10 @@
 package com.pidzama.smokecrafthookahapp.data.repository
 
 import com.pidzama.smokecrafthookahapp.data.DataStoreRepository
-import com.pidzama.smokecrafthookahapp.data.model.NewRandomRecipeSubList
-import com.pidzama.smokecrafthookahapp.data.model.RandomRecipe
-import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.data.network.SmokeCraftApi
 import com.pidzama.smokecrafthookahapp.data.remote.AuthRequest
-import com.pidzama.smokecrafthookahapp.data.remote.reduce.ReduceRecipeResponse
 import com.pidzama.smokecrafthookahapp.utils.StatusAuth
 import retrofit2.HttpException
-import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
 
@@ -23,6 +18,7 @@ class SmokeCraftRepository @Inject constructor(
         return try {
             val response = smokeCraftApi.loginUser(login)
             preferences.saveAuthToken(response.auth_token)
+            preferences.saveUserLogin(login.username)
             StatusAuth.Success(Unit)
         } catch (e: IOException) {
             StatusAuth.Error("${e.message}")

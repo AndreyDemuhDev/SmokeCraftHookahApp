@@ -32,6 +32,7 @@ import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
 import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 import com.pidzama.smokecrafthookahapp.utils.Constants.TastyWeight.ListTastyWeight
+import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetSuccess
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -107,10 +108,20 @@ fun PortraitDetailView(
     viewModel: DetailHookahViewModel,
     listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
-    val context = LocalContext.current
+
     val screenWidth = LocalConfiguration.current.screenWidthDp
     val screenHeight = LocalConfiguration.current.screenHeightDp
+    var openDialogSuccess by remember { mutableStateOf(false) }
 
+    if (openDialogSuccess) {
+        openDialogSuccess = false
+        SweetSuccess(
+            message = "Табак успешно списан со склада!",
+            duration = Toast.LENGTH_SHORT,
+            padding = PaddingValues(top = MaterialTheme.dimens.medium1),
+            contentAlignment = Alignment.TopCenter
+        )
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -151,13 +162,7 @@ fun PortraitDetailView(
                         Log.d("MyLog", "РЕЦЕПТ=========Detail=>${recipe} ")
                         viewModel.reduceRecipe(recipe)
                         navController.navigate(MainScreen.CurrentOrders.route)
-                        Toast.makeText(
-                            context,
-                            "Табак успешно списан со склада",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
-                        Log.d("MyLog", "СПИСАЛ")
+                        openDialogSuccess = true
                     },
                     modifier = Modifier
                         .bounceClick()
@@ -201,7 +206,17 @@ fun LandscapeDetailView(
     viewModel: DetailHookahViewModel,
     listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
-    val context = LocalContext.current
+    var openDialogSuccess by remember { mutableStateOf(false) }
+
+    if (openDialogSuccess) {
+        openDialogSuccess = false
+        SweetSuccess(
+            message = "Табак успешно списан со склада!",
+            duration = Toast.LENGTH_SHORT,
+            padding = PaddingValues(top = MaterialTheme.dimens.medium1),
+            contentAlignment = Alignment.TopCenter
+        )
+    }
 
     Row(
         modifier = Modifier
@@ -247,12 +262,7 @@ fun LandscapeDetailView(
                     onClick = {
                         viewModel.reduceRecipe(recipe)
                         navController.navigate(MainScreen.CurrentOrders.route)
-                        Toast.makeText(
-                            context,
-                            "Табак успешно списан со склада",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
+                        openDialogSuccess = true
                     },
                     modifier = Modifier
                         .bounceClick()

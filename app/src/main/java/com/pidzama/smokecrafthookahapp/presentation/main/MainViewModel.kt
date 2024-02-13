@@ -21,11 +21,8 @@ class MainViewModel @Inject constructor(
     private val _isDarkMode: MutableState<Boolean> = mutableStateOf(false)
     val isDarkMode: State<Boolean> = _isDarkMode
 
-    fun saveThemeMode(isDarkMode: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
-            dataStoreRepository.saveThemeMode(isDarkMode = isDarkMode)
-        }
-    }
+    private val _login: MutableState<String> = mutableStateOf("")
+    val login: State<String> = _login
 
     init {
         viewModelScope.launch {
@@ -36,4 +33,17 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun getUserLogin() {
+        viewModelScope.launch {
+            dataStoreRepository.getUserLogin().collect { login ->
+                _login.value = login.toString()
+            }
+        }
+    }
+
+    fun saveThemeMode(isDarkMode: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStoreRepository.saveThemeMode(isDarkMode = isDarkMode)
+        }
+    }
 }
