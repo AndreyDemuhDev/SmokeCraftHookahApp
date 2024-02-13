@@ -4,6 +4,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 data class Dimens(
+    val dp_1: Dp = 1.dp,
     val nanoSmall: Dp = 2.dp,
     val extraSmall: Dp = 2.dp,
     val small1: Dp = 0.dp,
@@ -17,7 +18,7 @@ data class Dimens(
     val large3: Dp = 0.dp,
     val buttonHeight: Dp = 56.dp,
     val buttonWidth: Dp = 294.dp,
-    val cornerShape:Dp = 10.dp,
+    val cornerShape: Dp = 10.dp,
     val image: Dp = 75.dp
 )
 

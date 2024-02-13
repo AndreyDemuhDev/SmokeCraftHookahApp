@@ -127,4 +127,6 @@ dependencies {
     //Moshi
     implementation "com.squareup.moshi:moshi-kotlin:$moshi"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit"
+    //CustomToast
+    implementation 'com.github.tfaki:ComposableSweetToast:1.0.1'
 }

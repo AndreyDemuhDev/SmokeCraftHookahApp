@@ -23,14 +23,15 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.res.painterResource
 import com.pidzama.smokecrafthookahapp.R
+import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 
 @Composable
 fun ThemeSwitcher(
+    modifier: Modifier,
     darkTheme: Boolean,
-    size: Dp = 40.dp,
-    iconSize: Dp = size / 2,
-    padding: Dp = 4.dp,
-    borderWidth: Dp = 1.dp,
+    size: Dp = MaterialTheme.dimens.medium3,
+    padding: Dp = MaterialTheme.dimens.extraSmall,
+    borderWidth: Dp = MaterialTheme.dimens.dp_1,
     parentShape: Shape = CircleShape,
     toggleShape: Shape = CircleShape,
     animationSpec: AnimationSpec<Dp> = tween(durationMillis = 500),
@@ -42,12 +43,19 @@ fun ThemeSwitcher(
         animationSpec = animationSpec
     )
 
-    Box(modifier = Modifier
+    Box(modifier = modifier
         .width(size * 2)
         .height(size)
         .clip(shape = parentShape)
+        .border(
+            border = BorderStroke(
+                width = borderWidth,
+                color = MaterialTheme.colorScheme.inverseSurface
+            ),
+            shape = parentShape
+        )
         .clickable { onClick() }
-        .background(MaterialTheme.colorScheme.secondaryContainer)
+        .background(MaterialTheme.colorScheme.onTertiary)
     ) {
         Box(
             modifier = Modifier
@@ -55,42 +63,7 @@ fun ThemeSwitcher(
                 .offset(x = offset)
                 .padding(all = padding)
                 .clip(shape = toggleShape)
-                .background(MaterialTheme.colorScheme.primary)
+                .background(MaterialTheme.colorScheme.inverseSurface)
         ) {}
-        Row(
-            modifier = Modifier
-                .border(
-                    border = BorderStroke(
-                        width = borderWidth,
-                        color = MaterialTheme.colorScheme.primary
-                    ),
-                    shape = parentShape
-                )
-        ) {
-            Box(
-                modifier = Modifier.size(size),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    modifier = Modifier.size(iconSize),
-                    painter = painterResource(id = R.drawable.ic_light_mode),
-                    contentDescription = "light_theme_icon",
-                    tint = if (darkTheme) MaterialTheme.colorScheme.secondaryContainer
-                    else MaterialTheme.colorScheme.primary
-                )
-            }
-            Box(
-                modifier = Modifier.size(size),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    modifier = Modifier.size(iconSize),
-                    painter = painterResource(id = R.drawable.ic_dark_mode),
-                    contentDescription = "dark_theme_icon",
-                    tint = if (darkTheme) MaterialTheme.colorScheme.primary
-                    else MaterialTheme.colorScheme.secondaryContainer
-                )
-            }
-        }
     }
 }

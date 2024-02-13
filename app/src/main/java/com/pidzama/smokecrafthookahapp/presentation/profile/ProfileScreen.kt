@@ -1,271 +1,424 @@
 package com.pidzama.smokecrafthookahapp.presentation.profile
 
-import android.media.Image
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import android.annotation.SuppressLint
+import android.util.Log
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.*
 import com.pidzama.smokecrafthookahapp.R
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.pidzama.smokecrafthookahapp.presentation.common.ThemeSwitcher
+import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
+import com.pidzama.smokecrafthookahapp.presentation.current_orders.substringToken
 import com.pidzama.smokecrafthookahapp.presentation.main.MainViewModel
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+
 
 @Composable
 fun ProfileScreen(
-    onBoardingViewModel: MainViewModel,
-    darkTheme: Boolean, onThemeUpdated: () -> Unit
+    viewModel: MainViewModel,
+    navController: NavHostController,
+    darkTheme: Boolean,
+    onThemeUpdated: () -> Unit,
 ) {
-    Text(text = "Profile Screen", color = MaterialTheme.colors.primary)
-    var isDark by remember {
-        mutableStateOf(onBoardingViewModel.isDarkMode.value)
-    }
 
-    var listPrepared by remember {
-        mutableStateOf(false)
-    }
+    val openAlertDialog: MutableState<Boolean> = remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
-        withContext(Dispatchers.Default) {
-            optionsList.clear()
+    ChooseLanguageDialog(openAlertDialog)
 
-            // Add the data to optionsList
-            prepareOptionsData()
-
-            listPrepared = true
-        }
-    }
-
-    if (listPrepared) {
-
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-
-            item {
-                ThemeSwitcher(
-                    darkTheme = darkTheme,
-                    onClick = {
-                        isDark = !isDark
-                        onBoardingViewModel.saveThemeMode(isDarkMode = isDark)
-                        onThemeUpdated()
-                    }
-                )
-                UserDetails()
-            }
-            items(optionsList) { item ->
-                OptionsItemStyle(item = item)
-            }
+    Log.d("MyLog", "ALERTDIALOG ${openAlertDialog.value}")
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(
+                horizontal = MaterialTheme.dimens.small3,
+                vertical = MaterialTheme.dimens.small2
+            )
+    ) {
+        item {
+            LogoutSection(navController = navController)
+            UserDetails(viewModel = viewModel)
+            OptionsItemsSection(
+                viewModel = viewModel,
+                darkTheme = darkTheme,
+                onThemeUpdated = onThemeUpdated,
+                onClickChangeLanguage = { openAlertDialog.value = true }
+            )
 
         }
     }
 }
 
 @Composable
-fun UserDetails() {
+fun LogoutSection(navController: NavHostController) {
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(androidx.compose.material3.MaterialTheme.dimens.small3),
-        verticalAlignment = Alignment.CenterVertically
+            .padding(vertical = MaterialTheme.dimens.nanoSmall),
+        horizontalArrangement = Arrangement.End
     ) {
-
-        // User's image
-
-        Image(
+        Button(
             modifier = Modifier
-                .size(androidx.compose.material3.MaterialTheme.dimens.image)
-                .clip(shape = CircleShape),
-            painter = painterResource(id = R.drawable.ic_apply),
-            contentDescription = "Your Image"
-        )
+                .bounceClick()
+                .height(MaterialTheme.dimens.medium3),
+            onClick = { },
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+            shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
+        ) {
+            Text(
+                text = "Выйти",
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+        }
+    }
+}
 
+@Composable
+fun UserDetails(
+    viewModel: MainViewModel
+) {
+    viewModel.getUserLogin()
+    val login = viewModel.login.value.substringToken(viewModel.login.value)
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(MaterialTheme.dimens.small2),
             verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                modifier = Modifier
+                    .weight(3f)
+                    .size(MaterialTheme.dimens.image)
+                    .padding(end = MaterialTheme.dimens.small1)
+                    .clip(shape = CircleShape),
+                painter = painterResource(id = R.drawable.ic_avatar_user),
+                contentDescription = "Your Image",
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.inverseSurface)
+            )
+            Text(
+                modifier = Modifier.weight(6f),
+                text = login.uppercase(),
+                color = MaterialTheme.colorScheme.inverseSurface,
+                style = MaterialTheme.typography.headlineMedium,
+                maxLines = 1
+            )
+            IconButton(
+                modifier = Modifier
+                    .bounceClick()
+                    .weight(weight = 1f, fill = false),
+                onClick = { }) {
+                Icon(
+                    modifier = Modifier
+                        .size(MaterialTheme.dimens.medium2),
+                    painter = painterResource(id = R.drawable.ic_edit),
+                    contentDescription = "edit_profile_icon",
+                    tint = MaterialTheme.colorScheme.inverseSurface
+                )
+            }
+        }
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = MaterialTheme.dimens.small1)
+                .height(MaterialTheme.dimens.nanoSmall),
+            color = MaterialTheme.colorScheme.primary
+        )
+    }
+}
+
+
+@Composable
+private fun OptionsItemsSection(
+    viewModel: MainViewModel,
+    darkTheme: Boolean,
+    onThemeUpdated: () -> Unit,
+    onClickChangeLanguage: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        OptionItem(
+            icon = R.drawable.profile,
+            title = "Аккаунт",
+            subTitle = "Наустройки Вашего аккаунта",
+            onClick = {})
+        OptionItem(
+            icon = R.drawable.ic_storage,
+            title = "Склад",
+            subTitle = "Информация о продукции",
+            onClick = {})
+        ThemeSwitcherItem(
+            icon = R.drawable.ic_change_theme,
+            title = "Тема",
+            subTitle = "Изменение темы",
+            viewModel = viewModel,
+            darkTheme = darkTheme,
+            onThemeUpdated = onThemeUpdated
+        )
+        OptionItem(
+            icon = R.drawable.ic_language,
+            title = "Язык",
+            subTitle = "Изменить язык приложения",
+            onClick = {
+                onClickChangeLanguage()
+
+            }
+        )
+        OptionItem(
+            icon = R.drawable.ic_help,
+            title = "Помощь",
+            subTitle = "Вопросы и тех.поддержка",
+            onClick = {})
+    }
+}
+
+@Composable
+fun ThemeSwitcherItem(
+    @DrawableRes icon: Int,
+    title: String,
+    subTitle: String,
+    viewModel: MainViewModel,
+    darkTheme: Boolean,
+    onThemeUpdated: () -> Unit
+) {
+
+    var isDark by remember { mutableStateOf(viewModel.isDarkMode.value) }
+
+    OutlinedCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(MaterialTheme.dimens.small1),
+        shape = RoundedCornerShape(10.dp),
+        border = BorderStroke(
+            width = 1.dp,
+            color = MaterialTheme.colorScheme.onTertiary
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = MaterialTheme.dimens.nanoSmall
+        ),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = MaterialTheme.dimens.nanoSmall),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                modifier = Modifier
+                    .weight(1f)
+                    .size(MaterialTheme.dimens.medium3),
+                painter = painterResource(id = icon),
+                contentDescription = title,
+                tint = MaterialTheme.colorScheme.inverseSurface
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(weight = 3f, fill = false)
+                    .padding(start = MaterialTheme.dimens.small3)
+            ) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.inverseSurface
+                )
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.nanoSmall))
+                Text(
+                    text = subTitle,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.inverseSurface
+                )
+            }
+            ThemeSwitcher(modifier = Modifier
+                .padding(end = MaterialTheme.dimens.small1),
+                darkTheme = darkTheme,
+                onClick = {
+                    isDark = !isDark
+                    viewModel.saveThemeMode(isDarkMode = isDark)
+                    onThemeUpdated()
+                }
+            )
+        }
+    }
+}
+
+
+@Composable
+fun OptionItem(
+    @DrawableRes icon: Int,
+    title: String,
+    subTitle: String,
+    onClick: () -> Unit
+) {
+    OutlinedCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(MaterialTheme.dimens.small1),
+        shape = RoundedCornerShape(10.dp),
+        border = BorderStroke(
+            width = 1.dp,
+            color = MaterialTheme.colorScheme.onTertiary
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = MaterialTheme.dimens.nanoSmall
+        ),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .bounceClick { onClick() }
+                .padding(bottom = MaterialTheme.dimens.nanoSmall),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                modifier = Modifier
+                    .size(MaterialTheme.dimens.medium3),
+                painter = painterResource(id = icon),
+                contentDescription = title,
+                tint = MaterialTheme.colorScheme.inverseSurface
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(weight = 3f, fill = false)
+                    .padding(start = MaterialTheme.dimens.small3)
+            ) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.inverseSurface
+                )
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.nanoSmall))
+                Text(
+                    text = subTitle,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.inverseSurface
+                )
+            }
+            Icon(
+                modifier = Modifier
+                    .weight(weight = 1f, fill = false),
+                painter = painterResource(id = R.drawable.ic_arrow_forward),
+                contentDescription = title,
+                tint = MaterialTheme.colorScheme.inverseSurface.copy(
+                    alpha = 0.6f
+                )
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ChooseLanguageDialog(
+    openDialog: MutableState<Boolean>,
+) {
+    if (openDialog.value) {
+        AlertDialog(onDismissRequest = { openDialog.value = false }) {
+            DialogData(openDialog)
+        }
+    }
+}
+
+@Composable
+fun DialogData(openDialog: MutableState<Boolean>) {
+    val languageList = listOf("Русский", "English")
+    var selectedLanguage by remember {
+        mutableStateOf(0)
+    }
+
+    Card(
+        shape = RoundedCornerShape(10.dp),
+        modifier = Modifier.padding(
+            vertical = MaterialTheme.dimens.small3,
+            horizontal = MaterialTheme.dimens.small1
+        ),
+        elevation = CardDefaults.cardElevation(8.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f))
         ) {
             Column(
                 modifier = Modifier
-                    .weight(weight = 3f, fill = false)
-                    .padding(start = androidx.compose.material3.MaterialTheme.dimens.small3)
+                    .padding(MaterialTheme.dimens.small1)
             ) {
-
-                // User's name
                 Text(
-                    text = "Victoria Steele",
-                    style = androidx.compose.material3.MaterialTheme.typography.labelMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "Выберите язык",
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
+                languageList.forEachIndexed { index, language ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = selectedLanguage == index, onClick = {
+                                selectedLanguage = index
 
-                Spacer(modifier = Modifier.height(androidx.compose.material3.MaterialTheme.dimens.extraSmall))
-
-                // User's email
-                Text(
-                    text = "email@email.com",
-                    style = androidx.compose.material3.MaterialTheme.typography.labelSmall,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                            },
+                            enabled = true
+                        )
+                        Text(text = language)
+                    }
+                }
             }
-
-            // Edit button
-            IconButton(
-                modifier = Modifier
-                    .weight(weight = 1f, fill = false),
-                onClick = {
-
-                }) {
-                Icon(
-                    modifier = Modifier.size(androidx.compose.material3.MaterialTheme.dimens.medium2),
-                    imageVector = Icons.Outlined.Edit,
-                    contentDescription = "Edit Details",
-                    tint = MaterialTheme.colors.primary
-                )
-            }
-
-        }
-    }
-}
-
-@Composable
-private fun OptionsItemStyle(item: OptionsData) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(enabled = true) {
-
-            }
-            .padding(all = androidx.compose.material3.MaterialTheme.dimens.small3),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        OutlinedCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(androidx.compose.material3.MaterialTheme.dimens.small2)
-                .background(Color.Red),
-            shape = RoundedCornerShape(8.dp),
-            colors = CardDefaults.cardColors(containerColor = androidx.compose.material3.MaterialTheme.colorScheme.primary)
-        ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
+                horizontalArrangement = Arrangement.Center
             ) {
-                Icon(
-                    modifier = Modifier
-                        .size(androidx.compose.material3.MaterialTheme.dimens.medium3),
-                    imageVector = item.icon,
-                    contentDescription = item.title,
-                    tint = MaterialTheme.colors.primary
-                )
-                Column(
-                    modifier = Modifier
-                        .weight(weight = 3f, fill = false)
-                        .padding(start = androidx.compose.material3.MaterialTheme.dimens.small3)
-                ) {
-
+                TextButton(onClick = { openDialog.value = false }) {
                     Text(
-                        text = item.title,
-                        style = androidx.compose.material3.MaterialTheme.typography.headlineMedium,
-                    )
-                    Spacer(modifier = Modifier.height(androidx.compose.material3.MaterialTheme.dimens.extraSmall))
-                    Text(
-                        text = item.subTitle,
-                        style = androidx.compose.material3.MaterialTheme.typography.titleLarge,
+                        text = "Принять",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.inverseSurface,
+                        modifier = Modifier.padding(
+                            vertical = MaterialTheme.dimens.small1
+                        )
                     )
                 }
-                Icon(
-                    modifier = Modifier
-                        .weight(weight = 1f, fill = false),
-                    imageVector = Icons.Outlined.Check,
-                    contentDescription = item.title,
-                    tint = Color.Black.copy(alpha = 0.70f)
-                )
+                TextButton(onClick = { openDialog.value = false }) {
+                    Text(
+                        text = "Отмена",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.inverseSurface,
+                        modifier = Modifier.padding(vertical = MaterialTheme.dimens.small1)
+                    )
+                }
+
             }
         }
     }
 }
-
-private val optionsList: ArrayList<OptionsData> = ArrayList()
-
-private fun prepareOptionsData() {
-
-    val appIcons = Icons.Outlined
-
-    optionsList.add(
-        OptionsData(
-            icon = appIcons.Person,
-            title = "Account",
-            subTitle = "Manage your account"
-        )
-    )
-
-    optionsList.add(
-        OptionsData(
-            icon = appIcons.ShoppingCart,
-            title = "Orders",
-            subTitle = "Orders history"
-        )
-    )
-
-    optionsList.add(
-        OptionsData(
-            icon = appIcons.Person,
-            title = "Addresses",
-            subTitle = "Your saved addresses"
-        )
-    )
-
-    optionsList.add(
-        OptionsData(
-            icon = appIcons.Refresh,
-            title = "Saved Cards",
-            subTitle = "Your saved debit/credit cards"
-        )
-    )
-
-    optionsList.add(
-        OptionsData(
-            icon = appIcons.Settings,
-            title = "Settings",
-            subTitle = "App notification settings"
-        )
-    )
-
-    optionsList.add(
-        OptionsData(
-            icon = appIcons.Check,
-            title = "Help Center",
-            subTitle = "FAQs and customer support"
-        )
-    )
-}
-
-data class OptionsData(val icon: ImageVector, val title: String, val subTitle: String)

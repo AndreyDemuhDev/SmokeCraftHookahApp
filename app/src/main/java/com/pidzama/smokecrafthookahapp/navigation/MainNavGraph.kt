@@ -29,8 +29,10 @@ fun MainNavGraph(
     ) {
         composable(MainScreen.Profile.route) {
             ProfileScreen(
-                darkTheme = darkTheme, onThemeUpdated = onThemeUpdated,
-                onBoardingViewModel = viewModelMain
+                navController = navController,
+                darkTheme = darkTheme,
+                onThemeUpdated = onThemeUpdated,
+                viewModel = viewModelMain
             )
         }
         composable(MainScreen.CurrentOrders.route) {
