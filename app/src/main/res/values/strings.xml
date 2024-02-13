@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SmokeCraftHookahApp</string>
-    <string name="enter_to_app">Enter to App</string>
+    <string name="enter_to_app">Welcome</string>
     <string name="sign_in">Sign in</string>
     <string name="login">Login</string>
     <string name="password">Password</string>
