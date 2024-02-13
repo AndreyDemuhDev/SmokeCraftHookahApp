@@ -27,7 +27,9 @@ import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.*
+import com.pidzama.smokecrafthookahapp.R
 import com.pidzama.smokecrafthookahapp.data.model.NewRandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipe
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
@@ -92,12 +94,12 @@ fun PortraitPieChartRecipe(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Рецепт ",
+                            text = stringResource(id = R.string.recipe),
                             color = MaterialTheme.colorScheme.inverseSurface,
                             style = MaterialTheme.typography.headlineMedium,
                         )
                         Text(
-                            text = "№${indexRecipe}",
+                            text = " №${indexRecipe}",
                             color = MaterialTheme.colorScheme.primary,
                             style = MaterialTheme.typography.headlineMedium,
                         )
@@ -274,12 +276,12 @@ fun LandscapePieChartRecipe(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Рецепт ",
+                            text = stringResource(id = R.string.recipe),
                             color = MaterialTheme.colorScheme.inverseSurface,
                             style = MaterialTheme.typography.headlineMedium,
                         )
                         Text(
-                            text = "№${indexRecipe}",
+                            text = " №${indexRecipe}",
                             color = MaterialTheme.colorScheme.primary,
                             style = MaterialTheme.typography.headlineMedium,
                         )
@@ -328,7 +330,7 @@ fun LandscapePieChartRecipe(
                     val width = size.width
                     val height = size.height
                     val anglePerValue = 360f / totalTastyWeight
-                    var currentStartAngle = 0f
+                    var currentStartAngle = 270f
 
                     circleCenter = Offset(x = width / 2, y = height / 2)
 

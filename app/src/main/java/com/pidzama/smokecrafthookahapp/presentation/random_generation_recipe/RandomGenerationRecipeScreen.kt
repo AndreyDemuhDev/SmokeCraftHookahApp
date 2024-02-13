@@ -27,6 +27,7 @@ import com.pidzama.smokecrafthookahapp.presentation.current_orders.CurrentOrders
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import com.pidzama.smokecrafthookahapp.presentation.current_orders.substringToken
 import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
@@ -48,7 +49,7 @@ fun RandomGenerationRecipeScreen(
                         Alignment.Center
                     ) {
                         Text(
-                            text = "Рецепты",
+                            text = stringResource(id = R.string.recipes),
                             style = MaterialTheme.typography.titleLarge
                         )
                     }
@@ -190,7 +191,7 @@ fun PortraitRecipesContentView(
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
                 ) {
                     Text(
-                        text = "Сгенерировать новый рецепт",
+                        text = stringResource(id = R.string.generate_new_recipe),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onBackground
                     )

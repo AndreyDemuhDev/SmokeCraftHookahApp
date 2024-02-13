@@ -14,8 +14,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.pidzama.smokecrafthookahapp.R
 import com.pidzama.smokecrafthookahapp.navigation.MainScreen
 import com.pidzama.smokecrafthookahapp.presentation.common.NoRippleEffect
 import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
@@ -26,7 +28,6 @@ import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 @Composable
 fun CurrentOrders(
     navController: NavHostController = rememberNavController(),
-//    darkTheme: Boolean, onThemeUpdated: () -> Unit
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
     Surface(
@@ -39,13 +40,11 @@ fun CurrentOrders(
                 PortraitCurrentOrderScreen(
                     navController = navController,
                     screenWidth = screenWidth,
-//                    darkTheme = darkTheme, onThemeUpdated = onThemeUpdated
                 )
             } else {
                 LandscapeCurrentOrderScreen(
                     navController = navController,
                     screenWidth = screenWidth,
-//                    darkTheme = darkTheme, onThemeUpdated = onThemeUpdated
                 )
             }
         }
@@ -55,7 +54,6 @@ fun CurrentOrders(
 @Composable
 fun PortraitCurrentOrderScreen(
     navController: NavHostController,
-//    darkTheme: Boolean, onThemeUpdated: () -> Unit,
     screenWidth: Int = LocalConfiguration.current.screenWidthDp,
 ) {
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -73,7 +71,7 @@ fun PortraitCurrentOrderScreen(
                 shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
             ) {
                 Text(
-                    text = "Случайная генерация",
+                    text = stringResource(id = R.string.random_generation),
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onBackground,
                 )
@@ -87,7 +85,7 @@ fun PortraitCurrentOrderScreen(
                 interactionSource = remember { NoRippleEffect() }
             ) {
                 Text(
-                    text = "Фирменные миксы",
+                    text = stringResource(id = R.string.branded_mixes),
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onBackground,
                 )
@@ -101,7 +99,7 @@ fun PortraitCurrentOrderScreen(
                 interactionSource = remember { NoRippleEffect() }
             ) {
                 Text(
-                    text = "Генерация по ингредиенту",
+                    text = stringResource(id = R.string.generation_by_ingredient),
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onBackground,
                 )
@@ -113,7 +111,6 @@ fun PortraitCurrentOrderScreen(
 @Composable
 fun LandscapeCurrentOrderScreen(
     navController: NavHostController,
-//    darkTheme: Boolean, onThemeUpdated: () -> Unit,
     screenWidth: Int = LocalConfiguration.current.screenWidthDp
 ) {
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -133,7 +130,7 @@ fun LandscapeCurrentOrderScreen(
                 shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
             ) {
                 Text(
-                    text = "Случайная генерация",
+                    text = stringResource(id = R.string.random_generation),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground,
                 )
@@ -147,7 +144,7 @@ fun LandscapeCurrentOrderScreen(
                 interactionSource = remember { NoRippleEffect() }
             ) {
                 Text(
-                    text = "Фирменные миксы",
+                    text = stringResource(id = R.string.branded_mixes),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground,
                 )
@@ -161,7 +158,7 @@ fun LandscapeCurrentOrderScreen(
                 interactionSource = remember { NoRippleEffect() }
             ) {
                 Text(
-                    text = "Генерация по ингредиенту",
+                    text = stringResource(id = R.string.generation_by_ingredient),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground,
                 )

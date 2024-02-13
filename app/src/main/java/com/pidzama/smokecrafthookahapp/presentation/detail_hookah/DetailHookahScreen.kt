@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -54,7 +55,7 @@ fun DetailHookahScreen(
                         Alignment.Center
                     ) {
                         androidx.compose.material3.Text(
-                            text = "Заказы",
+                            text = stringResource(id = R.string.orders),
                             style = MaterialTheme.typography.titleLarge,
                         )
                     }
@@ -116,7 +117,7 @@ fun PortraitDetailView(
     if (openDialogSuccess) {
         openDialogSuccess = false
         SweetSuccess(
-            message = "Табак успешно списан со склада!",
+            message = stringResource(id = R.string.successfully_written_off),
             duration = Toast.LENGTH_SHORT,
             padding = PaddingValues(top = MaterialTheme.dimens.medium1),
             contentAlignment = Alignment.TopCenter
@@ -143,7 +144,7 @@ fun PortraitDetailView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(MaterialTheme.dimens.small3),
-                    text = "Заказ №${(1..20).random()}/ стол №${(1..8).random()}",
+                    text = "${stringResource(id = R.string.order)} №${(1..20).random()}/ ${stringResource(id = R.string.table)} №${(1..8).random()}",
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.inverseSurface,
                     style = MaterialTheme.typography.headlineMedium,
@@ -172,7 +173,7 @@ fun PortraitDetailView(
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
                 ) {
                     Text(
-                        text = "Списать со склада",
+                        text = stringResource(id = R.string.write_off),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onBackground,
                     )
@@ -187,7 +188,7 @@ fun PortraitDetailView(
                     border = BorderStroke(2.dp, color = MaterialTheme.colorScheme.primary),
                 ) {
                     Text(
-                        text = "Отменить",
+                        text = stringResource(id = R.string.cancel),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -211,7 +212,7 @@ fun LandscapeDetailView(
     if (openDialogSuccess) {
         openDialogSuccess = false
         SweetSuccess(
-            message = "Табак успешно списан со склада!",
+            message = stringResource(id = R.string.successfully_written_off),
             duration = Toast.LENGTH_SHORT,
             padding = PaddingValues(top = MaterialTheme.dimens.medium1),
             contentAlignment = Alignment.TopCenter
@@ -239,7 +240,7 @@ fun LandscapeDetailView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(MaterialTheme.dimens.small3),
-                    text = "Заказ №${(1..20).random()}/ стол №${(1..8).random()}",
+                    text = "${stringResource(id = R.string.order)} №${(1..20).random()}/ ${stringResource(id = R.string.table)} №${(1..8).random()}",
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.inverseSurface,
                     style = MaterialTheme.typography.titleLarge,

@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -122,7 +123,7 @@ fun PortraitAuthFieldSection(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Вход в систему",
+            text = stringResource(id = R.string.enter_to_app),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.inverseSurface,
@@ -139,7 +140,7 @@ fun PortraitAuthFieldSection(
             isError = loginState.error != null,
             placeholder = {
                 Text(
-                    text = "Login",
+                    text = stringResource(id = R.string.login),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onTertiary
                 )
@@ -184,7 +185,7 @@ fun PortraitAuthFieldSection(
             textStyle = LocalTextStyle.current.copy(color = MaterialTheme.colorScheme.inverseSurface),
             placeholder = {
                 Text(
-                    text = "Password",
+                    text = stringResource(id = R.string.password),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onTertiary
                 )
@@ -268,7 +269,7 @@ fun PortraitAuthFieldSection(
             },
         ) {
             Text(
-                text = "Войти",
+                text = stringResource(id = R.string.sign_in),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onBackground,
             )
@@ -309,7 +310,7 @@ fun LandscapeAuthFieldSection(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Вход в систему",
+                text = stringResource(id = R.string.enter_to_app),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineMedium,
                 color = Color.White,
@@ -326,7 +327,7 @@ fun LandscapeAuthFieldSection(
                 isError = loginState.error != null,
                 placeholder = {
                     Text(
-                        text = "Login",
+                        text = stringResource(id = R.string.login),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onTertiary
                     )
@@ -369,7 +370,7 @@ fun LandscapeAuthFieldSection(
                 textStyle = LocalTextStyle.current.copy(color = MaterialTheme.colorScheme.inverseSurface),
                 placeholder = {
                     Text(
-                        text = "Password",
+                        text = stringResource(id = R.string.password),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onTertiary
                     )
@@ -450,7 +451,7 @@ fun LandscapeAuthFieldSection(
                 },
             ) {
                 Text(
-                    text = "Войти",
+                    text = stringResource(id = R.string.sign_in),
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onBackground,
                 )

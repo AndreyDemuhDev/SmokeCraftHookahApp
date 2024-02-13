@@ -106,7 +106,7 @@ fun RowScope.AddItem(
                     tint = MaterialTheme.colorScheme.inverseSurface
                 )
                 Text(
-                    text = screen.title,
+                    text = screen.title.toString(),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.inverseSurface
                 )

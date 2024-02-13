@@ -1,8 +1,12 @@
 package com.pidzama.smokecrafthookahapp.presentation.profile
 
-import android.annotation.SuppressLint
+import android.app.LocaleManager
+import android.content.Context
+import android.os.Build
+import android.os.LocaleList
 import android.util.Log
 import androidx.annotation.DrawableRes
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,9 +21,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavHostController
 import com.pidzama.smokecrafthookahapp.presentation.common.ThemeSwitcher
 import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
@@ -81,7 +88,7 @@ fun LogoutSection(navController: NavHostController) {
             shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
         ) {
             Text(
-                text = "Выйти",
+                text = stringResource(id = R.string.logout),
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onBackground
             )
@@ -162,26 +169,26 @@ private fun OptionsItemsSection(
     ) {
         OptionItem(
             icon = R.drawable.profile,
-            title = "Аккаунт",
-            subTitle = "Наустройки Вашего аккаунта",
+            title = stringResource(id = R.string.account),
+            subTitle = stringResource(id = R.string.settings_profile),
             onClick = {})
         OptionItem(
             icon = R.drawable.ic_storage,
-            title = "Склад",
-            subTitle = "Информация о продукции",
+            title = stringResource(id = R.string.storage),
+            subTitle = stringResource(id = R.string.info_storage),
             onClick = {})
         ThemeSwitcherItem(
             icon = R.drawable.ic_change_theme,
-            title = "Тема",
-            subTitle = "Изменение темы",
+            title = stringResource(id = R.string.theme),
+            subTitle = stringResource(id = R.string.change_theme),
             viewModel = viewModel,
             darkTheme = darkTheme,
             onThemeUpdated = onThemeUpdated
         )
         OptionItem(
             icon = R.drawable.ic_language,
-            title = "Язык",
-            subTitle = "Изменить язык приложения",
+            title = stringResource(id = R.string.language),
+            subTitle = stringResource(id = R.string.change_language),
             onClick = {
                 onClickChangeLanguage()
 
@@ -189,8 +196,8 @@ private fun OptionsItemsSection(
         )
         OptionItem(
             icon = R.drawable.ic_help,
-            title = "Помощь",
-            subTitle = "Вопросы и тех.поддержка",
+            title = stringResource(id = R.string.help),
+            subTitle = stringResource(id = R.string.faq),
             onClick = {})
     }
 }
@@ -349,11 +356,15 @@ fun ChooseLanguageDialog(
 
 @Composable
 fun DialogData(openDialog: MutableState<Boolean>) {
-    val languageList = listOf("Русский", "English")
+    val languageList =
+        listOf(
+            Pair(stringResource(id = R.string.russian), "en"),
+            Pair(stringResource(id = R.string.english), "ru")
+        )
     var selectedLanguage by remember {
         mutableStateOf(0)
     }
-
+    val context = LocalContext.current
     Card(
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier.padding(
@@ -365,7 +376,7 @@ fun DialogData(openDialog: MutableState<Boolean>) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.5f))
+                .background(MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.2f))
         ) {
             Column(
                 modifier = Modifier
@@ -373,7 +384,7 @@ fun DialogData(openDialog: MutableState<Boolean>) {
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = "Выберите язык",
+                    text = stringResource(id = R.string.choose_language),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.onBackground
@@ -386,39 +397,58 @@ fun DialogData(openDialog: MutableState<Boolean>) {
                         RadioButton(
                             selected = selectedLanguage == index, onClick = {
                                 selectedLanguage = index
-
                             },
                             enabled = true
                         )
-                        Text(text = language)
+                        Text(
+                            text = languageList[index].first,
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
                     }
                 }
             }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                TextButton(onClick = { openDialog.value = false }) {
-                    Text(
-                        text = "Принять",
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.inverseSurface,
-                        modifier = Modifier.padding(
-                            vertical = MaterialTheme.dimens.small1
-                        )
-                    )
-                }
-                TextButton(onClick = { openDialog.value = false }) {
-                    Text(
-                        text = "Отмена",
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.inverseSurface,
-                        modifier = Modifier.padding(vertical = MaterialTheme.dimens.small1)
-                    )
-                }
-
-            }
         }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            TextButton(onClick = {
+                changeLanguage(
+                    context,
+                    languageList[selectedLanguage].second
+                )
+                openDialog.value = false
+            }) {
+                Text(
+                    text = stringResource(id = R.string.ok),
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.inverseSurface,
+                    modifier = Modifier.padding(
+                        vertical = MaterialTheme.dimens.small1
+                    )
+                )
+            }
+            TextButton(onClick = { openDialog.value = false }) {
+                Text(
+                    text = stringResource(id = R.string.cancel),
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.inverseSurface,
+                    modifier = Modifier.padding(vertical = MaterialTheme.dimens.small1)
+                )
+            }
+
+        }
+    }
+}
+
+
+fun changeLanguage(context: Context, localeString: String) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        context.getSystemService(LocaleManager::class.java)
+            .applicationLocales = LocaleList.forLanguageTags(localeString)
+    } else {
+        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(localeString))
     }
 }
