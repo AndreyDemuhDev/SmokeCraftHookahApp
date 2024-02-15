@@ -25,10 +25,10 @@ import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
 import com.pidzama.smokecrafthookahapp.presentation.current_orders.CurrentOrdersViewModel
 import androidx.compose.foundation.lazy.items
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import com.pidzama.smokecrafthookahapp.presentation.current_orders.substringToken
+import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.common.LandscapeRecipeCard
+import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.common.PortraitRecipeCard
 import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 import com.pidzama.smokecrafthookahapp.utils.Constants.TastyWeight.ListTastyWeight
@@ -103,7 +103,7 @@ fun PortraitRecipesContentView(
     val updateIndexRecipe = viewModel.data.collectAsState()
     var indexRecipe = updateIndexRecipe.value
     var result = viewModel.res.value
-
+    val density = LocalConfiguration.current.densityDpi
 //    LaunchedEffect(key1 = indexRecipe, block = {
 //        viewModel.getListRecipes(
 //            "Token ${
@@ -150,11 +150,12 @@ fun PortraitRecipesContentView(
                             val recipeNumber = indexRecipe
                             Log.d("MyLog", "IndexRecipe $indexRecipe")
                             Log.d("MyLog", "РЕЦЕПТ===> $recipe")
-                            PortraitPieChartRecipe(
+                            PortraitRecipeCard(
                                 input = recipe,
                                 indexRecipe = indexRecipe,
                                 listTobaccoWeight = listTobaccoWeight,
-                                onClickToDetailsScreen = { navigateToDetails(recipe, recipeNumber) }
+                                onClickToDetailsScreen = { navigateToDetails(recipe, recipeNumber) },
+                            radius = MaterialTheme.dimens.radius.value
                             )
 //                                },
 //                                transitionSpec = {
@@ -254,17 +255,24 @@ fun LandscapeRecipesContentView(
 //                            content = {
                         indexRecipe++
                         val recipeNumber = indexRecipe
-                        LandscapePieChartRecipe(
+                        LandscapeRecipeCard(
                             input = recipe,
                             indexRecipe = indexRecipe,
                             listTobaccoWeight = listTobaccoWeight,
-                            onClickToDetailsScreen = {
-                                navigateToDetails(
-                                    recipe,
-                                    recipeNumber
-                                )
-                            }
+                            onClickToDetailsScreen = { navigateToDetails(recipe, recipeNumber) },
+                            radius = MaterialTheme.dimens.radius.value
                         )
+//                        LandscapePieChartRecipe(
+//                            input = recipe,
+//                            indexRecipe = indexRecipe,
+//                            listTobaccoWeight = listTobaccoWeight,
+//                            onClickToDetailsScreen = {
+//                                navigateToDetails(
+//                                    recipe,
+//                                    recipeNumber
+//                                )
+//                            }
+//                        )
 //                            },
 //                            transitionSpec = {
 //                                scaleIn(

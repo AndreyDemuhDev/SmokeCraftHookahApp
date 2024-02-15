@@ -43,31 +43,32 @@ fun ProfileScreen(
     onThemeUpdated: () -> Unit,
 ) {
 
+    Text(text = "Profile")
     val openAlertDialog: MutableState<Boolean> = remember { mutableStateOf(false) }
 
     ChooseLanguageDialog(openAlertDialog)
 
     Log.d("MyLog", "ALERTDIALOG ${openAlertDialog.value}")
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(
-                horizontal = MaterialTheme.dimens.small3,
-                vertical = MaterialTheme.dimens.small2
-            )
-    ) {
-        item {
-            LogoutSection(navController = navController)
-            UserDetails(viewModel = viewModel)
-            OptionsItemsSection(
-                viewModel = viewModel,
-                darkTheme = darkTheme,
-                onThemeUpdated = onThemeUpdated,
-                onClickChangeLanguage = { openAlertDialog.value = true }
-            )
-
-        }
-    }
+//    LazyColumn(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .padding(
+//                horizontal = MaterialTheme.dimens.small3,
+//                vertical = MaterialTheme.dimens.small2
+//            )
+//    ) {
+//        item {
+//            LogoutSection(navController = navController)
+//            UserDetails(viewModel = viewModel)
+//            OptionsItemsSection(
+//                viewModel = viewModel,
+//                darkTheme = darkTheme,
+//                onThemeUpdated = onThemeUpdated,
+//                onClickChangeLanguage = { openAlertDialog.value = true }
+//            )
+//
+//        }
+//    }
 }
 
 @Composable
