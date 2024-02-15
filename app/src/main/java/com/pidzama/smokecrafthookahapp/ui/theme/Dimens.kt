@@ -1,5 +1,6 @@
 package com.pidzama.smokecrafthookahapp.ui.theme
 
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -19,7 +20,8 @@ data class Dimens(
     val buttonHeight: Dp = 56.dp,
     val buttonWidth: Dp = 294.dp,
     val cornerShape: Dp = 10.dp,
-    val image: Dp = 75.dp
+    val image: Dp = 75.dp,
+    val radius: Dp = 140.dp
 )
 
 val CompactSmallDimens = Dimens(
@@ -27,7 +29,7 @@ val CompactSmallDimens = Dimens(
     extraSmall = 4.dp,
     small1 = 5.dp,
     small2 = 6.dp,
-    small3 = 8.dp,
+    small3 = 10.dp,
     medium1 = 15.dp,
     medium2 = 26.dp,
     medium3 = 30.dp,

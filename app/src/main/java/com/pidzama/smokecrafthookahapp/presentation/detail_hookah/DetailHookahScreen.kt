@@ -12,30 +12,25 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.R
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.navigation.MainScreen
-import com.pidzama.smokecrafthookahapp.presentation.auth.common.UiEvents
 import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
+import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.common.LandscapeDetailRecipeCard
+import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.common.PortraitDetailRecipeCard
 import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 import com.pidzama.smokecrafthookahapp.utils.Constants.TastyWeight.ListTastyWeight
 import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetSuccess
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 
 @Composable
@@ -127,7 +122,7 @@ fun PortraitDetailView(
         modifier = Modifier
             .fillMaxSize()
             .padding(
-                top = (screenHeight / 14).dp,
+                top =MaterialTheme.dimens.large2,
                 start = (screenHeight / 26).dp,
                 end = (screenHeight / 26).dp
             ),
@@ -149,11 +144,13 @@ fun PortraitDetailView(
                     color = MaterialTheme.colorScheme.inverseSurface,
                     style = MaterialTheme.typography.headlineMedium,
                 )
-                PortraitDetailPieChart(
+                PortraitDetailRecipeCard(
                     input = recipe,
                     numberRecipe = numberRecipe,
-                    listTobaccoWeight = listTobaccoWeight
+                    listTobaccoWeight = listTobaccoWeight,
+                    radius = MaterialTheme.dimens.radius.value
                 )
+                Log.d("MyLog", "dimens radius  = ${MaterialTheme.dimens.radius.value}")
             }
         }
         BoxWithConstraints(modifier = Modifier.weight(0.2f)) {
@@ -218,13 +215,12 @@ fun LandscapeDetailView(
             contentAlignment = Alignment.TopCenter
         )
     }
-
     Row(
         modifier = Modifier
             .fillMaxSize()
             .padding(
-                top = MaterialTheme.dimens.medium1,
-                start = MaterialTheme.dimens.small2,
+                top = MaterialTheme.dimens.small3,
+                start = MaterialTheme.dimens.small3,
                 end = MaterialTheme.dimens.small2,
             ),
     ) {
@@ -236,6 +232,7 @@ fun LandscapeDetailView(
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Spacer(modifier = Modifier.padding(MaterialTheme.dimens.small1))
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -245,10 +242,11 @@ fun LandscapeDetailView(
                     color = MaterialTheme.colorScheme.inverseSurface,
                     style = MaterialTheme.typography.titleLarge,
                 )
-                LandscapeDetailPieChart(
+                LandscapeDetailRecipeCard(
                     input = recipe,
                     numberRecipe = numberRecipe,
-                    listTobaccoWeight = listTobaccoWeight
+                    listTobaccoWeight = listTobaccoWeight,
+                    radius = MaterialTheme.dimens.radius.value
                 )
             }
         }

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -299,7 +298,10 @@ fun LandscapeAuthFieldSection(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(state = rememberScrollState())
-            .clickable { keyboardController.hide() },
+            .clickable(
+                interactionSource = MutableInteractionSource(),
+                indication = null,
+                onClick = { keyboardController.hide() }),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -334,7 +336,8 @@ fun LandscapeAuthFieldSection(
                 },
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = MaterialTheme.colorScheme.onSecondary,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.tertiaryContainer),
+                    unfocusedContainerColor = MaterialTheme.colorScheme.tertiaryContainer
+                ),
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
                 ),
@@ -387,7 +390,8 @@ fun LandscapeAuthFieldSection(
                 maxLines = 1,
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = MaterialTheme.colorScheme.onSecondary,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.tertiaryContainer),
+                    unfocusedContainerColor = MaterialTheme.colorScheme.tertiaryContainer
+                ),
                 keyboardActions = KeyboardActions(onNext = {
                     viewModel.loginUser()
                     localFocusManager.clearFocus()
@@ -425,8 +429,8 @@ fun LandscapeAuthFieldSection(
                 modifier = Modifier
                     .bounceClick()
                     .fillMaxWidth()
-                    .height(MaterialTheme.dimens.buttonHeight)
-                    .padding(top = (screenHeight / 42).dp),
+                    .padding(top = (screenHeight / 42).dp)
+                    .height(MaterialTheme.dimens.buttonHeight),
                 shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
                 onClick = {
                     scope.launch {
