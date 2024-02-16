@@ -4,11 +4,11 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pidzama.smokecrafthookahapp.domain.use_case.LoginUseCase
+import com.pidzama.smokecrafthookahapp.domain.use_case.AppUseCase
 import com.pidzama.smokecrafthookahapp.navigation.Graph
 import com.pidzama.smokecrafthookahapp.presentation.auth.common.TextFieldState
 import com.pidzama.smokecrafthookahapp.presentation.auth.common.UiEvents
-import com.pidzama.smokecrafthookahapp.utils.StatusAuth
+import com.pidzama.smokecrafthookahapp.presentation.auth.common.StatusAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: AppUseCase
 ) : ViewModel() {
 
     private var _authState = mutableStateOf(AuthState())
@@ -45,7 +45,7 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             _authState.value = authState.value.copy(isLoading = false)
 
-            val loginResult = loginUseCase(
+            val loginResult = loginUseCase.login(
                 login = loginState.value.text,
                 password = passwordState.value.text
             )
@@ -67,6 +67,13 @@ class AuthViewModel @Inject constructor(
                     _eventFlow.emit(
                         UiEvents.SnackBarEvent(
                             "Невозможно войти в систему с указанными учетными данными."
+                        )
+                    )
+                }
+                is StatusAuth.Loading -> {
+                    _eventFlow.emit(
+                        UiEvents.SnackBarEvent(
+                            "Ошибка подключения"
                         )
                     )
                 }

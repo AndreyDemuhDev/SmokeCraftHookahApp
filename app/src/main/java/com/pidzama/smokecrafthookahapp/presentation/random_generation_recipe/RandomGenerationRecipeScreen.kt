@@ -25,6 +25,7 @@ import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
 import com.pidzama.smokecrafthookahapp.presentation.current_orders.CurrentOrdersViewModel
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.stringResource
 import com.pidzama.smokecrafthookahapp.presentation.current_orders.substringToken
 import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.common.LandscapeRecipeCard
@@ -102,8 +103,7 @@ fun PortraitRecipesContentView(
     val userToken = viewModel.token.value
     val updateIndexRecipe = viewModel.data.collectAsState()
     var indexRecipe = updateIndexRecipe.value
-    var result = viewModel.res.value
-    val density = LocalConfiguration.current.densityDpi
+    val result = viewModel.res.value
 //    LaunchedEffect(key1 = indexRecipe, block = {
 //        viewModel.getListRecipes(
 //            "Token ${
@@ -114,9 +114,26 @@ fun PortraitRecipesContentView(
 //        )
 //    })
 
-    if (result.error.isNotEmpty()) {
+    if (result.isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text(text = result.error)
+            CircularProgressIndicator()
+        }
+    }
+    if (result.error.isNotEmpty()) {
+        Column(
+            modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(id = R.string.error_connection),
+                style = MaterialTheme.typography.titleLarge
+            )
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.small2))
+            Image(
+                painter = painterResource(id = R.drawable.ic_error),
+                contentDescription = "error_logo",
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
+            )
         }
     }
     if (result.data.isNotEmpty()) {
@@ -154,8 +171,13 @@ fun PortraitRecipesContentView(
                                 input = recipe,
                                 indexRecipe = indexRecipe,
                                 listTobaccoWeight = listTobaccoWeight,
-                                onClickToDetailsScreen = { navigateToDetails(recipe, recipeNumber) },
-                            radius = MaterialTheme.dimens.radius.value
+                                onClickToDetailsScreen = {
+                                    navigateToDetails(
+                                        recipe,
+                                        recipeNumber
+                                    )
+                                },
+                                radius = MaterialTheme.dimens.radius.value
                             )
 //                                },
 //                                transitionSpec = {
@@ -228,40 +250,67 @@ fun LandscapeRecipesContentView(
 //            }"
 //        )
 //    })
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                top = (screenHeight / 6).dp,
-                start = (screenHeight / 20).dp,
-                end = (screenHeight / 20).dp
-            ),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(modifier = Modifier.weight(0.9f)) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                items(items = result.data) { recipe ->
-                    Card(
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
-                    ) {
-                        Log.d("MyLog", "IndexRecipe LANDSCAPE $indexRecipe")
-                        Log.d("MyLog", "РЕЦЕПТ LANDSCAPE===> $recipe")
+    if (result.isLoading) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+    }
+    if (result.error.isNotEmpty()) {
+        Column(
+            modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(id = R.string.error_connection),
+                style = MaterialTheme.typography.titleLarge
+            )
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.small2))
+            Image(
+                painter = painterResource(id = R.drawable.ic_error),
+                contentDescription = "error_logo",
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
+            )
+        }
+    }
+    if (result.data.isNotEmpty()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    top = (screenHeight / 6).dp,
+                    start = (screenHeight / 20).dp,
+                    end = (screenHeight / 20).dp
+                ),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(modifier = Modifier.weight(0.9f)) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    items(items = result.data) { recipe ->
+                        Card(
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+                        ) {
+                            Log.d("MyLog", "IndexRecipe LANDSCAPE $indexRecipe")
+                            Log.d("MyLog", "РЕЦЕПТ LANDSCAPE===> $recipe")
 //                        AnimatedContent(
 //                            targetState = count,
 //                            content = {
-                        indexRecipe++
-                        val recipeNumber = indexRecipe
-                        LandscapeRecipeCard(
-                            input = recipe,
-                            indexRecipe = indexRecipe,
-                            listTobaccoWeight = listTobaccoWeight,
-                            onClickToDetailsScreen = { navigateToDetails(recipe, recipeNumber) },
-                            radius = MaterialTheme.dimens.radius.value
-                        )
+                            indexRecipe++
+                            val recipeNumber = indexRecipe
+                            LandscapeRecipeCard(
+                                input = recipe,
+                                indexRecipe = indexRecipe,
+                                listTobaccoWeight = listTobaccoWeight,
+                                onClickToDetailsScreen = {
+                                    navigateToDetails(
+                                        recipe,
+                                        recipeNumber
+                                    )
+                                },
+                                radius = MaterialTheme.dimens.radius.value
+                            )
 //                        LandscapePieChartRecipe(
 //                            input = recipe,
 //                            indexRecipe = indexRecipe,
@@ -283,37 +332,37 @@ fun LandscapeRecipesContentView(
 //                                ) with scaleOut(animationSpec = tween(150))
 //                            }
 //                        )
+                        }
                     }
                 }
             }
-        }
-        Box(modifier = Modifier.weight(0.2f)) {
-            Button(
-                onClick = {
-                    viewModel.getListRecipes(
-                        "Token ${
-                            viewModel.token.value.substringToken(
-                                userToken
-                            )
-                        }"
-                    )
-                    viewModel.updateRecipesIndex(updateIndexRecipe.value)
+            Box(modifier = Modifier.weight(0.2f)) {
+                Button(
+                    onClick = {
+                        viewModel.getListRecipes(
+                            "Token ${
+                                viewModel.token.value.substringToken(
+                                    userToken
+                                )
+                            }"
+                        )
+                        viewModel.updateRecipesIndex(updateIndexRecipe.value)
 
-                },
-                modifier = Modifier
-                    .bounceClick()
-                    .fillMaxWidth()
-                    .height(MaterialTheme.dimens.buttonHeight)
-                    .padding(horizontal = (screenHeight / 25).dp),
-                shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
-                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_refresh),
-                    contentDescription = "refresh_icon"
-                )
+                    },
+                    modifier = Modifier
+                        .bounceClick()
+                        .fillMaxWidth()
+                        .height(MaterialTheme.dimens.buttonHeight)
+                        .padding(horizontal = (screenHeight / 25).dp),
+                    shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
+                    colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_refresh),
+                        contentDescription = "refresh_icon"
+                    )
+                }
             }
         }
     }
 }
-

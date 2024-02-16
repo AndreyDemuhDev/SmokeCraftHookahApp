@@ -1,16 +1,15 @@
 package com.pidzama.smokecrafthookahapp.navigation
 
-import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.pidzama.smokecrafthookahapp.presentation.main.MainScreen
-import com.pidzama.smokecrafthookahapp.presentation.main.MainViewModel
+import com.pidzama.smokecrafthookahapp.presentation.profile.ProfileViewModel
 
 @Composable
 fun RootNavGraph(
-    viewModelMain: MainViewModel,
+    viewModelMain: ProfileViewModel,
     navController: NavHostController,
     darkTheme: Boolean, onThemeUpdated: () -> Unit
 ) {

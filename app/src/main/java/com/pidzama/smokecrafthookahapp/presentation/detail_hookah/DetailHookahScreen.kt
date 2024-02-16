@@ -108,7 +108,7 @@ fun PortraitDetailView(
     val screenWidth = LocalConfiguration.current.screenWidthDp
     val screenHeight = LocalConfiguration.current.screenHeightDp
     var openDialogSuccess by remember { mutableStateOf(false) }
-
+    Log.d("MyLog", "res==== ${viewModel.res.value.data?.result}")
     if (openDialogSuccess) {
         openDialogSuccess = false
         SweetSuccess(
@@ -150,17 +150,18 @@ fun PortraitDetailView(
                     listTobaccoWeight = listTobaccoWeight,
                     radius = MaterialTheme.dimens.radius.value
                 )
-                Log.d("MyLog", "dimens radius  = ${MaterialTheme.dimens.radius.value}")
             }
         }
         BoxWithConstraints(modifier = Modifier.weight(0.2f)) {
             Column(modifier = Modifier.padding(vertical = MaterialTheme.dimens.extraSmall)) {
                 Button(
                     onClick = {
+                        openDialogSuccess = true
                         Log.d("MyLog", "РЕЦЕПТ=========Detail=>${recipe} ")
                         viewModel.reduceRecipe(recipe)
                         navController.navigate(MainScreen.CurrentOrders.route)
-                        openDialogSuccess = true
+                        viewModel.insertRecipes(recipe)
+                        Log.d("MyLog", "res==== ${viewModel.res.value.data?.result}")
                     },
                     modifier = Modifier
                         .bounceClick()

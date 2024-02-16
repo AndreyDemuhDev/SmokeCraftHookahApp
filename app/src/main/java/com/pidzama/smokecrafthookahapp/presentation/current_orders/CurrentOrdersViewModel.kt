@@ -5,12 +5,12 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pidzama.smokecrafthookahapp.data.DataStoreRepository
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.data.network.doOnFailure
 import com.pidzama.smokecrafthookahapp.data.network.doOnLoading
 import com.pidzama.smokecrafthookahapp.data.network.doOnSuccess
-import com.pidzama.smokecrafthookahapp.domain.use_case.RecipesUseCase
+import com.pidzama.smokecrafthookahapp.data.repository.DataStoreRepository
+import com.pidzama.smokecrafthookahapp.domain.use_case.AppUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CurrentOrdersViewModel @Inject constructor(
     private val dataStoreRepository: DataStoreRepository,
-    private val useCase: RecipesUseCase
+    private val useCase: AppUseCase
 ) : ViewModel() {
 
     private val _data = MutableStateFlow(0)
@@ -33,11 +33,13 @@ class CurrentOrdersViewModel @Inject constructor(
     private val _res: MutableState<MovieState> = mutableStateOf(MovieState())
     val res: State<MovieState> = _res
 
-    init{
+    init {
         getUserToken()
-        getListRecipes(token="Token ${
-            token.value.substringToken(token.value)
-        }")
+        getListRecipes(
+            token = "Token ${
+                token.value.substringToken(token.value)
+            }"
+        )
     }
 
     fun getUserToken() {
@@ -50,7 +52,7 @@ class CurrentOrdersViewModel @Inject constructor(
 
     fun getListRecipes(token: String) {
         viewModelScope.launch {
-            useCase.getMovies(token)
+            useCase.recipes.getMovies(token)
                 .doOnSuccess {
                     _res.value = MovieState(
                         data = it
@@ -58,6 +60,10 @@ class CurrentOrdersViewModel @Inject constructor(
                 }.doOnFailure {
                     _res.value = MovieState(
                         error = it.message!!
+                    )
+                }.doOnLoading {
+                    _res.value = MovieState(
+                        isLoading = true
                     )
                 }.collect()
         }
@@ -73,5 +79,6 @@ fun String.substringToken(token: String) =
 
 data class MovieState(
     val data: List<RandomRecipeSubList> = emptyList(),
-    val error: String = ""
+    val error: String = "",
+    val isLoading: Boolean = false
 )

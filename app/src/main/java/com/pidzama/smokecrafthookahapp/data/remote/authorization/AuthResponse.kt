@@ -1,4 +1,4 @@
-package com.pidzama.smokecrafthookahapp.data.remote
+package com.pidzama.smokecrafthookahapp.data.remote.authorization
 
 import com.google.gson.annotations.SerializedName
 

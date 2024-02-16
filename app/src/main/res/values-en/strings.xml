@@ -35,7 +35,9 @@
     <string name="generation_by_ingredient">Generation by ingredient</string>
     <string name="generate_new_recipe">Generate new recipe</string>
     <string name="successfully_written_off">Tobacco was successfully written off from the warehouse</string>
-
+    <string name="error_connection">"Error! Something went wrong"</string>
+    <string name="auth_false">"Validation field error"</string>
+    <string name="auth_error">"Authorization error"</string>
 
 
 </resources>

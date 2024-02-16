@@ -1,17 +1,17 @@
-package com.pidzama.smokecrafthookahapp.presentation.main
+package com.pidzama.smokecrafthookahapp.presentation.profile
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pidzama.smokecrafthookahapp.data.DataStoreRepository
+import com.pidzama.smokecrafthookahapp.data.repository.DataStoreRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class MainViewModel @Inject constructor(
+class ProfileViewModel @Inject constructor(
     private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
 

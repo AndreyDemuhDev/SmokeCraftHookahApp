@@ -1,49 +1,32 @@
 package com.pidzama.smokecrafthookahapp.di
 
 
-import com.pidzama.smokecrafthookahapp.data.DataStoreRepository
+import android.app.Application
+import androidx.room.Room
+import com.pidzama.smokecrafthookahapp.data.local.RecipeDao
+import com.pidzama.smokecrafthookahapp.data.local.RecipeDataBase
 import com.pidzama.smokecrafthookahapp.data.network.SmokeCraftApi
-import com.pidzama.smokecrafthookahapp.data.repository.SmokeCraftRepository
-import com.pidzama.smokecrafthookahapp.domain.use_case.LoginUseCase
+import com.pidzama.smokecrafthookahapp.data.repository.DataStoreRepository
+import com.pidzama.smokecrafthookahapp.domain.repository.RecipeRepository
+import com.pidzama.smokecrafthookahapp.data.repository.RecipeRepositoryImpl
+import com.pidzama.smokecrafthookahapp.domain.model.RecipeMapper
+import com.pidzama.smokecrafthookahapp.domain.use_case.*
+import com.pidzama.smokecrafthookahapp.utils.Constants.Database.NAME_DATABASE
+//import com.pidzama.smokecrafthookahapp.data.repository.SmokeCraftRepository
 import com.pidzama.smokecrafthookahapp.utils.Constants.Network.BASE_URL
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-//
-//    @Provides
-//    @Singleton
-//    fun provideMoshi(): Moshi = Moshi
-//        .Builder()
-//        .run {
-//            add(KotlinJsonAdapterFactory())
-//            build()
-//        }
-//
-//    @Provides
-//    @Singleton
-//    fun provideHookahApi(moshi: Moshi): SmokeCraftApi =
-//        Retrofit.Builder()
-//            .run {
-//                baseUrl(BASE_URL)
-//                addConverterFactory(MoshiConverterFactory.create(moshi))
-//                build()
-//            }.create(SmokeCraftApi::class.java)
-
-
 
     @Provides
     @Singleton
@@ -61,24 +44,50 @@ object AppModule {
             .create(SmokeCraftApi::class.java)
     }
 
-@Provides
-@Singleton
-fun provideSmokeCraftRepository(
-    smokeCraftApi: SmokeCraftApi,
-    preferences: DataStoreRepository
-): SmokeCraftRepository {
-    return SmokeCraftRepository(
-        smokeCraftApi = smokeCraftApi,
-        preferences = preferences
-    )
-}
+    @Provides
+    @Singleton
+    fun provideSmokeCraftRepository(
+        smokeCraftApi: SmokeCraftApi,
+        preferences: DataStoreRepository,
+        recipeDao: RecipeDao
+    ): RecipeRepository {
+        return RecipeRepositoryImpl(
+            apiService = smokeCraftApi,
+            preferences = preferences,
+            recipeDao = recipeDao
+        )
+    }
 
-@Provides
-@Singleton
-fun providesLoginUseCase(repository: SmokeCraftRepository): LoginUseCase {
-    return LoginUseCase(repository)
-}
-}
+    @Provides
+    @Singleton
+    fun provideGamesUseCases(
+        gamesRepository: RecipeRepository,
+        mapper: RecipeMapper,
+    ): AppUseCase {
+        return AppUseCase(
+            login = LoginUseCase(gamesRepository),
+            recipes = RecipesUseCase(gamesRepository, mapper),
+            getAllRecipesInDataBaseUseCase = GetAllRecipesInDataBaseUseCase(gamesRepository),
+            insertRecipeToArchiveUseCase = InsertRecipeToArchiveUseCase(gamesRepository),
+            reduceRecipeUseCase = ReduceRecipeUseCase(gamesRepository)
+        )
+    }
 
+    @Provides
+    @Singleton
+    fun provideGamesDataBase(
+        application: Application
+    ): RecipeDataBase {
+        return Room.databaseBuilder(
+            context = application,
+            klass = RecipeDataBase::class.java,
+            name = NAME_DATABASE
+        ).allowMainThreadQueries().fallbackToDestructiveMigration().build()
+    }
 
-//}
+    @Provides
+    @Singleton
+    fun provideGamesDao(
+        gamesDataBase: RecipeDataBase
+    ): RecipeDao = gamesDataBase.RecipeDao()
+}

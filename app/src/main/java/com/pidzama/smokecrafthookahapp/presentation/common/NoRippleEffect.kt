@@ -6,7 +6,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
-
+//отключение клика
 class NoRippleEffect : MutableInteractionSource {
 
     override val interactions: Flow<Interaction> = emptyFlow()

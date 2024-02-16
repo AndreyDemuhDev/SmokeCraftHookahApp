@@ -1,11 +1,11 @@
 package com.pidzama.smokecrafthookahapp.domain.use_case
 
-import com.pidzama.smokecrafthookahapp.data.remote.AuthRequest
-import com.pidzama.smokecrafthookahapp.data.repository.SmokeCraftRepository
+import com.pidzama.smokecrafthookahapp.data.remote.authorization.AuthRequest
+import com.pidzama.smokecrafthookahapp.domain.repository.RecipeRepository
 import com.pidzama.smokecrafthookahapp.domain.model.AuthResult
 
 class LoginUseCase(
-    private val repository: SmokeCraftRepository
+    private val repository: RecipeRepository
 ) {
 
     suspend operator fun invoke(

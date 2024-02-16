@@ -13,14 +13,14 @@ import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.Ran
 import com.pidzama.smokecrafthookahapp.presentation.archive_orders.OrderArchiveScreen
 import com.pidzama.smokecrafthookahapp.presentation.current_orders.CurrentOrdersViewModel
 import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.DetailHookahViewModel
-import com.pidzama.smokecrafthookahapp.presentation.main.MainViewModel
+import com.pidzama.smokecrafthookahapp.presentation.profile.ProfileViewModel
 
 
 @Composable
 fun MainNavGraph(
     navController: NavHostController,
     darkTheme: Boolean, onThemeUpdated: () -> Unit,
-    viewModelMain: MainViewModel
+    viewModelMain: ProfileViewModel
 ) {
     NavHost(
         navController = navController,
@@ -41,9 +41,7 @@ fun MainNavGraph(
             )
         }
         composable(MainScreen.OrderArchive.route) {
-            OrderArchiveScreen(
-                navController = navController,
-            )
+            OrderArchiveScreen()
         }
         composable(MainScreen.ChooseGenerateRecipe.route) {
             val viewModel = hiltViewModel<CurrentOrdersViewModel>()
@@ -57,7 +55,7 @@ fun MainNavGraph(
                     )
                 })
         }
-        composable(route = MainScreen.DetailHookahScreen.route) { backStackEntry ->
+        composable(route = MainScreen.DetailHookahScreen.route) {
             val viewModel = hiltViewModel<DetailHookahViewModel>()
             val recipe =
                 navController.previousBackStackEntry?.savedStateHandle?.get<RandomRecipeSubList?>("recipe")
