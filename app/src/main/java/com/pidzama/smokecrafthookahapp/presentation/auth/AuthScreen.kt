@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_EXPRESSION")
+
 package com.pidzama.smokecrafthookahapp.presentation.auth
 
 import android.content.res.Configuration
@@ -48,7 +50,7 @@ fun AuthScreens(
     val keyboardController = LocalSoftwareKeyboardController.current!!
     val snackBarHostState = remember { SnackbarHostState() }
     val viewModel = hiltViewModel<AuthViewModel>()
-    var showBottomBar by rememberSaveable { mutableStateOf(true) }
+    val showBottomBar by rememberSaveable { mutableStateOf(true) }
     Scaffold(
         topBar = { showBottomBar },
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) },

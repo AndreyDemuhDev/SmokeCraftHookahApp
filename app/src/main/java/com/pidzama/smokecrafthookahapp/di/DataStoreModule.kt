@@ -1,7 +1,7 @@
 package com.pidzama.smokecrafthookahapp.di
 
 import android.content.Context
-import com.pidzama.smokecrafthookahapp.data.DataStoreRepository
+import com.pidzama.smokecrafthookahapp.data.repository.DataStoreRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

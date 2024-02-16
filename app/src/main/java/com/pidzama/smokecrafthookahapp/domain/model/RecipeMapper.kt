@@ -1,4 +1,4 @@
-package com.pidzama.smokecrafthookahapp.domain.mapper
+package com.pidzama.smokecrafthookahapp.domain.model
 
 import com.pidzama.smokecrafthookahapp.data.common.base.Mapper
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
@@ -9,7 +9,7 @@ class RecipeMapper @Inject constructor() :
 
 
     override fun fromMap(from: List<RandomRecipeSubList>): List<RandomRecipeSubList> {
-        var answer = mutableListOf<RandomRecipeSubList>()
+        val answer = mutableListOf<RandomRecipeSubList>()
         from.mapIndexed { index, randomRecipeSubLists ->
             answer.add(randomRecipeSubLists)
         }

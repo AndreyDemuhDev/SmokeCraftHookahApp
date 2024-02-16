@@ -31,8 +31,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.*
 import com.pidzama.smokecrafthookahapp.R
-import com.pidzama.smokecrafthookahapp.data.model.NewRandomRecipeSubList
-import com.pidzama.smokecrafthookahapp.data.model.RandomRecipe
+
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.presentation.common.setColorTaste
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens

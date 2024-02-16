@@ -3,6 +3,7 @@ package com.pidzama.smokecrafthookahapp.presentation.common
 
 import androidx.compose.ui.graphics.Color
 
+//класс содержащий группы вкуса
 enum class ColorTaste(val taste: String) {
     FRUIT(taste = "Фруктовые"),
     BERRY(taste = "Ягодные"),
@@ -16,6 +17,7 @@ enum class ColorTaste(val taste: String) {
 
 }
 
+//функция устанавливающая цвет в соответтсвии с группой вкуса
 fun setColorTaste(colorTaste: String): Color {
     return when (colorTaste) {
         ColorTaste.FRUIT.taste -> Color(0xFFEB1B32)

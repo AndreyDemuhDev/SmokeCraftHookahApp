@@ -217,8 +217,6 @@ fun RecipePieChartLandscape(
                         ),
                         style = Stroke((pieRadius - innerRadius) * 4f, cap = StrokeCap.Butt)
                     )
-                    Log.d("MyLog", "width = $width")
-                    Log.d("MyLog", "height = $height")
                     currentStartAngle += angleToDraw
                 }
 

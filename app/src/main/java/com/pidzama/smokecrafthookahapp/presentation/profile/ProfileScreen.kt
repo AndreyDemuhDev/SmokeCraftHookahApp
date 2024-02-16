@@ -1,15 +1,9 @@
 package com.pidzama.smokecrafthookahapp.presentation.profile
 
-import android.app.LocaleManager
-import android.content.Context
-import android.os.Build
-import android.os.LocaleList
-import android.util.Log
+import android.content.res.Configuration
 import androidx.annotation.DrawableRes
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.*
 import com.pidzama.smokecrafthookahapp.R
@@ -17,63 +11,65 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavHostController
 import com.pidzama.smokecrafthookahapp.presentation.common.ThemeSwitcher
 import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
 import com.pidzama.smokecrafthookahapp.presentation.current_orders.substringToken
-import com.pidzama.smokecrafthookahapp.presentation.main.MainViewModel
+import com.pidzama.smokecrafthookahapp.presentation.profile.common.ChooseLanguageDialog
+import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 
 
 @Composable
 fun ProfileScreen(
-    viewModel: MainViewModel,
+    viewModel: ProfileViewModel,
     navController: NavHostController,
     darkTheme: Boolean,
     onThemeUpdated: () -> Unit,
 ) {
 
-    Text(text = "Profile")
-    val openAlertDialog: MutableState<Boolean> = remember { mutableStateOf(false) }
+    val openAlertDialog: MutableState<Boolean> = rememberSaveable() { mutableStateOf(false) }
 
     ChooseLanguageDialog(openAlertDialog)
 
-    Log.d("MyLog", "ALERTDIALOG ${openAlertDialog.value}")
-//    LazyColumn(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .padding(
-//                horizontal = MaterialTheme.dimens.small3,
-//                vertical = MaterialTheme.dimens.small2
-//            )
-//    ) {
-//        item {
-//            LogoutSection(navController = navController)
-//            UserDetails(viewModel = viewModel)
-//            OptionsItemsSection(
-//                viewModel = viewModel,
-//                darkTheme = darkTheme,
-//                onThemeUpdated = onThemeUpdated,
-//                onClickChangeLanguage = { openAlertDialog.value = true }
-//            )
-//
-//        }
-//    }
+    Surface(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(state = rememberScrollState()),
+        color = MaterialTheme.colorScheme.background,
+        content = {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        start = MaterialTheme.dimens.small3,
+                        end = MaterialTheme.dimens.small3,
+                        top = MaterialTheme.dimens.small2,
+                        bottom = MaterialTheme.dimens.large1
+                    )
+            ) {
+                LogoutSection(navController = navController)
+                UserDetails(viewModel = viewModel)
+                OptionsItemsSection(
+                    viewModel = viewModel,
+                    darkTheme = darkTheme,
+                    onThemeUpdated = onThemeUpdated,
+                    onClickChangeLanguage = { openAlertDialog.value = true }
+                )
+            }
+        })
 }
 
 @Composable
 fun LogoutSection(navController: NavHostController) {
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -99,7 +95,7 @@ fun LogoutSection(navController: NavHostController) {
 
 @Composable
 fun UserDetails(
-    viewModel: MainViewModel
+    viewModel: ProfileViewModel
 ) {
     viewModel.getUserLogin()
     val login = viewModel.login.value.substringToken(viewModel.login.value)
@@ -158,7 +154,7 @@ fun UserDetails(
 
 @Composable
 private fun OptionsItemsSection(
-    viewModel: MainViewModel,
+    viewModel: ProfileViewModel,
     darkTheme: Boolean,
     onThemeUpdated: () -> Unit,
     onClickChangeLanguage: () -> Unit
@@ -208,7 +204,7 @@ fun ThemeSwitcherItem(
     @DrawableRes icon: Int,
     title: String,
     subTitle: String,
-    viewModel: MainViewModel,
+    viewModel: ProfileViewModel,
     darkTheme: Boolean,
     onThemeUpdated: () -> Unit
 ) {
@@ -247,8 +243,11 @@ fun ThemeSwitcherItem(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(weight = 3f, fill = false)
-                    .padding(start = MaterialTheme.dimens.small3)
+                    .weight(
+                        weight = if (ScreenOrientation == Configuration.ORIENTATION_PORTRAIT) 3f else 4f,
+                        fill = false
+                    )
+                    .padding(start = MaterialTheme.dimens.small1)
             ) {
                 Text(
                     text = title,
@@ -340,116 +339,5 @@ fun OptionItem(
                 )
             )
         }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ChooseLanguageDialog(
-    openDialog: MutableState<Boolean>,
-) {
-    if (openDialog.value) {
-        AlertDialog(onDismissRequest = { openDialog.value = false }) {
-            DialogData(openDialog)
-        }
-    }
-}
-
-@Composable
-fun DialogData(openDialog: MutableState<Boolean>) {
-    val languageList =
-        listOf(
-            Pair(stringResource(id = R.string.russian), "en"),
-            Pair(stringResource(id = R.string.english), "ru")
-        )
-    var selectedLanguage by remember {
-        mutableStateOf(0)
-    }
-    val context = LocalContext.current
-    Card(
-        shape = RoundedCornerShape(10.dp),
-        modifier = Modifier.padding(
-            vertical = MaterialTheme.dimens.small3,
-            horizontal = MaterialTheme.dimens.small1
-        ),
-        elevation = CardDefaults.cardElevation(8.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.2f))
-        ) {
-            Column(
-                modifier = Modifier
-                    .padding(MaterialTheme.dimens.small1)
-            ) {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.choose_language),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                languageList.forEachIndexed { index, language ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = selectedLanguage == index, onClick = {
-                                selectedLanguage = index
-                            },
-                            enabled = true
-                        )
-                        Text(
-                            text = languageList[index].first,
-                            style = MaterialTheme.typography.titleLarge,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                    }
-                }
-            }
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround
-        ) {
-            TextButton(onClick = {
-                changeLanguage(
-                    context,
-                    languageList[selectedLanguage].second
-                )
-                openDialog.value = false
-            }) {
-                Text(
-                    text = stringResource(id = R.string.ok),
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.inverseSurface,
-                    modifier = Modifier.padding(
-                        vertical = MaterialTheme.dimens.small1
-                    )
-                )
-            }
-            TextButton(onClick = { openDialog.value = false }) {
-                Text(
-                    text = stringResource(id = R.string.cancel),
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.inverseSurface,
-                    modifier = Modifier.padding(vertical = MaterialTheme.dimens.small1)
-                )
-            }
-
-        }
-    }
-}
-
-
-fun changeLanguage(context: Context, localeString: String) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        context.getSystemService(LocaleManager::class.java)
-            .applicationLocales = LocaleList.forLanguageTags(localeString)
-    } else {
-        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(localeString))
     }
 }

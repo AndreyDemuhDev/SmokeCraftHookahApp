@@ -1,4 +1,4 @@
-package com.pidzama.smokecrafthookahapp.data
+package com.pidzama.smokecrafthookahapp.data.repository
 
 import android.content.Context
 import androidx.datastore.core.DataStore

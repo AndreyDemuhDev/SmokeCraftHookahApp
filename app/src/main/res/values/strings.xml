@@ -35,6 +35,9 @@
     <string name="generation_by_ingredient">Генерация по ингредиенту</string>
     <string name="generate_new_recipe">Сгенерировать новый рецепт</string>
     <string name="successfully_written_off">Табак успешно списан со склада!</string>
+    <string name="error_connection">"Ошибка! Что-то пошло не так"</string>
+    <string name="auth_false">"Невозможно войти в систему с указанными учетными данными."</string>
+    <string name="auth_error">"Ошибка авторизации"</string>
 
 
 </resources>

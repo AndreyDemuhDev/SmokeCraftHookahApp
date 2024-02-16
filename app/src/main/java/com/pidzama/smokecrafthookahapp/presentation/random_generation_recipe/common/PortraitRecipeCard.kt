@@ -32,6 +32,8 @@ import com.pidzama.smokecrafthookahapp.R
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.presentation.common.setColorTaste
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
+import com.pidzama.smokecrafthookahapp.utils.Constants
+import com.pidzama.smokecrafthookahapp.utils.Constants.TastyWeight.ListTastyWeight
 
 //карточка рецепта при книжной ориентации
 @Composable
@@ -39,7 +41,7 @@ fun PortraitRecipeCard(
     input: RandomRecipeSubList,
     onClickToDetailsScreen: () -> Unit,
     indexRecipe: Int,
-    listTobaccoWeight: List<Float>,
+    listTobaccoWeight: List<Float> = ListTastyWeight,
     radius: Float
 ) {
     Card(
@@ -220,8 +222,6 @@ fun RecipePieChartPortrait(
                         ),
                         style = Stroke((pieRadius - innerRadius) * 4f, cap = StrokeCap.Butt)
                     )
-                    Log.d("MyLog", "width = $width")
-                    Log.d("MyLog", "height = $height")
                     currentStartAngle += angleToDraw
                 }
 

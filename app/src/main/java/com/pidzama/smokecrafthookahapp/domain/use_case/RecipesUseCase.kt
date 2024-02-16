@@ -3,8 +3,8 @@ package com.pidzama.smokecrafthookahapp.domain.use_case
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.data.network.ApiState
 import com.pidzama.smokecrafthookahapp.data.network.map
-import com.pidzama.smokecrafthookahapp.data.repository.RecipeRepository
-import com.pidzama.smokecrafthookahapp.domain.mapper.RecipeMapper
+import com.pidzama.smokecrafthookahapp.domain.repository.RecipeRepository
+import com.pidzama.smokecrafthookahapp.domain.model.RecipeMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -21,5 +21,4 @@ class RecipesUseCase @Inject constructor(
             }
         }
     }
-
 }

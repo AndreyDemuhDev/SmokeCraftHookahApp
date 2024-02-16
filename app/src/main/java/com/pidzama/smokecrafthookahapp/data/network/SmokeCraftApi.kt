@@ -1,9 +1,8 @@
 package com.pidzama.smokecrafthookahapp.data.network
 
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
-import com.pidzama.smokecrafthookahapp.data.remote.AuthRequest
-import com.pidzama.smokecrafthookahapp.data.remote.AuthResponse
-import com.pidzama.smokecrafthookahapp.data.remote.reduce.ReduceRecipeRequest
+import com.pidzama.smokecrafthookahapp.data.remote.authorization.AuthRequest
+import com.pidzama.smokecrafthookahapp.data.remote.authorization.AuthResponse
 import com.pidzama.smokecrafthookahapp.data.remote.reduce.ReduceRecipeResponse
 import retrofit2.Response
 import retrofit2.http.Body

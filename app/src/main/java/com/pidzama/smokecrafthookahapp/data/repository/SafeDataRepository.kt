@@ -9,13 +9,12 @@ import kotlinx.coroutines.flow.flowOn
 import retrofit2.Response
 import java.io.IOException
 
-abstract class BaseRepository {
+abstract class SafeDataRepository {
 
     suspend fun <T> safeApiCall(
         apiCall: suspend () -> Response<T>
     ): Flow<ApiState<T>> = flow {
         emit(ApiState.Loading)
-
 
         val response = apiCall()
         if (response.isSuccessful) {

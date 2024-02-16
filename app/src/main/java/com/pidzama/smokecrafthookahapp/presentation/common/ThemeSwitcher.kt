@@ -25,11 +25,12 @@ import androidx.compose.ui.res.painterResource
 import com.pidzama.smokecrafthookahapp.R
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 
+//кастомный UI компонент для переключения темы приложения
 @Composable
 fun ThemeSwitcher(
     modifier: Modifier,
     darkTheme: Boolean,
-    size: Dp = MaterialTheme.dimens.medium3,
+    size: Dp = MaterialTheme.dimens.medium2,
     padding: Dp = MaterialTheme.dimens.extraSmall,
     borderWidth: Dp = MaterialTheme.dimens.dp_1,
     parentShape: Shape = CircleShape,

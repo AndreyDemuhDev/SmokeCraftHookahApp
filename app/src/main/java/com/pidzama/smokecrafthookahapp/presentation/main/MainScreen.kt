@@ -1,7 +1,6 @@
 package com.pidzama.smokecrafthookahapp.presentation.main
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.BottomNavigation
@@ -21,6 +20,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.navigation.MainNavGraph
 import com.pidzama.smokecrafthookahapp.presentation.common.BottomBarScreens
+import com.pidzama.smokecrafthookahapp.presentation.profile.ProfileViewModel
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -28,7 +28,7 @@ import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 fun MainScreen(
     navController: NavHostController = rememberNavController(),
     darkTheme: Boolean, onThemeUpdated: () -> Unit,
-    viewModelMain: MainViewModel
+    viewModelMain: ProfileViewModel
 ) {
 
     Scaffold(
@@ -106,7 +106,7 @@ fun RowScope.AddItem(
                     tint = MaterialTheme.colorScheme.inverseSurface
                 )
                 Text(
-                    text = screen.title.toString(),
+                    text = screen.title,
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.inverseSurface
                 )

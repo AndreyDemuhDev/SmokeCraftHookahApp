@@ -1,18 +1,23 @@
 package com.pidzama.smokecrafthookahapp.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-
 class RandomRecipeSubList: ArrayList<RandomRecipeSubListItem>()
 
-//@Parcelize
+
+@Entity(tableName = "Tobaccos")
 data class RandomRecipeSubListItem(
     val best_before_date: String,
     val brand: String,
     val created: String,
+    @PrimaryKey(autoGenerate = true)
     val id: Int,
     val is_active: Boolean,
     val organization_id: Int,
@@ -24,6 +29,7 @@ data class RandomRecipeSubListItem(
     val updated: String,
     val weight: Double
 )
+
 
 
 
