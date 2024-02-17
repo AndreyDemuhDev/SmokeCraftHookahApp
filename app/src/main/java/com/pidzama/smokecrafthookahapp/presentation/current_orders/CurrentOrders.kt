@@ -1,6 +1,7 @@
 package com.pidzama.smokecrafthookahapp.presentation.current_orders
 
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Surface
@@ -23,6 +24,7 @@ import com.pidzama.smokecrafthookahapp.presentation.common.NoRippleEffect
 import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
 import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
+import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 
 @Composable
@@ -56,6 +58,18 @@ fun PortraitCurrentOrderScreen(
     navController: NavHostController,
     screenWidth: Int = LocalConfiguration.current.screenWidthDp,
 ) {
+
+    var openToastInfo by remember { mutableStateOf(false) }
+    if (openToastInfo) {
+        openToastInfo = false
+        SweetToastUtil.SweetInfo(
+            message = stringResource(id = R.string.not_available),
+            duration = Toast.LENGTH_SHORT,
+            padding = PaddingValues(top = MaterialTheme.dimens.medium1),
+            contentAlignment = Alignment.TopCenter
+        )
+    }
+
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         Column(
             modifier = Modifier.padding(horizontal = (screenWidth / 8).dp),
@@ -77,7 +91,7 @@ fun PortraitCurrentOrderScreen(
                 )
             }
             Button(
-                onClick = {/*TODO*/ },
+                onClick = { openToastInfo = true },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight),
@@ -91,7 +105,7 @@ fun PortraitCurrentOrderScreen(
                 )
             }
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { openToastInfo = true },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight),
@@ -113,6 +127,17 @@ fun LandscapeCurrentOrderScreen(
     navController: NavHostController,
     screenWidth: Int = LocalConfiguration.current.screenWidthDp
 ) {
+    var openToastInfo by remember { mutableStateOf(false) }
+    if (openToastInfo) {
+        openToastInfo = false
+        SweetToastUtil.SweetInfo(
+            message = stringResource(id = R.string.not_available),
+            duration = Toast.LENGTH_SHORT,
+            padding = PaddingValues(top = MaterialTheme.dimens.medium1),
+            contentAlignment = Alignment.TopCenter
+        )
+    }
+
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         Column(
             modifier = Modifier
@@ -136,7 +161,7 @@ fun LandscapeCurrentOrderScreen(
                 )
             }
             Button(
-                onClick = {/*TODO*/ },
+                onClick = { openToastInfo = true },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight),
@@ -150,7 +175,7 @@ fun LandscapeCurrentOrderScreen(
                 )
             }
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { openToastInfo = true },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight),

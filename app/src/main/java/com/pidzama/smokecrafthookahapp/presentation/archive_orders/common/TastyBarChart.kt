@@ -1,6 +1,5 @@
 package com.pidzama.smokecrafthookahapp.presentation.archive_orders.common
 
-import android.util.Log
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -14,11 +13,11 @@ import co.yml.charts.ui.barchart.models.*
 import com.pidzama.smokecrafthookahapp.presentation.common.setColorTaste
 
 @Composable
-fun YBarChart(
-    solution: List<Map.Entry<String, Int>>
+fun TastyBarChart(
+    listTobaccos: List<Map.Entry<String, Int>>
 ) {
     val list = ArrayList<BarData>()
-    solution.forEachIndexed { index, entry ->
+    listTobaccos.forEachIndexed { index, entry ->
         list.add(
             BarData(
                 point = Point(index.toFloat(), entry.value.toFloat()),
@@ -28,35 +27,33 @@ fun YBarChart(
             )
         )
     }
-    Log.d("MyLog", "SOLUTION SIZW ${solution.size}")
 
     val stepSize = list.size
-
-    val max = getMax(list)
-    val min = getMin(list)
+    val max = getMaxY(list)
 
     val xAxisData = AxisData.Builder()
-        .axisStepSize(40.dp)
-        .backgroundColor(MaterialTheme.colorScheme.primary)
+        .startDrawPadding(18.dp)
+        .axisLineColor(MaterialTheme.colorScheme.inverseSurface)
+        .axisStepSize(10.dp)
+        .axisLabelAngle(45f)
+        .axisOffset(2.dp)
+        .axisLabelColor(MaterialTheme.colorScheme.inverseSurface)
+        .backgroundColor(MaterialTheme.colorScheme.background)
         .steps(list.size - 1)
-        .bottomPadding(50.dp)
-        .axisLabelAngle(50f)
         .labelData { index -> list[index].label }
-        .labelAndAxisLinePadding(5.dp)
+        .bottomPadding(140.dp)
         .build()
 
     val yAxisData = AxisData.Builder()
         .steps(stepSize)
-        .backgroundColor(MaterialTheme.colorScheme.primary)
+        .backgroundColor(MaterialTheme.colorScheme.background)
+        .axisLineColor(MaterialTheme.colorScheme.inverseSurface)
         .labelAndAxisLinePadding(10.dp)
-        .axisOffset(20.dp)
+        .axisLabelColor(MaterialTheme.colorScheme.inverseSurface)
+        .axisOffset(30.dp)
         .labelData { index ->
-            val yScale = (max - min) * 2 / stepSize.toFloat()
-            Log.d("MyLog", "index $index")
-            Log.d("MyLog", "LIST SIZE ${list.size}")
-            Log.d("MyLog", "MAX $max")
-//            Log.d("MyLog", "yScale $yScale")
-            (((index * yScale)).toString())
+            val yScale = max / stepSize.toFloat()
+            String.format("%.0f", (((index * yScale))))
         }
         .build()
 
@@ -66,40 +63,27 @@ fun YBarChart(
         xAxisData = xAxisData,
         yAxisData = yAxisData,
         backgroundColor = MaterialTheme.colorScheme.background,
-        horizontalExtraSpace = 20.dp,
-        paddingTop = 50.dp,
+        paddingTop = 10.dp,
+        paddingEnd = 3.dp,
         barStyle = BarStyle(
             selectionHighlightData = SelectionHighlightData(
-                highlightBarColor = MaterialTheme.colorScheme.primary,
-                highlightTextColor = MaterialTheme.colorScheme.primary,
+                highlightBarColor = MaterialTheme.colorScheme.inverseSurface,
+                highlightTextColor = MaterialTheme.colorScheme.inverseSurface,
                 highlightTextBackgroundColor = MaterialTheme.colorScheme.background.copy(alpha = 0.0f),
-//                popUpLabel ={},
-
+                popUpLabel = { x, y -> "${list[x.toInt()].label}, ${y.toInt()}" }
             )
-        )
-//        barWidth = 25.dp
+        ),
     )
 
     BarChart(modifier = Modifier.height(350.dp), barChartData = barChartData)
 }
 
-
-private fun getMax(list: List<BarData>): Float {
-    var max = 0F
+private fun getMaxY(list: List<BarData>): Float {
+    var max = list.size.toFloat()
     list.forEach { value ->
         if (max < value.point.y) {
             max = value.point.y
         }
     }
     return max
-}
-
-private fun getMin(list: List<BarData>): Float {
-    var min = 100F
-    list.forEach { value ->
-        if (min > value.point.y) {
-            min = value.point.y
-        }
-    }
-    return min
 }

@@ -27,6 +27,7 @@ import com.pidzama.smokecrafthookahapp.presentation.current_orders.CurrentOrders
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.stringResource
+import com.pidzama.smokecrafthookahapp.presentation.common.NoRippleEffect
 import com.pidzama.smokecrafthookahapp.presentation.current_orders.substringToken
 import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.common.LandscapeRecipeCard
 import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.common.PortraitRecipeCard
@@ -51,7 +52,8 @@ fun RandomGenerationRecipeScreen(
                     ) {
                         Text(
                             text = stringResource(id = R.string.recipes),
-                            style = MaterialTheme.typography.titleLarge
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.inverseSurface
                         )
                     }
                 },
@@ -65,7 +67,10 @@ fun RandomGenerationRecipeScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { }, enabled = true) {
+                    IconButton(
+                        onClick = { },
+                        enabled = true,
+                        interactionSource = remember { NoRippleEffect() }) {
                         Icon(
                             painter = painterResource(id = R.drawable.arrow_left),
                             contentDescription = "arrow_left",

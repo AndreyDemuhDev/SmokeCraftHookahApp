@@ -24,6 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.R
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.navigation.MainScreen
+import com.pidzama.smokecrafthookahapp.presentation.common.NoRippleEffect
 import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
 import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.common.LandscapeDetailRecipeCard
 import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.common.PortraitDetailRecipeCard
@@ -49,9 +50,10 @@ fun DetailHookahScreen(
                             .fillMaxWidth(),
                         Alignment.Center
                     ) {
-                        androidx.compose.material3.Text(
+                        Text(
                             text = stringResource(id = R.string.orders),
                             style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.inverseSurface
                         )
                     }
                 },
@@ -65,7 +67,10 @@ fun DetailHookahScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { }, enabled = true) {
+                    IconButton(
+                        onClick = { },
+                        enabled = true,
+                        interactionSource = remember { NoRippleEffect() }) {
                         Icon(
                             painter = painterResource(id = R.drawable.arrow_left),
                             contentDescription = "arrow_left",
@@ -122,7 +127,7 @@ fun PortraitDetailView(
         modifier = Modifier
             .fillMaxSize()
             .padding(
-                top =MaterialTheme.dimens.large2,
+                top = MaterialTheme.dimens.large2,
                 start = (screenHeight / 26).dp,
                 end = (screenHeight / 26).dp
             ),
@@ -139,7 +144,11 @@ fun PortraitDetailView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(MaterialTheme.dimens.small3),
-                    text = "${stringResource(id = R.string.order)} №${(1..20).random()}/ ${stringResource(id = R.string.table)} №${(1..8).random()}",
+                    text = "${stringResource(id = R.string.order)} №${(1..20).random()}/ ${
+                        stringResource(
+                            id = R.string.table
+                        )
+                    } №${(1..8).random()}",
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.inverseSurface,
                     style = MaterialTheme.typography.headlineMedium,
@@ -238,7 +247,11 @@ fun LandscapeDetailView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(MaterialTheme.dimens.small3),
-                    text = "${stringResource(id = R.string.order)} №${(1..20).random()}/ ${stringResource(id = R.string.table)} №${(1..8).random()}",
+                    text = "${stringResource(id = R.string.order)} №${(1..20).random()}/ ${
+                        stringResource(
+                            id = R.string.table
+                        )
+                    } №${(1..8).random()}",
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.inverseSurface,
                     style = MaterialTheme.typography.titleLarge,

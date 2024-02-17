@@ -10,22 +10,28 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pidzama.smokecrafthookahapp.R
-
-
-import com.pidzama.smokecrafthookahapp.presentation.archive_orders.common.YBarChart
+import com.pidzama.smokecrafthookahapp.presentation.archive_orders.common.TastyBarChart
 import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.DetailHookahViewModel
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 
 
 @Composable
 fun OrderArchiveScreen(
-    viewModel: DetailHookahViewModel = hiltViewModel()
+    viewModel: DetailHookahViewModel = hiltViewModel(),
+    viewModelCurrent: ArchiveViewModel = hiltViewModel()
 ) {
-    val listRecipes = viewModel.listArchiveTobaccos.collectAsState()
+    val listOrdersRecipe = viewModel.listArchiveTobaccos.collectAsState()
 
-    val solution = listRecipes.value.groupingBy { it.taste_group }.eachCount()
+    val listAllTobaccos = viewModelCurrent.listAllTobaccos.value.data
+
+    val groupListOrdersTobaccos = listOrdersRecipe.value.groupingBy { it.taste_group }.eachCount()
+        .entries
+        .sortedByDescending { it.value }
+
+    val groupListAllTobaccos = listAllTobaccos.groupingBy { it.taste_group }.eachCount()
         .entries
         .sortedByDescending { it.value }
 
@@ -36,7 +42,7 @@ fun OrderArchiveScreen(
         color = MaterialTheme.colorScheme.background,
         content = {
 
-            if (listRecipes.value.isNotEmpty()) {
+            if (listOrdersRecipe.value.isNotEmpty() && listAllTobaccos.isNotEmpty()) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -46,10 +52,19 @@ fun OrderArchiveScreen(
                         ),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = "Количество списанного табака")
-                    YBarChart(solution)
+                    Text(
+                        text = stringResource(id = R.string.quantity_of_tobacco_ordered),
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.inverseSurface
+                    )
+                    TastyBarChart(groupListOrdersTobaccos)
+                    Text(
+                        text = stringResource(id = R.string.list_of_all_tobacco),
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.inverseSurface
+                    )
+                    TastyBarChart(groupListAllTobaccos)
                 }
-
             } else {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -60,7 +75,7 @@ fun OrderArchiveScreen(
                             contentDescription = "empty_storage_img"
                         )
                         Spacer(modifier = Modifier.height(MaterialTheme.dimens.small3))
-                        Text(text = "Заказов еще не было")
+                        Text(text = stringResource(id = R.string.empty_list_order))
                     }
 
                 }

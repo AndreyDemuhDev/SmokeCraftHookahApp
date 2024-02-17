@@ -61,15 +61,16 @@ object AppModule {
     @Provides
     @Singleton
     fun provideGamesUseCases(
-        gamesRepository: RecipeRepository,
+        recipeRepository: RecipeRepository,
         mapper: RecipeMapper,
     ): AppUseCase {
         return AppUseCase(
-            login = LoginUseCase(gamesRepository),
-            recipes = RecipesUseCase(gamesRepository, mapper),
-            getAllRecipesInDataBaseUseCase = GetAllRecipesInDataBaseUseCase(gamesRepository),
-            insertRecipeToArchiveUseCase = InsertRecipeToArchiveUseCase(gamesRepository),
-            reduceRecipeUseCase = ReduceRecipeUseCase(gamesRepository)
+            login = LoginUseCase(recipeRepository),
+            recipes = RecipesUseCase(recipeRepository, mapper),
+            getAllTobaccosList = GetAllTobaccosListUseCase(recipeRepository),
+            getAllRecipesInDataBaseUseCase = GetAllRecipesInDataBaseUseCase(recipeRepository),
+            insertRecipeToArchiveUseCase = InsertRecipeToArchiveUseCase(recipeRepository),
+            reduceRecipeUseCase = ReduceRecipeUseCase(recipeRepository)
         )
     }
 
@@ -88,6 +89,6 @@ object AppModule {
     @Provides
     @Singleton
     fun provideGamesDao(
-        gamesDataBase: RecipeDataBase
-    ): RecipeDao = gamesDataBase.RecipeDao()
+        recipeDataBase: RecipeDataBase
+    ): RecipeDao = recipeDataBase.RecipeDao()
 }

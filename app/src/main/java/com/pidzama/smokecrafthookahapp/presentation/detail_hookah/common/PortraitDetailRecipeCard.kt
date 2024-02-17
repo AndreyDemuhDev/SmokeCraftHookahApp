@@ -135,8 +135,8 @@ fun PortraitDetailRecipePieChart(
     val coeff: Float
     val pieRadius: Float
     if (density > 400) {
-        coeff = 0.6f
-        pieRadius = radius * 2f
+        coeff = 0.85f
+        pieRadius = radius * 1.6f
     } else if (density in 261..399) {
         coeff = 1f
         pieRadius = radius / 1.5f

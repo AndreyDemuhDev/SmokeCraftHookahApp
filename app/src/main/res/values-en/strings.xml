@@ -38,6 +38,9 @@
     <string name="error_connection">"Error! Something went wrong"</string>
     <string name="auth_false">"Validation field error"</string>
     <string name="auth_error">"Authorization error"</string>
-
+    <string name="empty_list_order">"Order list is empty"</string>
+    <string name="quantity_of_tobacco_ordered">"Quantity of tobacco ordered"</string>
+    <string name="list_of_all_tobacco">"List of all tobacco"</string>
+    <string name="not_available">"Not available, try again later"</string>
 
 </resources>

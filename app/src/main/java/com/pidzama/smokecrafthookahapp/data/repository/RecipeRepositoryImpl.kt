@@ -33,6 +33,11 @@ class RecipeRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getAllTobaccosList(token: String): Flow<ApiState<List<RandomRecipeSubListItem>>> =
+        safeApiCall {
+            apiService.getAllTobaccosList(token = token)
+        }
+
     override suspend fun getListRecipes(token: String): Flow<ApiState<List<RandomRecipeSubList>>> =
         safeApiCall {
             apiService.getRandomGenerateRecipeList(token = token)

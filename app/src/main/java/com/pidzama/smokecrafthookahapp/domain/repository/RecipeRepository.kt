@@ -12,6 +12,8 @@ interface RecipeRepository {
 
     suspend fun loginUser(login: AuthRequest): StatusAuth<Unit>
 
+    suspend fun getAllTobaccosList(token: String): Flow<ApiState<List<RandomRecipeSubListItem>>>
+
     suspend fun getListRecipes(token: String): Flow<ApiState<List<RandomRecipeSubList>>>
 
     suspend fun reduceRecipe(recipe: RandomRecipeSubList): Flow<ApiState<ReduceRecipeResponse>>
