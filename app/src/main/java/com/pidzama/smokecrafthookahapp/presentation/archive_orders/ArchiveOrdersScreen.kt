@@ -75,7 +75,11 @@ fun OrderArchiveScreen(
                             contentDescription = "empty_storage_img"
                         )
                         Spacer(modifier = Modifier.height(MaterialTheme.dimens.small3))
-                        Text(text = stringResource(id = R.string.empty_list_order))
+                        Text(
+                            text = stringResource(id = R.string.empty_list_order),
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = MaterialTheme.colorScheme.inverseSurface
+                        )
                     }
 
                 }

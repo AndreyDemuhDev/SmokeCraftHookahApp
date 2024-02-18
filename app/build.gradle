@@ -103,6 +103,12 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:4.7.2"
     implementation "com.squareup.okhttp3:okhttp:4.7.2"
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    //CustomToast
+    implementation 'com.github.tfaki:ComposableSweetToast:1.0.1'
+    //BarChar
+    implementation 'co.yml:ycharts:2.1.0'
+    //SwipeToRefresh
+    implementation 'com.google.accompanist:accompanist-swiperefresh:0.24.13-rc'
     // Local unit tests
     testImplementation "androidx.test:core:1.4.0"
     testImplementation "androidx.arch.core:core-testing:2.1.0"
@@ -123,8 +129,4 @@ dependencies {
     androidTestImplementation "com.squareup.okhttp3:mockwebserver:4.9.1"
     androidTestImplementation "io.mockk:mockk-android:1.10.5"
     androidTestImplementation 'androidx.test:runner:1.4.0'
-    //CustomToast
-    implementation 'com.github.tfaki:ComposableSweetToast:1.0.1'
-//    implementation "com.github.tehras:charts:0.2.4-alpha"
-    implementation 'co.yml:ycharts:2.1.0'
 }

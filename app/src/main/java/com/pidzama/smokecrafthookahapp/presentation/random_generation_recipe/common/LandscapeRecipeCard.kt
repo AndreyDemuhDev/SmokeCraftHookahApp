@@ -3,9 +3,7 @@ package com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.co
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.util.Log
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
@@ -15,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -43,10 +42,26 @@ fun LandscapeRecipeCard(
     listTobaccoWeight: List<Float>,
     radius: Float
 ) {
+
+    val scale = remember {
+        Animatable(initialValue = 0f)
+    }
+    LaunchedEffect(true) {
+        scale.animateTo(
+            targetValue = 1f,
+            animationSpec = tween(
+                durationMillis = 200,
+                delayMillis = 50,
+                easing = LinearEasing
+            )
+        )
+    }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = MaterialTheme.dimens.small1)
+            .scale(scale = scale.value)
             .clickable { onClickToDetailsScreen() },
         border = BorderStroke(2.dp, color = MaterialTheme.colorScheme.primary),
         shape = MaterialTheme.shapes.extraLarge,

@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.data.network.doOnFailure
 import com.pidzama.smokecrafthookahapp.data.network.doOnLoading
@@ -12,7 +13,9 @@ import com.pidzama.smokecrafthookahapp.data.network.doOnSuccess
 import com.pidzama.smokecrafthookahapp.data.repository.DataStoreRepository
 import com.pidzama.smokecrafthookahapp.domain.use_case.AppUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,8 +36,12 @@ class CurrentOrdersViewModel @Inject constructor(
     private val _res: MutableState<MovieState> = mutableStateOf(MovieState())
     val res: State<MovieState> = _res
 
+    private val _swipeIsLoading = MutableStateFlow(false)
+    val swipeIsLoading = _swipeIsLoading.asStateFlow()
+
     init {
         getUserToken()
+        useSwipe()
         getListRecipes(
             token = "Token ${
                 token.value.substringToken(token.value)
@@ -72,6 +79,15 @@ class CurrentOrdersViewModel @Inject constructor(
     fun updateRecipesIndex(newData: Int) {
         _data.value = newData + 3
     }
+
+    fun useSwipe(){
+        viewModelScope.launch {
+            _swipeIsLoading.value = true
+            delay(3000L)
+            _swipeIsLoading.value = false
+        }
+    }
+
 }
 
 fun String.substringToken(token: String) =
