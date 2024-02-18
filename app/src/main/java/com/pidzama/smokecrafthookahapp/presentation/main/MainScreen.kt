@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -20,6 +21,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.navigation.MainNavGraph
 import com.pidzama.smokecrafthookahapp.presentation.common.BottomBarScreens
+import com.pidzama.smokecrafthookahapp.presentation.common.nonComposableText
 import com.pidzama.smokecrafthookahapp.presentation.profile.ProfileViewModel
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 
@@ -90,7 +92,7 @@ fun RowScope.AddItem(
     currentDestination: NavDestination?,
     navController: NavHostController
 ) {
-
+    val context = LocalContext.current
     NavigationBarItem(
         modifier = Modifier.background(
             MaterialTheme.colorScheme.surface,
@@ -106,7 +108,7 @@ fun RowScope.AddItem(
                     tint = MaterialTheme.colorScheme.inverseSurface
                 )
                 Text(
-                    text = screen.title,
+                    text = nonComposableText(context, screen.title),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.inverseSurface
                 )

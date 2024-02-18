@@ -40,7 +40,7 @@ fun LanguageDialogStyle(openDialog: MutableState<Boolean>) {
     }
     val context = LocalContext.current
     Card(
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(MaterialTheme.dimens.dp_10),
         modifier = Modifier.padding(
             vertical = MaterialTheme.dimens.small1,
             horizontal = MaterialTheme.dimens.nanoSmall

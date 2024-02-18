@@ -215,9 +215,9 @@ fun ThemeSwitcherItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(MaterialTheme.dimens.small1),
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(MaterialTheme.dimens.dp_10),
         border = BorderStroke(
-            width = 1.dp,
+            width = MaterialTheme.dimens.dp_1,
             color = MaterialTheme.colorScheme.onTertiary
         ),
         elevation = CardDefaults.cardElevation(
@@ -286,9 +286,9 @@ fun OptionItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(MaterialTheme.dimens.small1),
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(MaterialTheme.dimens.dp_10),
         border = BorderStroke(
-            width = 1.dp,
+            width = MaterialTheme.dimens.dp_1,
             color = MaterialTheme.colorScheme.onTertiary
         ),
         elevation = CardDefaults.cardElevation(

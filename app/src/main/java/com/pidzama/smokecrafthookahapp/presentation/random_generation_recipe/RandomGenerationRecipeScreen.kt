@@ -2,9 +2,6 @@ package com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe
 
 import android.content.res.Configuration
 import android.util.Log
-import androidx.compose.animation.*
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,6 +24,8 @@ import com.pidzama.smokecrafthookahapp.presentation.current_orders.CurrentOrders
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.stringResource
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.pidzama.smokecrafthookahapp.presentation.common.NoRippleEffect
 import com.pidzama.smokecrafthookahapp.presentation.current_orders.substringToken
 import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.common.LandscapeRecipeCard
@@ -41,6 +40,10 @@ fun RandomGenerationRecipeScreen(
     navigateToDetails: (RandomRecipeSubList, Int) -> Unit,
     viewModel: CurrentOrdersViewModel
 ) {
+
+    val isUseSwipe by viewModel.swipeIsLoading.collectAsState()
+    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isUseSwipe)
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -81,22 +84,23 @@ fun RandomGenerationRecipeScreen(
             )
         },
         content = {
-            if (ScreenOrientation == Configuration.ORIENTATION_PORTRAIT) {
-                PortraitRecipesContentView(
-                    navigateToDetails = navigateToDetails,
-                    viewModel = viewModel
-                )
-            } else {
-                LandscapeRecipesContentView(
-                    navigateToDetails = navigateToDetails,
-                    viewModel = viewModel
-                )
+            SwipeRefresh(state = swipeRefreshState, onRefresh = viewModel::useSwipe) {
+                if (ScreenOrientation == Configuration.ORIENTATION_PORTRAIT) {
+                    PortraitRecipesContentView(
+                        navigateToDetails = navigateToDetails,
+                        viewModel = viewModel
+                    )
+                } else {
+                    LandscapeRecipesContentView(
+                        navigateToDetails = navigateToDetails,
+                        viewModel = viewModel
+                    )
+                }
             }
         }
     )
 }
 
-@OptIn(ExperimentalAnimationApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun PortraitRecipesContentView(
     navigateToDetails: (RandomRecipeSubList, Int) -> Unit,
@@ -104,20 +108,10 @@ fun PortraitRecipesContentView(
     listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
 
-    viewModel.getUserToken()
     val userToken = viewModel.token.value
     val updateIndexRecipe = viewModel.data.collectAsState()
     var indexRecipe = updateIndexRecipe.value
     val result = viewModel.res.value
-//    LaunchedEffect(key1 = indexRecipe, block = {
-//        viewModel.getListRecipes(
-//            "Token ${
-//                viewModel.token.value.substringToken(
-//                    userToken
-//                )
-//            }"
-//        )
-//    })
 
     if (result.isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -161,13 +155,6 @@ fun PortraitRecipesContentView(
                             modifier = Modifier,
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
                         ) {
-
-
-//
-//                            AnimatedContent(
-//                                targetState = true,
-//                                content = {
-
                             indexRecipe++
                             val recipeNumber = indexRecipe
                             Log.d("MyLog", "IndexRecipe $indexRecipe")
@@ -184,16 +171,6 @@ fun PortraitRecipesContentView(
                                 },
                                 radius = MaterialTheme.dimens.radius.value
                             )
-//                                },
-//                                transitionSpec = {
-//                                    scaleIn(
-//                                        animationSpec = tween(
-//                                            600,
-//                                            400
-//                                        )
-//                                    ) with scaleOut(animationSpec = tween(650))
-//                                }
-//                            )
                         }
                     }
                 }
@@ -201,7 +178,6 @@ fun PortraitRecipesContentView(
             Box(modifier = Modifier.weight(0.1f)) {
                 Button(
                     onClick = {
-//                        count++
                         viewModel.getListRecipes(
                             "Token ${
                                 viewModel.token.value.substringToken(
@@ -230,7 +206,6 @@ fun PortraitRecipesContentView(
 }
 
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun LandscapeRecipesContentView(
     navigateToDetails: (RandomRecipeSubList, Int) -> Unit,
@@ -238,23 +213,12 @@ fun LandscapeRecipesContentView(
     listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
 
-    viewModel.getUserToken()
     val screenHeight = LocalConfiguration.current.screenHeightDp
     val userToken = viewModel.token.value
     val updateIndexRecipe = viewModel.data.collectAsState()
     var indexRecipe = updateIndexRecipe.value
-    var result = viewModel.res.value
+    val result = viewModel.res.value
 
-//    LaunchedEffect(key1 = indexRecipe, block = {
-//
-//        viewModel.getListRecipies(
-//            "Token ${
-//                viewModel.token.value.substringToken(
-//                    userToken
-//                )
-//            }"
-//        )
-//    })
     if (result.isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
@@ -297,11 +261,6 @@ fun LandscapeRecipesContentView(
                         Card(
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
                         ) {
-                            Log.d("MyLog", "IndexRecipe LANDSCAPE $indexRecipe")
-                            Log.d("MyLog", "РЕЦЕПТ LANDSCAPE===> $recipe")
-//                        AnimatedContent(
-//                            targetState = count,
-//                            content = {
                             indexRecipe++
                             val recipeNumber = indexRecipe
                             LandscapeRecipeCard(
@@ -316,27 +275,6 @@ fun LandscapeRecipesContentView(
                                 },
                                 radius = MaterialTheme.dimens.radius.value
                             )
-//                        LandscapePieChartRecipe(
-//                            input = recipe,
-//                            indexRecipe = indexRecipe,
-//                            listTobaccoWeight = listTobaccoWeight,
-//                            onClickToDetailsScreen = {
-//                                navigateToDetails(
-//                                    recipe,
-//                                    recipeNumber
-//                                )
-//                            }
-//                        )
-//                            },
-//                            transitionSpec = {
-//                                scaleIn(
-//                                    animationSpec = tween(
-//                                        300,
-//                                        200
-//                                    )
-//                                ) with scaleOut(animationSpec = tween(150))
-//                            }
-//                        )
                         }
                     }
                 }
