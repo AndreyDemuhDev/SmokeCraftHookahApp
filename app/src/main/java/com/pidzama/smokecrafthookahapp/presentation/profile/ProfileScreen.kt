@@ -20,6 +20,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.pidzama.smokecrafthookahapp.navigation.AuthScreen
+import com.pidzama.smokecrafthookahapp.navigation.Graph
 import com.pidzama.smokecrafthookahapp.presentation.common.ThemeSwitcher
 import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
 import com.pidzama.smokecrafthookahapp.presentation.current_orders.substringToken
@@ -31,9 +34,9 @@ import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel,
-    navController: NavHostController,
     darkTheme: Boolean,
     onThemeUpdated: () -> Unit,
+    navController: NavHostController
 ) {
 
     val openAlertDialog: MutableState<Boolean> = rememberSaveable() { mutableStateOf(false) }
@@ -56,7 +59,7 @@ fun ProfileScreen(
                         bottom = MaterialTheme.dimens.large1
                     )
             ) {
-                LogoutSection(navController = navController)
+                LogoutSection(navController=navController)
                 UserDetails(viewModel = viewModel)
                 OptionsItemsSection(
                     viewModel = viewModel,
@@ -69,7 +72,9 @@ fun ProfileScreen(
 }
 
 @Composable
-fun LogoutSection(navController: NavHostController) {
+fun LogoutSection(
+    navController: NavHostController,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -78,7 +83,6 @@ fun LogoutSection(navController: NavHostController) {
     ) {
         Button(
             modifier = Modifier
-                .bounceClick()
                 .height(MaterialTheme.dimens.medium3),
             onClick = { },
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
