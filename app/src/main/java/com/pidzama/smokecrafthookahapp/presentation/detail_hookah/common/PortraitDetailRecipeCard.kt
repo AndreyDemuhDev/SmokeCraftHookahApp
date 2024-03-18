@@ -144,7 +144,7 @@ fun PortraitDetailRecipePieChart(
         coeff = 1.3f
         pieRadius = radius / 1.8f
     }
-
+    Log.d("MyLog", "DENSITY == > $density")
     val totalTastyWeight = listTobaccoWeight.sum()
     val innerRadius = pieRadius - ((MaterialTheme.dimens.small3).value)
     var animationPlayed by remember { mutableStateOf(false) }

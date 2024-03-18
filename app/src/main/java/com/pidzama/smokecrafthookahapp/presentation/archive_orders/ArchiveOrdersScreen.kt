@@ -41,49 +41,49 @@ fun OrderArchiveScreen(
             .verticalScroll(state = rememberScrollState()),
         color = MaterialTheme.colorScheme.background,
         content = {
-
-            if (listOrdersRecipe.value.isNotEmpty() && listAllTobaccos.isNotEmpty()) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(
-                            vertical = MaterialTheme.dimens.small3,
-                            horizontal = MaterialTheme.dimens.small1
+//
+//            if (listOrdersRecipe.value.isNotEmpty() && listAllTobaccos.isNotEmpty()) {
+//                Column(
+//                    modifier = Modifier
+//                        .fillMaxSize()
+//                        .padding(
+//                            vertical = MaterialTheme.dimens.small3,
+//                            horizontal = MaterialTheme.dimens.small1
+//                        ),
+//                    horizontalAlignment = Alignment.CenterHorizontally
+//                ) {
+//                    Text(
+//                        text = stringResource(id = R.string.quantity_of_tobacco_ordered),
+//                        style = MaterialTheme.typography.headlineMedium,
+//                        color = MaterialTheme.colorScheme.inverseSurface
+//                    )
+//                    TastyBarChart(groupListOrdersTobaccos)
+//                    Text(
+//                        text = stringResource(id = R.string.list_of_all_tobacco),
+//                        style = MaterialTheme.typography.headlineMedium,
+//                        color = MaterialTheme.colorScheme.inverseSurface
+//                    )
+//                    TastyBarChart(groupListAllTobaccos)
+//                }
+//            } else {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Image(
+                        painter = painterResource(
+                            id = R.drawable.empty_storage
                         ),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+                        contentDescription = "empty_storage_img"
+                    )
+                    Spacer(modifier = Modifier.height(MaterialTheme.dimens.small3))
                     Text(
-                        text = stringResource(id = R.string.quantity_of_tobacco_ordered),
+                        text = stringResource(id = R.string.empty_list_order),
                         style = MaterialTheme.typography.headlineMedium,
                         color = MaterialTheme.colorScheme.inverseSurface
                     )
-                    TastyBarChart(groupListOrdersTobaccos)
-                    Text(
-                        text = stringResource(id = R.string.list_of_all_tobacco),
-                        style = MaterialTheme.typography.headlineMedium,
-                        color = MaterialTheme.colorScheme.inverseSurface
-                    )
-                    TastyBarChart(groupListAllTobaccos)
                 }
-            } else {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Image(
-                            painter = painterResource(
-                                id = R.drawable.empty_storage
-                            ),
-                            contentDescription = "empty_storage_img"
-                        )
-                        Spacer(modifier = Modifier.height(MaterialTheme.dimens.small3))
-                        Text(
-                            text = stringResource(id = R.string.empty_list_order),
-                            style = MaterialTheme.typography.headlineMedium,
-                            color = MaterialTheme.colorScheme.inverseSurface
-                        )
-                    }
-
-                }
+//
             }
+//            }
         })
 }
 

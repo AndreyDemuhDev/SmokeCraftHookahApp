@@ -113,7 +113,6 @@ fun PortraitDetailView(
     val screenWidth = LocalConfiguration.current.screenWidthDp
     val screenHeight = LocalConfiguration.current.screenHeightDp
     var openDialogSuccess by remember { mutableStateOf(false) }
-    Log.d("MyLog", "res==== ${viewModel.res.value.data?.result}")
     if (openDialogSuccess) {
         openDialogSuccess = false
         SweetSuccess(
@@ -170,7 +169,6 @@ fun PortraitDetailView(
                         viewModel.reduceRecipe(recipe)
                         navController.navigate(MainScreen.CurrentOrders.route)
                         viewModel.insertRecipes(recipe)
-                        Log.d("MyLog", "res==== ${viewModel.res.value.data?.result}")
                     },
                     modifier = Modifier
                         .bounceClick()
