@@ -1,13 +1,12 @@
 package com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.IconButton
-import androidx.compose.material.TopAppBar
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -26,7 +25,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.stringResource
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.pidzama.smokecrafthookahapp.presentation.common.NoRippleEffect
+import com.pidzama.smokecrafthookahapp.presentation.common.TopBarContent
 import com.pidzama.smokecrafthookahapp.presentation.current_orders.substringToken
 import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.common.LandscapeRecipeCard
 import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.common.PortraitRecipeCard
@@ -34,6 +33,8 @@ import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 import com.pidzama.smokecrafthookahapp.utils.Constants.TastyWeight.ListTastyWeight
 
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun RandomGenerationRecipeScreen(
     navController: NavHostController = rememberNavController(),
@@ -46,42 +47,7 @@ fun RandomGenerationRecipeScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        Alignment.Center
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.recipes),
-                            style = MaterialTheme.typography.titleLarge,
-                            color = MaterialTheme.colorScheme.inverseSurface
-                        )
-                    }
-                },
-                backgroundColor = MaterialTheme.colorScheme.primary,
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.arrow_left),
-                            contentDescription = "arrow_left"
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(
-                        onClick = { },
-                        enabled = true,
-                        interactionSource = remember { NoRippleEffect() }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.arrow_left),
-                            contentDescription = "arrow_left",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
-            )
+            TopBarContent(navController = navController, title = R.string.recipes)
         },
         content = {
             SwipeRefresh(state = swipeRefreshState, onRefresh = viewModel::useSwipe) {
@@ -112,7 +78,7 @@ fun PortraitRecipesContentView(
     val updateIndexRecipe = viewModel.data.collectAsState()
     var indexRecipe = updateIndexRecipe.value
     val result = viewModel.res.value
-
+    Log.d("MyLog", userToken)
     if (result.isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
