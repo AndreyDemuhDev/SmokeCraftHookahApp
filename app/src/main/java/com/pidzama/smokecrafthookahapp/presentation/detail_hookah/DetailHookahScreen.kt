@@ -1,5 +1,6 @@
 package com.pidzama.smokecrafthookahapp.presentation.detail_hookah
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.util.Log
 import android.widget.Toast
@@ -25,6 +26,7 @@ import com.pidzama.smokecrafthookahapp.R
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.navigation.MainScreen
 import com.pidzama.smokecrafthookahapp.presentation.common.NoRippleEffect
+import com.pidzama.smokecrafthookahapp.presentation.common.TopBarContent
 import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
 import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.common.LandscapeDetailRecipeCard
 import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.common.PortraitDetailRecipeCard
@@ -34,6 +36,7 @@ import com.pidzama.smokecrafthookahapp.utils.Constants.TastyWeight.ListTastyWeig
 import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetSuccess
 
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun DetailHookahScreen(
     navController: NavHostController = rememberNavController(),
@@ -43,42 +46,7 @@ fun DetailHookahScreen(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        Alignment.Center
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.orders),
-                            style = MaterialTheme.typography.titleLarge,
-                            color = MaterialTheme.colorScheme.inverseSurface
-                        )
-                    }
-                },
-                backgroundColor = MaterialTheme.colorScheme.primary,
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.arrow_left),
-                            contentDescription = "arrow_left"
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(
-                        onClick = { },
-                        enabled = true,
-                        interactionSource = remember { NoRippleEffect() }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.arrow_left),
-                            contentDescription = "arrow_left",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
-            )
+                 TopBarContent(navController = navController, title = R.string.orders)
         },
         content = {
             if (ScreenOrientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -307,5 +275,6 @@ fun LandscapeDetailView(
         }
     }
 }
+
 
 

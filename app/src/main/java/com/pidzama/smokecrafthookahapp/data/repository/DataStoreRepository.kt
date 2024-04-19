@@ -16,7 +16,6 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = DAT
 class DataStoreRepository(context: Context) {
 
     private val dataStore = context.dataStore
-
     suspend fun saveAuthToken(loginToken: String) {
         dataStore.edit { pref ->
             pref[AUTH_KEY] = setOf(loginToken)
@@ -28,9 +27,9 @@ class DataStoreRepository(context: Context) {
         authToken
     }
 
-    suspend fun saveUserLogin(loginUser:String) {
+    suspend fun saveUserLogin(loginUser: String) {
         dataStore.edit { pref ->
-        pref[USER_LOGIN] = setOf(loginUser)
+            pref[USER_LOGIN] = setOf(loginUser)
         }
     }
 

@@ -7,6 +7,7 @@ class Constants {
 
     object DataStorePreferences {
         const val DATA_STORE_NAME = "data_store_pref"
+        const val DATA_STORE_TOKEN = "data_store_token"
         const val AUTH_PREFERENCES = "AUTH_PREF"
         val AUTH_KEY = stringSetPreferencesKey("auth_key")
         val USER_LOGIN = stringSetPreferencesKey("user_login")
@@ -14,7 +15,7 @@ class Constants {
     }
 
     object Network {
-        const val BASE_URL = "http://188.68.221.107/"
+        const val BASE_URL = "http://158.160.130.206/"
     }
 
     object TastyWeight {

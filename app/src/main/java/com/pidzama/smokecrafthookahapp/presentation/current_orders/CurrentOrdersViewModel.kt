@@ -1,5 +1,6 @@
 package com.pidzama.smokecrafthookahapp.presentation.current_orders
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -58,22 +59,30 @@ class CurrentOrdersViewModel @Inject constructor(
     }
 
     fun getListRecipes(token: String) {
-        viewModelScope.launch {
-            useCase.recipes.getMovies(token)
-                .doOnSuccess {
-                    _res.value = MovieState(
-                        data = it
-                    )
-                }.doOnFailure {
-                    _res.value = MovieState(
-                        error = it.message!!
-                    )
-                }.doOnLoading {
-                    _res.value = MovieState(
-                        isLoading = true
-                    )
-                }.collect()
+        try{
+            viewModelScope.launch {
+                useCase.recipes.getMovies(token)
+                    .doOnSuccess {
+                        _res.value = MovieState(
+                            data = it
+                        )
+                    }.doOnFailure {
+                        _res.value = MovieState(
+                            error = it.message!!
+                        )
+                    }.doOnLoading {
+                        _res.value = MovieState(
+                            isLoading = true
+                        )
+                    }.collect()
+            }
+        } catch (e: Exception){
+            _res.value = MovieState(
+                error = e.message!!
+            )
+            Log.d("MyLog", "error $e")
         }
+
     }
 
     fun updateRecipesIndex(newData: Int) {
