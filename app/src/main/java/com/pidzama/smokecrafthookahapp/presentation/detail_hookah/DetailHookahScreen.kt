@@ -46,7 +46,11 @@ fun DetailHookahScreen(
 ) {
     Scaffold(
         topBar = {
-                 TopBarContent(navController = navController, title = R.string.orders)
+            TopBarContent(
+                navController = navController,
+                canNavigateBack = true,
+                title = R.string.orders
+            )
         },
         content = {
             if (ScreenOrientation == Configuration.ORIENTATION_PORTRAIT) {

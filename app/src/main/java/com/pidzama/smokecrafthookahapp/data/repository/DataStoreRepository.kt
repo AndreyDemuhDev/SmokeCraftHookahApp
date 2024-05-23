@@ -16,17 +16,17 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = DAT
 class DataStoreRepository(context: Context) {
 
     private val dataStore = context.dataStore
-    suspend fun saveAuthToken(loginToken: String) {
-        dataStore.edit { pref ->
-            pref[AUTH_KEY] = setOf(loginToken)
-        }
-    }
-
-    fun getAuthToken() = dataStore.data.map { preferences ->
-        val authToken = preferences[AUTH_KEY] ?: ""
-        authToken
-    }
-
+//    suspend fun saveAuthToken(loginToken: String) {
+//        dataStore.edit { pref ->
+//            pref[AUTH_KEY] = setOf(loginToken)
+//        }
+//    }
+//
+//    fun getAuthToken() = dataStore.data.map { preferences ->
+//        val authToken = preferences[AUTH_KEY] ?: ""
+//        authToken
+//    }
+//
     suspend fun saveUserLogin(loginUser: String) {
         dataStore.edit { pref ->
             pref[USER_LOGIN] = setOf(loginUser)

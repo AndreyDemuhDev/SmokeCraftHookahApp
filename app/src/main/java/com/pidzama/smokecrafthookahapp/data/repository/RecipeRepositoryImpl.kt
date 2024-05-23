@@ -1,5 +1,6 @@
 package com.pidzama.smokecrafthookahapp.data.repository
 
+import android.util.Log
 import com.pidzama.smokecrafthookahapp.data.local.RecipeDao
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubListItem
@@ -17,14 +18,13 @@ import javax.inject.Inject
 class RecipeRepositoryImpl @Inject constructor(
     private val apiService: SmokeCraftApi,
     private val recipeDao: RecipeDao,
-    private val preferences: DataStoreRepository
+    private val dataStore: DataStoreRepository
 ) : RecipeRepository, SafeDataRepository() {
 
     override suspend fun loginUser(login: AuthRequest): StatusAuth<Unit> {
         return try {
-            val response = apiService.getJwtTokenUser(login)
-            preferences.saveAuthToken(response.access)
-            preferences.saveUserLogin(login.username)
+            apiService.getJwtTokenUser(login)
+            dataStore.saveUserLogin(login.username)
             StatusAuth.Success(Unit)
         } catch (e: IOException) {
             StatusAuth.Error("${e.message}")

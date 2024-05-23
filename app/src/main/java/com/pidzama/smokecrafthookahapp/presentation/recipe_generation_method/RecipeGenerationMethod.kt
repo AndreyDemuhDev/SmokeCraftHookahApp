@@ -1,4 +1,4 @@
-package com.pidzama.smokecrafthookahapp.presentation.current_orders
+package com.pidzama.smokecrafthookahapp.presentation.recipe_generation_method
 
 import android.content.res.Configuration
 import android.widget.Toast
@@ -28,7 +28,7 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 
 @Composable
-fun CurrentOrders(
+fun RecipeGenerationMethodScreen(
     navController: NavHostController = rememberNavController(),
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
