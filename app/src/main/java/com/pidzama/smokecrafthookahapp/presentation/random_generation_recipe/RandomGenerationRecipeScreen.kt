@@ -19,14 +19,14 @@ import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.R
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
-import com.pidzama.smokecrafthookahapp.presentation.current_orders.CurrentOrdersViewModel
+import com.pidzama.smokecrafthookahapp.presentation.recipe_generation_method.RecipeGenerationViewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.stringResource
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.pidzama.smokecrafthookahapp.presentation.common.TopBarContent
-import com.pidzama.smokecrafthookahapp.presentation.current_orders.substringToken
+import com.pidzama.smokecrafthookahapp.presentation.recipe_generation_method.substringToken
 import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.common.LandscapeRecipeCard
 import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.common.PortraitRecipeCard
 import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
@@ -39,7 +39,7 @@ import com.pidzama.smokecrafthookahapp.utils.Constants.TastyWeight.ListTastyWeig
 fun RandomGenerationRecipeScreen(
     navController: NavHostController = rememberNavController(),
     navigateToDetails: (RandomRecipeSubList, Int) -> Unit,
-    viewModel: CurrentOrdersViewModel
+    viewModel: RecipeGenerationViewModel
 ) {
 
     val isUseSwipe by viewModel.swipeIsLoading.collectAsState()
@@ -47,7 +47,11 @@ fun RandomGenerationRecipeScreen(
 
     Scaffold(
         topBar = {
-            TopBarContent(navController = navController, title = R.string.recipes)
+            TopBarContent(
+                navController = navController,
+                canNavigateBack = true,
+                title = R.string.recipes
+            )
         },
         content = {
             SwipeRefresh(state = swipeRefreshState, onRefresh = viewModel::useSwipe) {
@@ -70,15 +74,14 @@ fun RandomGenerationRecipeScreen(
 @Composable
 fun PortraitRecipesContentView(
     navigateToDetails: (RandomRecipeSubList, Int) -> Unit,
-    viewModel: CurrentOrdersViewModel,
+    viewModel: RecipeGenerationViewModel,
     listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
 
-    val userToken = viewModel.token.value
+    val userToken by viewModel.token.collectAsState()
     val updateIndexRecipe = viewModel.data.collectAsState()
     var indexRecipe = updateIndexRecipe.value
     val result = viewModel.res.value
-    Log.d("MyLog", userToken)
     if (result.isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
@@ -90,9 +93,10 @@ fun PortraitRecipesContentView(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(id = R.string.error_connection),
+                text = result.error,
                 style = MaterialTheme.typography.titleLarge
             )
+            Log.d("MyLog", "error = ${result.error}")
             Spacer(modifier = Modifier.height(MaterialTheme.dimens.small2))
             Image(
                 painter = painterResource(id = R.drawable.ic_error),
@@ -123,8 +127,6 @@ fun PortraitRecipesContentView(
                         ) {
                             indexRecipe++
                             val recipeNumber = indexRecipe
-                            Log.d("MyLog", "IndexRecipe $indexRecipe")
-                            Log.d("MyLog", "РЕЦЕПТ===> $recipe")
                             PortraitRecipeCard(
                                 input = recipe,
                                 indexRecipe = indexRecipe,
@@ -144,13 +146,7 @@ fun PortraitRecipesContentView(
             Box(modifier = Modifier.weight(0.1f)) {
                 Button(
                     onClick = {
-                        viewModel.getListRecipes(
-                            "Token ${
-                                viewModel.token.value.substringToken(
-                                    userToken
-                                )
-                            }"
-                        )
+                        viewModel.getListRecipes(userToken)
                         viewModel.updateRecipesIndex(updateIndexRecipe.value)
                     },
                     modifier = Modifier
@@ -175,12 +171,12 @@ fun PortraitRecipesContentView(
 @Composable
 fun LandscapeRecipesContentView(
     navigateToDetails: (RandomRecipeSubList, Int) -> Unit,
-    viewModel: CurrentOrdersViewModel,
+    viewModel: RecipeGenerationViewModel,
     listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
 
     val screenHeight = LocalConfiguration.current.screenHeightDp
-    val userToken = viewModel.token.value
+    val userToken = viewModel.token.collectAsState()
     val updateIndexRecipe = viewModel.data.collectAsState()
     var indexRecipe = updateIndexRecipe.value
     val result = viewModel.res.value
@@ -248,13 +244,13 @@ fun LandscapeRecipesContentView(
             Box(modifier = Modifier.weight(0.2f)) {
                 Button(
                     onClick = {
-                        viewModel.getListRecipes(
-                            "Token ${
-                                viewModel.token.value.substringToken(
-                                    userToken
-                                )
-                            }"
-                        )
+//                        viewModel.getListRecipes(
+//                            "Token ${
+//                                viewModel.token.value.substringToken(
+//                                    userToken
+//                                )
+//                            }"
+//                        )
                         viewModel.updateRecipesIndex(updateIndexRecipe.value)
 
                     },

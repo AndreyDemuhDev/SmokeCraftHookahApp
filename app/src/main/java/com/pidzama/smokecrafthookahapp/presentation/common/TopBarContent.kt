@@ -15,6 +15,7 @@ import com.pidzama.smokecrafthookahapp.R
 @Composable
 fun TopBarContent(
     navController: NavHostController,
+    canNavigateBack: Boolean,
     @StringRes title: Int,
     modifier: Modifier = Modifier
 ) {
@@ -23,15 +24,17 @@ fun TopBarContent(
             Text(
                 text = stringResource(id = title),
                 style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.inverseSurface
+                color = MaterialTheme.colorScheme.onBackground
             )
         },
         navigationIcon = {
-            IconButton(onClick = { navController.popBackStack() }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.arrow_left),
-                    contentDescription = "arrow_left"
-                )
+            if (canNavigateBack) {
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.arrow_left),
+                        contentDescription = "arrow_left"
+                    )
+                }
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary),

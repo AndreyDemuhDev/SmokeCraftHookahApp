@@ -24,13 +24,13 @@ interface SmokeCraftApi {
         @Body loginRequest: AuthRequest
     ): AuthToken
 
-    @GET("/api/v1/storage/tobacco")
+    @GET("api/v1/storage/tobacco")
     suspend fun getAllTobaccosList(
         @Header("Authorization") token: String
     ): Response<List<RandomRecipeSubListItem>>
 
-
-    @GET("api/v1/storage/tobacco/get_random_recipes/")
+//    api/v1/storage/tobacco/get_random_recipes/
+    @GET("api/v1/generator/")
     suspend fun getRandomGenerateRecipeList(
         @Header("Authorization") token: String
     ): Response<List<RandomRecipeSubList>>

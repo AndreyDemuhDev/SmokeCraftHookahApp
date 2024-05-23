@@ -10,7 +10,7 @@ import com.pidzama.smokecrafthookahapp.data.network.doOnFailure
 import com.pidzama.smokecrafthookahapp.data.network.doOnSuccess
 import com.pidzama.smokecrafthookahapp.data.repository.DataStoreRepository
 import com.pidzama.smokecrafthookahapp.domain.use_case.AppUseCase
-import com.pidzama.smokecrafthookahapp.presentation.current_orders.substringToken
+import com.pidzama.smokecrafthookahapp.presentation.recipe_generation_method.substringToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -30,12 +30,12 @@ class ArchiveViewModel @Inject constructor(
     val listAllTobaccos: State<ListTobaccosState> = _listAllTobaccos
 
     init {
-        getUserToken()
-        getAllTobaccosList(
-            token = "Token ${
-                token.value.substringToken(token.value)
-            }"
-        )
+//        getUserToken()
+//        getAllTobaccosList(
+//            token = "Token ${
+//                token.value.substringToken(token.value)
+//            }"
+//        )
     }
 
 
@@ -54,13 +54,13 @@ class ArchiveViewModel @Inject constructor(
         }
     }
 
-    fun getUserToken() {
-        viewModelScope.launch {
-            dataStoreRepository.getAuthToken().collect { getToken ->
-                _token.value = getToken.toString()
-            }
-        }
-    }
+//    fun getUserToken() {
+//        viewModelScope.launch {
+//            dataStoreRepository.getAuthToken().collect { getToken ->
+//                _token.value = getToken.toString()
+//            }
+//        }
+//    }
 
 }
 

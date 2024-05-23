@@ -14,7 +14,7 @@ class RecipesUseCase @Inject constructor(
     private val mapper: RecipeMapper
 ) {
 
-    suspend fun getMovies(token: String): Flow<ApiState<List<RandomRecipeSubList>>> {
+    suspend fun getListRecipes(token: String): Flow<ApiState<List<RandomRecipeSubList>>> {
         return repo.getListRecipes(token).map { result ->
             result.map {
                 mapper.fromMap(it)

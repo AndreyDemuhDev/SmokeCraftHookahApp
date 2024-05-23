@@ -5,8 +5,13 @@ import android.app.Application
 import androidx.room.Room
 import com.pidzama.smokecrafthookahapp.data.local.RecipeDao
 import com.pidzama.smokecrafthookahapp.data.local.RecipeDataBase
+import com.pidzama.smokecrafthookahapp.data.network.AccessTokenInterceptor
+import com.pidzama.smokecrafthookahapp.data.network.AuthAuthenticator
+import com.pidzama.smokecrafthookahapp.data.network.RefreshTokenInterceptor
+import com.pidzama.smokecrafthookahapp.data.network.RefreshTokenService
 import com.pidzama.smokecrafthookahapp.data.network.SmokeCraftApi
 import com.pidzama.smokecrafthookahapp.data.repository.DataStoreRepository
+import com.pidzama.smokecrafthookahapp.data.repository.JwtTokenDataStore
 import com.pidzama.smokecrafthookahapp.domain.repository.RecipeRepository
 import com.pidzama.smokecrafthookahapp.data.repository.RecipeRepositoryImpl
 import com.pidzama.smokecrafthookahapp.domain.model.RecipeMapper
@@ -22,26 +27,50 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    @Provides
-    @Singleton
-    fun provideHookahApi(): SmokeCraftApi {
+//    @Provides
+//    @Singleton
+//    fun provideHookahApi(): SmokeCraftApi {
+//        return Retrofit.Builder()
+//            .client(
+//                OkHttpClient.Builder()
+//                    .addInterceptor(HttpLoggingInterceptor().apply {
+//                        level = HttpLoggingInterceptor.Level.BODY
+//                    }).build()
+//            )
+//            .baseUrl(BASE_URL)
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build()
+//            .create(SmokeCraftApi::class.java)
+//    }
+
+    //создаем экземпляр ретрофита для авторизированного юзера
+    @[Provides Singleton]
+    fun provideAuthenticationApi(@AuthenticatedClient okHttpClient: OkHttpClient): SmokeCraftApi {
         return Retrofit.Builder()
-            .client(
-                OkHttpClient.Builder()
-                    .addInterceptor(HttpLoggingInterceptor().apply {
-                        level = HttpLoggingInterceptor.Level.BODY
-                    }).build()
-            )
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
             .build()
             .create(SmokeCraftApi::class.java)
+    }
+
+    //создаем экземпляр ретрофита для обновления токена
+    @[Provides Singleton]
+    fun provideRetrofit(@TokenRefreshClient okHttpClient: OkHttpClient): RefreshTokenService {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .build()
+            .create(RefreshTokenService::class.java)
     }
 
     @Provides
@@ -53,14 +82,14 @@ object AppModule {
     ): RecipeRepository {
         return RecipeRepositoryImpl(
             apiService = smokeCraftApi,
-            preferences = preferences,
+            dataStore = preferences,
             recipeDao = recipeDao
         )
     }
 
     @Provides
     @Singleton
-    fun provideGamesUseCases(
+    fun provideRecipesUseCases(
         recipeRepository: RecipeRepository,
         mapper: RecipeMapper,
     ): AppUseCase {
@@ -76,7 +105,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGamesDataBase(
+    fun provideRecipesDataBase(
         application: Application
     ): RecipeDataBase {
         return Room.databaseBuilder(
@@ -88,7 +117,67 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGamesDao(
+    fun provideRecipesDao(
         recipeDataBase: RecipeDataBase
     ): RecipeDao = recipeDataBase.RecipeDao()
+
+    //настройка OkHttpClient для запроса токена доступа
+    @[Provides Singleton AuthenticatedClient]
+    fun provideAccessOkHttpClient(
+        accessTokenInterceptor: AccessTokenInterceptor,
+        authAuthenticator: AuthAuthenticator
+    ): OkHttpClient {
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        return OkHttpClient.Builder()
+            .authenticator(authAuthenticator)
+            .addInterceptor(accessTokenInterceptor)
+            .addInterceptor(loggingInterceptor)
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .build()
+    }
+
+    //настройка OkHttpClient для запроса токена обновления
+    @[Provides Singleton TokenRefreshClient]
+    fun provideRefreshOkHttpClient(
+        refreshTokenInterceptor: RefreshTokenInterceptor
+    ): OkHttpClient {
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        return OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .addInterceptor(refreshTokenInterceptor)
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .build()
+    }
+
+//    @[Provides Singleton PublicClient]
+//    fun provideUnauthenticatedOkHttpClient(): OkHttpClient {
+//        val loggingInterceptor = HttpLoggingInterceptor()
+//        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+//        return OkHttpClient.Builder()
+//            .addInterceptor(loggingInterceptor)
+//            .connectTimeout(30, TimeUnit.SECONDS)
+//            .readTimeout(30, TimeUnit.SECONDS)
+//            .writeTimeout(30, TimeUnit.SECONDS)
+//            .build()
+//    }
+
+    //определяем два квалификатора для запроса токена досутпа
+    //и запроса токена обновления
+    @Qualifier
+    @Retention(AnnotationRetention.RUNTIME)
+    annotation class AuthenticatedClient
+
+    @Qualifier
+    @Retention(AnnotationRetention.RUNTIME)
+    annotation class TokenRefreshClient
+
+//    @Qualifier
+//    @Retention(AnnotationRetention.RUNTIME)
+//    annotation class PublicClient
 }

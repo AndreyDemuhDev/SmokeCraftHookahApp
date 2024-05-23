@@ -18,14 +18,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.pidzama.smokecrafthookahapp.navigation.AuthScreen
-import com.pidzama.smokecrafthookahapp.navigation.Graph
 import com.pidzama.smokecrafthookahapp.presentation.common.ThemeSwitcher
 import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
-import com.pidzama.smokecrafthookahapp.presentation.current_orders.substringToken
+import com.pidzama.smokecrafthookahapp.presentation.recipe_generation_method.substringToken
 import com.pidzama.smokecrafthookahapp.presentation.profile.common.ChooseLanguageDialog
 import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens

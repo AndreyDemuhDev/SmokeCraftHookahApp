@@ -2,6 +2,7 @@
 
 package com.pidzama.smokecrafthookahapp.presentation.auth
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -42,6 +43,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AuthScreens(
@@ -150,7 +152,7 @@ fun PortraitAuthFieldSection(
                 focusedContainerColor = MaterialTheme.colorScheme.onSecondary,
                 unfocusedContainerColor = MaterialTheme.colorScheme.tertiaryContainer
             ),
-            keyboardOptions = KeyboardOptions(
+            keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Next
             ),
             singleLine = true,
@@ -196,7 +198,7 @@ fun PortraitAuthFieldSection(
                 .fillMaxWidth()
                 .height(MaterialTheme.dimens.buttonHeight)
                 .width(MaterialTheme.dimens.buttonWidth),
-            keyboardOptions = KeyboardOptions(
+            keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
             ),
@@ -340,7 +342,7 @@ fun LandscapeAuthFieldSection(
                     focusedContainerColor = MaterialTheme.colorScheme.onSecondary,
                     unfocusedContainerColor = MaterialTheme.colorScheme.tertiaryContainer
                 ),
-                keyboardOptions = KeyboardOptions(
+                keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Next
                 ),
                 singleLine = true,
@@ -384,7 +386,7 @@ fun LandscapeAuthFieldSection(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.buttonHeight),
-                keyboardOptions = KeyboardOptions(
+                keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Done
                 ),
