@@ -41,7 +41,7 @@
     <string name="empty_list_order">"Архив заказов пустой"</string>
     <string name="quantity_of_tobacco_ordered">"Количество заказов"</string>
     <string name="list_of_all_tobacco">"Общее количество табака"</string>
-    <string name="not_available">"Недоступно, попробуйте позже"</string>
+    <string name="not_available">"Временно недоступно, попробуйте позже"</string>
     <string name="count_hookah">"Количество кальянов: "</string>
     <string name="create_new_order">"Создать новый заказ"</string>
 

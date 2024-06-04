@@ -1,19 +1,17 @@
 package com.pidzama.smokecrafthookahapp.presentation.detail_hookah
 
+//import com.pidzama.smokecrafthookahapp.data.repository.SmokeCraftRepository
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubListItem
-import com.pidzama.smokecrafthookahapp.data.network.doOnFailure
-import com.pidzama.smokecrafthookahapp.data.network.doOnSuccess
 import com.pidzama.smokecrafthookahapp.data.remote.reduce.ReduceRecipeResponse
 import com.pidzama.smokecrafthookahapp.domain.use_case.AppUseCase
-//import com.pidzama.smokecrafthookahapp.data.repository.SmokeCraftRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,20 +27,20 @@ class DetailHookahViewModel @Inject constructor(
     val listArchiveTobaccos :StateFlow<List<RandomRecipeSubListItem>> = _listArchiveTobaccos
 
 
-    fun reduceRecipe(recipe: RandomRecipeSubList) {
-        viewModelScope.launch {
-            useCase.reduceRecipeUseCase.reduceRecipe(recipe)
-                .doOnSuccess {
-                    _resultRecipeState.value = RecipeState(
-                        data = it
-                    )
-                }.doOnFailure {
-                    _resultRecipeState.value = RecipeState(
-                        error = it.message!!
-                    )
-                }.collect()
-        }
-    }
+//    fun reduceRecipe(recipe: NewRecipeItem) {
+//        viewModelScope.launch {
+//            useCase.reduceRecipeUseCase.reduceRecipe(recipe)
+//                .doOnSuccess {
+//                    _resultRecipeState.value = RecipeState(
+//                        data = it
+//                    )
+//                }.doOnFailure {
+//                    _resultRecipeState.value = RecipeState(
+//                        error = it.message!!
+//                    )
+//                }.collect()
+//        }
+//    }
 
     init {
         viewModelScope.launch {
@@ -51,12 +49,12 @@ class DetailHookahViewModel @Inject constructor(
 
     }
 
-    fun insertRecipes(recipe: List<RandomRecipeSubListItem>){
-        viewModelScope.launch {
-           useCase.insertRecipeToArchiveUseCase.insertRecipesToDataBase(recipe)
-            _listArchiveTobaccos.emit(useCase.getAllRecipesInDataBaseUseCase.getAllRecipesInDataBaseUseCase())
-        }
-    }
+//    fun insertRecipes(recipe: List<NewRecipeItem>){
+//        viewModelScope.launch {
+//           useCase.insertRecipeToArchiveUseCase.insertRecipesToDataBase(recipe)
+//            _listArchiveTobaccos.emit(useCase.getAllRecipesInDataBaseUseCase.getAllRecipesInDataBaseUseCase())
+//        }
+//    }
 
 }
 

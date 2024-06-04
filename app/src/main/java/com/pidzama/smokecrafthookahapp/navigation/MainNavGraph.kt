@@ -2,19 +2,20 @@ package com.pidzama.smokecrafthookahapp.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.*
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
-import com.pidzama.smokecrafthookahapp.presentation.profile.ProfileScreen
-import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.DetailHookahScreen
-import com.pidzama.smokecrafthookahapp.presentation.recipe_generation_method.RecipeGenerationMethodScreen
-import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.RandomGenerationRecipeScreen
+import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
 import com.pidzama.smokecrafthookahapp.presentation.archive_orders.OrderArchiveScreen
 import com.pidzama.smokecrafthookahapp.presentation.create_order.CurrentOrders
-import com.pidzama.smokecrafthookahapp.presentation.recipe_generation_method.RecipeGenerationViewModel
+import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.DetailHookahScreen
 import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.DetailHookahViewModel
+import com.pidzama.smokecrafthookahapp.presentation.profile.ProfileScreen
 import com.pidzama.smokecrafthookahapp.presentation.profile.ProfileViewModel
+import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.RandomGenerationRecipeScreen
+import com.pidzama.smokecrafthookahapp.presentation.recipe_generation_method.RecipeGenerationMethodScreen
+import com.pidzama.smokecrafthookahapp.presentation.recipe_generation_method.RecipeGenerationViewModel
 
 
 @Composable
@@ -64,7 +65,7 @@ fun MainNavGraph(
         composable(route = MainScreen.DetailHookahScreen.route) {
             val viewModel = hiltViewModel<DetailHookahViewModel>()
             val recipe =
-                navController.previousBackStackEntry?.savedStateHandle?.get<RandomRecipeSubList?>("recipe")
+                navController.previousBackStackEntry?.savedStateHandle?.get<ModelRecipeItem?>("recipe")
             val recipeNumber =
                 navController.previousBackStackEntry?.savedStateHandle?.get<Int?>("numberRecipe")
             if (recipe != null && recipeNumber != null) {
@@ -90,7 +91,7 @@ sealed class MainScreen(val route: String) {
 
 private fun navigateToDetails(
     navController: NavController,
-    recipe: RandomRecipeSubList,
+    recipe: ModelRecipeItem,
     numberRecipe: Int
 ) {
     navController.currentBackStackEntry?.savedStateHandle?.set("recipe", recipe)

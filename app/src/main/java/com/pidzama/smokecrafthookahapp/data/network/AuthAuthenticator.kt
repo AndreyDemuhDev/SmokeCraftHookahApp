@@ -1,6 +1,7 @@
 package com.pidzama.smokecrafthookahapp.data.network
 
 import android.util.Log
+import com.pidzama.smokecrafthookahapp.data.repository.JwtTokenDataStore
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
@@ -11,6 +12,7 @@ import javax.inject.Inject
 //аутентификатор который управляет нащими запросами на авторизацию
 class AuthAuthenticator @Inject constructor(
     private val tokenManager: JwtTokenManager,
+    private val jwtTokenManager: JwtTokenDataStore,
     private val refreshTokenService: RefreshTokenService
 ) : Authenticator {
     companion object {
@@ -26,18 +28,11 @@ class AuthAuthenticator @Inject constructor(
             val updatedToken = runBlocking {
                 tokenManager.getAccessJwt()
             }
-            val token = if (currentToken != updatedToken) updatedToken else {
-                val newSessionResponse = runBlocking { refreshTokenService.refreshToken() }
-                if (newSessionResponse.isSuccessful && newSessionResponse.body() != null) {
-                    newSessionResponse.body()?.let { body ->
-                        runBlocking {
-                            tokenManager.saveAccessJwt(body.access)
-                            tokenManager.saveRefreshJwt(body.refresh)
-                        }
-                        body.access
-                    }
-                } else null
+            val refreshToken = runBlocking {
+                jwtTokenManager.getRefreshJwt()
             }
+            val token = if (currentToken != updatedToken) updatedToken else refreshToken
+            Log.d("MyLog", "Отрабатывает authenticate токен = $token")
             return if (token != null) response.request.newBuilder()
                 .header(HEADER_AUTHORIZATION, "$TOKEN_TYPE $token")
                 .build() else null

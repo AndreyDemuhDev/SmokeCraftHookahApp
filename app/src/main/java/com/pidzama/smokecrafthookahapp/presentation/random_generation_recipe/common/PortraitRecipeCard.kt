@@ -2,14 +2,32 @@ package com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.co
 
 import android.graphics.Paint
 import android.graphics.Typeface
-import android.util.Log
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -28,19 +46,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pidzama.smokecrafthookahapp.R
-import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
+import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
 import com.pidzama.smokecrafthookahapp.presentation.common.setColorTaste
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
-import com.pidzama.smokecrafthookahapp.utils.Constants
-import com.pidzama.smokecrafthookahapp.utils.Constants.TastyWeight.ListTastyWeight
 
 //карточка рецепта при книжной ориентации
 @Composable
 fun PortraitRecipeCard(
-    input: RandomRecipeSubList,
+    input: ModelRecipeItem,
     onClickToDetailsScreen: () -> Unit,
     indexRecipe: Int,
-    listTobaccoWeight: List<Float> = ListTastyWeight,
+//    listTobaccoWeight: List<Taste>,
     radius: Float
 ) {
 
@@ -63,7 +79,8 @@ fun PortraitRecipeCard(
             .fillMaxWidth()
             .padding(vertical = MaterialTheme.dimens.small1)
             .scale(scale = scale.value)
-            .clickable { onClickToDetailsScreen() },
+            .clickable { onClickToDetailsScreen() }
+            .heightIn(min = MaterialTheme.dimens.large3 * 3),
         border = BorderStroke(2.dp, color = MaterialTheme.colorScheme.primary),
         shape = MaterialTheme.shapes.extraLarge,
         backgroundColor = MaterialTheme.colorScheme.background
@@ -94,7 +111,7 @@ fun PortraitRecipeCard(
             ) {
                 RecipePieChartPortrait(
                     input = input,
-                    listTobaccoWeight = listTobaccoWeight,
+//                    listTobaccoWeight = input.taste,
                     radius = radius
                 )
             }
@@ -106,7 +123,7 @@ fun PortraitRecipeCard(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LegendRecipePortrait(
-    input: RandomRecipeSubList,
+    input: ModelRecipeItem,
     indexRecipe: Int,
 ) {
     Column(
@@ -127,13 +144,17 @@ fun LegendRecipePortrait(
                 style = MaterialTheme.typography.headlineMedium,
             )
         }
-        input.forEach {
+        input.taste.forEachIndexed { index, tabacco ->
             Card(
                 modifier = Modifier
                     .padding(vertical = MaterialTheme.dimens.extraSmall),
                 border = BorderStroke(
                     width = 2.dp,
-                    color = setColorTaste(it.taste_group)
+                    color = if (input.matched_tobaccos.isNotEmpty()) {
+                        setColorTaste(input.matched_tobaccos[index].taste_group)
+                    } else {
+                        Color.Red
+                    }
                 ),
                 shape = MaterialTheme.shapes.medium,
                 backgroundColor = MaterialTheme.colorScheme.background
@@ -145,9 +166,9 @@ fun LegendRecipePortrait(
                             vertical = MaterialTheme.dimens.extraSmall
                         )
                         .basicMarquee(),
-                    text = "${it.taste}, ${it.brand}",
+                    text = "${tabacco.name}, ${input.matched_tobaccos[index].brand}",
                     style = MaterialTheme.typography.titleLarge,
-                    color = setColorTaste(it.taste_group)
+                    color = setColorTaste(input.matched_tobaccos[index].taste_group)
                 )
             }
         }
@@ -157,8 +178,7 @@ fun LegendRecipePortrait(
 //диаграмма рецепта при книжной ориентации
 @Composable
 fun RecipePieChartPortrait(
-    input: RandomRecipeSubList,
-    listTobaccoWeight: List<Float>,
+    input: ModelRecipeItem,
     animDuration: Int = 600,
     radius: Float,
 ) {
@@ -179,7 +199,7 @@ fun RecipePieChartPortrait(
         coeff = 1.3f
     }
 
-    val totalTastyWeight = listTobaccoWeight.sum()
+    val totalTastyWeight = input.taste.sumOf { it.weight }
     val innerRadius = pieRadius - ((MaterialTheme.dimens.small1 * 1.3f).value)
     var animationPlayed by remember { mutableStateOf(false) }
     val animateRotation by animateFloatAsState(
@@ -213,19 +233,19 @@ fun RecipePieChartPortrait(
 
             circleCenter = Offset(x = width / 2, y = height / 2)
 
-            listTobaccoWeight.forEachIndexed { index, tobacco ->
+            input.taste.forEachIndexed { index, tobacco ->
                 val scale = 1.1f
-                val angleToDraw = tobacco * anglePerValue
+                val angleToDraw = tobacco.weight * anglePerValue
 
                 scale(scale) {
                     drawArc(
-                        color = if (input.size >= 3) {
-                            setColorTaste(input[index].taste_group)
+                        color = if (input.matched_tobaccos.size != 1) {
+                            setColorTaste(input.matched_tobaccos[index].taste_group)
                         } else {
                             Color.Red
                         },
                         startAngle = currentStartAngle,
-                        sweepAngle = angleToDraw,
+                        sweepAngle = angleToDraw.toFloat(),
                         useCenter = false,
                         size = Size(
                             width = pieRadius * 2f,
@@ -237,7 +257,7 @@ fun RecipePieChartPortrait(
                         ),
                         style = Stroke((pieRadius - innerRadius) * 4f, cap = StrokeCap.Butt)
                     )
-                    currentStartAngle += angleToDraw
+                    currentStartAngle += angleToDraw.toFloat()
                 }
 
                 var rotateAngle = currentStartAngle - angleToDraw / 2f - 90f
@@ -248,18 +268,18 @@ fun RecipePieChartPortrait(
                 }
 
                 val percentage =
-                    (tobacco / totalTastyWeight * 100).toInt()
+                    (tobacco.weight / totalTastyWeight * 100).toInt()
                 drawContext.canvas.nativeCanvas.apply {
                     if (percentage > 3) {
-                        rotate(rotateAngle) {
+                        rotate(rotateAngle.toFloat()) {
                             drawText(
                                 "$percentage %",
                                 circleCenter.x,
                                 circleCenter.y + (pieRadius + innerRadius / 2f) * factor,
                                 Paint().apply {
                                     textSize = 15.sp.toPx()
-                                    color = if (input.size >= 3) {
-                                        setColorTaste(input[index].taste_group).toArgb()
+                                    color = if (input.matched_tobaccos.size != 1) {
+                                        setColorTaste(input.matched_tobaccos[index].taste_group).toArgb()
                                     } else {
                                         Color.Red.toArgb()
                                     }

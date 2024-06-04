@@ -6,7 +6,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
+import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
 import com.pidzama.smokecrafthookahapp.data.network.doOnFailure
 import com.pidzama.smokecrafthookahapp.data.network.doOnLoading
 import com.pidzama.smokecrafthookahapp.data.network.doOnSuccess
@@ -64,10 +64,13 @@ class RecipeGenerationViewModel @Inject constructor(
                         _res.value = GenerateRecipeUiState(
                             data = it
                         )
+                        Log.d("MyLog", "data $it")
+
                     }.doOnFailure {
                         _res.value = GenerateRecipeUiState(
                             error = it.message!!
                         )
+                        Log.d("MyLog", "message ${it.message}")
                     }.doOnLoading {
                         _res.value = GenerateRecipeUiState(
                             isLoading = true
@@ -101,7 +104,7 @@ fun String.substringToken(token: String) =
     this.substring(1, token.length - 1)
 
 data class GenerateRecipeUiState(
-    val data: List<RandomRecipeSubList> = emptyList(),
+    val data: List<ModelRecipeItem> = emptyList(),
     val error: String = "",
     val isLoading: Boolean = false
 )

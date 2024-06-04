@@ -13,7 +13,11 @@ enum class ColorTaste(val taste: String) {
     DESSERT(taste = "Десертные"),
     GRASSY(taste = "Травянистые"),
     WALNUT(taste = "Ореховые"),
-    FLORAL(taste = "Цветочные")
+    FLORAL(taste = "Цветочные"),
+    DRINKS(taste = "Напитки"),
+    SWEETS(taste = "Сладости"),
+    MINTS(taste = "Мятные"),
+    RARE(taste = "Редкие"),
 
 }
 
@@ -29,6 +33,10 @@ fun setColorTaste(colorTaste: String): Color {
         ColorTaste.GRASSY.taste -> Color(0xFF6CA314)
         ColorTaste.WALNUT.taste -> Color(0xFFBF6614)
         ColorTaste.FLORAL.taste -> Color(0xFFCB7DE1)
+        ColorTaste.DRINKS.taste -> Color(0xFFCCC7CE)
+        ColorTaste.SWEETS.taste -> Color(0xFFFc0Fc0)
+        ColorTaste.MINTS.taste -> Color(0xFF98FF98)
+        ColorTaste.RARE.taste -> Color(0xFF80D8FF)
         else -> {Color(0xFFFF1255)
         }
     }

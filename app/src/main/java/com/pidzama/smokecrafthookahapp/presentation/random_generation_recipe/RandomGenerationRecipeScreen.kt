@@ -4,41 +4,56 @@ import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.pidzama.smokecrafthookahapp.R
-import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
-import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
-import com.pidzama.smokecrafthookahapp.presentation.recipe_generation_method.RecipeGenerationViewModel
-import androidx.compose.foundation.lazy.items
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.stringResource
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.pidzama.smokecrafthookahapp.R
+import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
 import com.pidzama.smokecrafthookahapp.presentation.common.TopBarContent
-import com.pidzama.smokecrafthookahapp.presentation.recipe_generation_method.substringToken
+import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
 import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.common.LandscapeRecipeCard
 import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.common.PortraitRecipeCard
+import com.pidzama.smokecrafthookahapp.presentation.recipe_generation_method.RecipeGenerationViewModel
 import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
-import com.pidzama.smokecrafthookahapp.utils.Constants.TastyWeight.ListTastyWeight
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun RandomGenerationRecipeScreen(
     navController: NavHostController = rememberNavController(),
-    navigateToDetails: (RandomRecipeSubList, Int) -> Unit,
+    navigateToDetails: (ModelRecipeItem, Int) -> Unit,
     viewModel: RecipeGenerationViewModel
 ) {
 
@@ -73,9 +88,8 @@ fun RandomGenerationRecipeScreen(
 
 @Composable
 fun PortraitRecipesContentView(
-    navigateToDetails: (RandomRecipeSubList, Int) -> Unit,
+    navigateToDetails: (ModelRecipeItem, Int) -> Unit,
     viewModel: RecipeGenerationViewModel,
-    listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
 
     val userToken by viewModel.token.collectAsState()
@@ -130,7 +144,6 @@ fun PortraitRecipesContentView(
                             PortraitRecipeCard(
                                 input = recipe,
                                 indexRecipe = indexRecipe,
-                                listTobaccoWeight = listTobaccoWeight,
                                 onClickToDetailsScreen = {
                                     navigateToDetails(
                                         recipe,
@@ -170,13 +183,12 @@ fun PortraitRecipesContentView(
 
 @Composable
 fun LandscapeRecipesContentView(
-    navigateToDetails: (RandomRecipeSubList, Int) -> Unit,
+    navigateToDetails: (ModelRecipeItem, Int) -> Unit,
     viewModel: RecipeGenerationViewModel,
-    listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
 
     val screenHeight = LocalConfiguration.current.screenHeightDp
-    val userToken = viewModel.token.collectAsState()
+    val userToken by viewModel.token.collectAsState()
     val updateIndexRecipe = viewModel.data.collectAsState()
     var indexRecipe = updateIndexRecipe.value
     val result = viewModel.res.value
@@ -228,7 +240,6 @@ fun LandscapeRecipesContentView(
                             LandscapeRecipeCard(
                                 input = recipe,
                                 indexRecipe = indexRecipe,
-                                listTobaccoWeight = listTobaccoWeight,
                                 onClickToDetailsScreen = {
                                     navigateToDetails(
                                         recipe,
@@ -244,13 +255,7 @@ fun LandscapeRecipesContentView(
             Box(modifier = Modifier.weight(0.2f)) {
                 Button(
                     onClick = {
-//                        viewModel.getListRecipes(
-//                            "Token ${
-//                                viewModel.token.value.substringToken(
-//                                    userToken
-//                                )
-//                            }"
-//                        )
+                        viewModel.getListRecipes(userToken)
                         viewModel.updateRecipesIndex(updateIndexRecipe.value)
 
                     },
