@@ -4,17 +4,34 @@ import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.IconButton
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -23,16 +40,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.R
-import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
+import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
 import com.pidzama.smokecrafthookahapp.navigation.MainScreen
-import com.pidzama.smokecrafthookahapp.presentation.common.NoRippleEffect
 import com.pidzama.smokecrafthookahapp.presentation.common.TopBarContent
 import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
 import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.common.LandscapeDetailRecipeCard
 import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.common.PortraitDetailRecipeCard
 import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
-import com.pidzama.smokecrafthookahapp.utils.Constants.TastyWeight.ListTastyWeight
 import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetSuccess
 
 
@@ -40,7 +55,7 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetSuccess
 @Composable
 fun DetailHookahScreen(
     navController: NavHostController = rememberNavController(),
-    recipe: RandomRecipeSubList,
+    recipe: ModelRecipeItem,
     numberRecipe: Int,
     viewModel: DetailHookahViewModel
 ) {
@@ -77,9 +92,8 @@ fun DetailHookahScreen(
 fun PortraitDetailView(
     navController: NavHostController,
     numberRecipe: Int,
-    recipe: RandomRecipeSubList,
+    recipe: ModelRecipeItem,
     viewModel: DetailHookahViewModel,
-    listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
 
     val screenWidth = LocalConfiguration.current.screenWidthDp
@@ -127,7 +141,6 @@ fun PortraitDetailView(
                 PortraitDetailRecipeCard(
                     input = recipe,
                     numberRecipe = numberRecipe,
-                    listTobaccoWeight = listTobaccoWeight,
                     radius = MaterialTheme.dimens.radius.value
                 )
             }
@@ -138,9 +151,9 @@ fun PortraitDetailView(
                     onClick = {
                         openDialogSuccess = true
                         Log.d("MyLog", "РЕЦЕПТ=========Detail=>${recipe} ")
-                        viewModel.reduceRecipe(recipe)
+//                        viewModel.reduceRecipe(recipe)
                         navController.navigate(MainScreen.CurrentOrders.route)
-                        viewModel.insertRecipes(recipe)
+//                        viewModel.insertRecipes(recipe)
                     },
                     modifier = Modifier
                         .bounceClick()
@@ -179,10 +192,9 @@ fun PortraitDetailView(
 @Composable
 fun LandscapeDetailView(
     navController: NavHostController,
-    recipe: RandomRecipeSubList,
+    recipe: ModelRecipeItem,
     numberRecipe: Int,
     viewModel: DetailHookahViewModel,
-    listTobaccoWeight: List<Float> = ListTastyWeight
 ) {
     var openDialogSuccess by remember { mutableStateOf(false) }
 
@@ -229,7 +241,6 @@ fun LandscapeDetailView(
                 LandscapeDetailRecipeCard(
                     input = recipe,
                     numberRecipe = numberRecipe,
-                    listTobaccoWeight = listTobaccoWeight,
                     radius = MaterialTheme.dimens.radius.value
                 )
             }
@@ -243,7 +254,7 @@ fun LandscapeDetailView(
             Column(modifier = Modifier.padding(all = MaterialTheme.dimens.extraSmall)) {
                 Button(
                     onClick = {
-                        viewModel.reduceRecipe(recipe)
+//                        viewModel.reduceRecipe(recipe)
                         navController.navigate(MainScreen.CurrentOrders.route)
                         openDialogSuccess = true
                     },

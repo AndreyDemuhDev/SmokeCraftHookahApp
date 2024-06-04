@@ -18,12 +18,12 @@ class Constants {
         const val BASE_URL = "http://158.160.130.206/"
     }
 
-    object TastyWeight {
-        private const val firstTasty = 12f
-        private const val secondTasty = 6f
-        private const val threeTasty = 2f
-        val ListTastyWeight =  listOf(firstTasty, secondTasty, threeTasty)
-
+    object Tasty {
+//        private const val firstTasty = 12f
+//        private const val secondTasty = 6f
+//        private const val threeTasty = 2f
+//        val ListTastyWeight =  listOf(firstTasty, secondTasty, threeTasty)
+        const val bowlVolume = 20
     }
 
     object Database {

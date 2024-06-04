@@ -35,7 +35,7 @@ import com.pidzama.smokecrafthookahapp.navigation.MainScreen
 import com.pidzama.smokecrafthookahapp.presentation.common.TopBarContent
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 
-val listOrders = listOf(1, 2, 3, 4, 5)
+val listOrders = listOf(1)
 
 @Composable
 fun CurrentOrders(

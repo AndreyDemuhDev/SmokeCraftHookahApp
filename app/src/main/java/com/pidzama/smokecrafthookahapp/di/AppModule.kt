@@ -77,11 +77,13 @@ object AppModule {
     @Singleton
     fun provideSmokeCraftRepository(
         smokeCraftApi: SmokeCraftApi,
+        jwtToken: JwtTokenDataStore,
         preferences: DataStoreRepository,
         recipeDao: RecipeDao
     ): RecipeRepository {
         return RecipeRepositoryImpl(
             apiService = smokeCraftApi,
+            jwtTokenManager = jwtToken,
             dataStore = preferences,
             recipeDao = recipeDao
         )
@@ -155,17 +157,17 @@ object AppModule {
             .build()
     }
 
-//    @[Provides Singleton PublicClient]
-//    fun provideUnauthenticatedOkHttpClient(): OkHttpClient {
-//        val loggingInterceptor = HttpLoggingInterceptor()
-//        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-//        return OkHttpClient.Builder()
-//            .addInterceptor(loggingInterceptor)
-//            .connectTimeout(30, TimeUnit.SECONDS)
-//            .readTimeout(30, TimeUnit.SECONDS)
-//            .writeTimeout(30, TimeUnit.SECONDS)
-//            .build()
-//    }
+    @[Provides Singleton PublicClient]
+    fun provideUnauthenticatedOkHttpClient(): OkHttpClient {
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        return OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .build()
+    }
 
     //определяем два квалификатора для запроса токена досутпа
     //и запроса токена обновления
@@ -177,7 +179,7 @@ object AppModule {
     @Retention(AnnotationRetention.RUNTIME)
     annotation class TokenRefreshClient
 
-//    @Qualifier
-//    @Retention(AnnotationRetention.RUNTIME)
-//    annotation class PublicClient
+    @Qualifier
+    @Retention(AnnotationRetention.RUNTIME)
+    annotation class PublicClient
 }

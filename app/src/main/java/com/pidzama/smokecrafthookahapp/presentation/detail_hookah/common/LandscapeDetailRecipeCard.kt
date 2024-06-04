@@ -3,26 +3,29 @@ package com.pidzama.smokecrafthookahapp.presentation.detail_hookah.common
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.pidzama.smokecrafthookahapp.R
-import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubList
+import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
 import com.pidzama.smokecrafthookahapp.presentation.common.setColorTaste
 import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.common.RecipePieChartLandscape
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
+import com.pidzama.smokecrafthookahapp.utils.converterToWeight
 
 @Composable
 fun LandscapeDetailRecipeCard(
-    input: RandomRecipeSubList,
+    input: ModelRecipeItem,
     numberRecipe: Int,
-    listTobaccoWeight: List<Float>,
     radius: Float
 ) {
     Row(
@@ -31,12 +34,10 @@ fun LandscapeDetailRecipeCard(
         LegendDetailRecipeLandscape(
             input = input,
             indexRecipe = numberRecipe,
-            listTobaccoWeight = listTobaccoWeight
         )
         RecipePieChartLandscape(
             input = input,
-            listTobaccoWeight = listTobaccoWeight,
-            radius = radius
+            radius = radius,
         )
     }
 }
@@ -44,9 +45,8 @@ fun LandscapeDetailRecipeCard(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LegendDetailRecipeLandscape(
-    input: RandomRecipeSubList,
+    input: ModelRecipeItem,
     indexRecipe: Int,
-    listTobaccoWeight: List<Float>
 ) {
     Column(
         modifier = Modifier
@@ -66,13 +66,13 @@ fun LegendDetailRecipeLandscape(
                 style = MaterialTheme.typography.titleLarge,
             )
         }
-        input.forEachIndexed { index, tobacco ->
+        input.taste.forEachIndexed { index, tobacco ->
             Card(
                 modifier = Modifier
                     .padding(vertical = MaterialTheme.dimens.extraSmall / 2),
                 border = BorderStroke(
                     width = 2.dp,
-                    color = setColorTaste(tobacco.taste_group)
+                    color = setColorTaste(input.matched_tobaccos[index].taste_group)
                 ),
                 shape = MaterialTheme.shapes.medium,
                 backgroundColor = MaterialTheme.colorScheme.background
@@ -84,9 +84,9 @@ fun LegendDetailRecipeLandscape(
                                 horizontal = MaterialTheme.dimens.small1,
                                 vertical = MaterialTheme.dimens.extraSmall
                             ),
-                        text = "${tobacco.taste}, ${tobacco.brand}",
+                        text = "${tobacco.name}, ${input.matched_tobaccos[index].brand}",
                         style = MaterialTheme.typography.titleMedium,
-                        color = setColorTaste(tobacco.taste_group)
+                        color = setColorTaste(input.matched_tobaccos[index].taste_group)
                     )
                     Text(
                         modifier = Modifier.padding(
@@ -94,7 +94,7 @@ fun LegendDetailRecipeLandscape(
                             bottom = MaterialTheme.dimens.extraSmall,
                             end = MaterialTheme.dimens.small2
                         ),
-                        text = "${listTobaccoWeight[index].toInt()} г.",
+                        text = converterToWeight(tobacco.weight),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.outlineVariant
                     )
