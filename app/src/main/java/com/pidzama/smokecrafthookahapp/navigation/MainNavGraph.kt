@@ -66,13 +66,12 @@ fun MainNavGraph(
             val viewModel = hiltViewModel<DetailHookahViewModel>()
             val recipe =
                 navController.previousBackStackEntry?.savedStateHandle?.get<ModelRecipeItem?>("recipe")
-            val recipeNumber =
-                navController.previousBackStackEntry?.savedStateHandle?.get<Int?>("numberRecipe")
-            if (recipe != null && recipeNumber != null) {
+//            val recipeNumber =
+//                navController.previousBackStackEntry?.savedStateHandle?.get<Int?>("numberRecipe")
+            if (recipe != null) {
                 DetailHookahScreen(
                     navController = navController,
                     recipe = recipe,
-                    numberRecipe = recipeNumber,
                     viewModel = viewModel
                 )
             }

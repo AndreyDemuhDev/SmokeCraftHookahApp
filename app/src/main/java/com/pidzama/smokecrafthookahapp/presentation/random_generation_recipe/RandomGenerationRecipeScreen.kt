@@ -94,9 +94,6 @@ fun PortraitRecipesContentView(
     viewModel: RecipeGenerationViewModel,
 ) {
 
-    val userToken by viewModel.token.collectAsState()
-    val updateIndexRecipe = viewModel.data.collectAsState()
-    var indexRecipe = updateIndexRecipe.value
     val result = viewModel.res.value
     if (result.isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -154,19 +151,6 @@ fun PortraitRecipesContentView(
                                     .padding(vertical = 4.dp)
                                     .heightIn(min = 190.dp)
                             )
-//                            indexRecipe++
-//                            val recipeNumber = indexRecipe
-//                            PortraitRecipeCard(
-//                                input = recipe,
-//                                indexRecipe = indexRecipe,
-//                                onClickToDetailsScreen = {
-//                                    navigateToDetails(
-//                                        recipe,
-//                                        recipeNumber
-//                                    )
-//                                },
-//                                radius = MaterialTheme.dimens.radius.value
-//                            )
                         }
                     }
                 }
@@ -174,8 +158,7 @@ fun PortraitRecipesContentView(
             Box(modifier = Modifier.weight(0.1f)) {
                 Button(
                     onClick = {
-                        viewModel.getListRecipes(userToken)
-                        viewModel.updateRecipesIndex(updateIndexRecipe.value)
+                        viewModel.getListRecipes()
                     },
                     modifier = Modifier
                         .bounceClick()
@@ -203,9 +186,6 @@ fun LandscapeRecipesContentView(
 ) {
 
     val screenHeight = LocalConfiguration.current.screenHeightDp
-    val userToken by viewModel.token.collectAsState()
-    val updateIndexRecipe = viewModel.data.collectAsState()
-    var indexRecipe = updateIndexRecipe.value
     val result = viewModel.res.value
 
     if (result.isLoading) {
@@ -250,18 +230,18 @@ fun LandscapeRecipesContentView(
                         Card(
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
                         ) {
-                            indexRecipe++
-                            val recipeNumber = indexRecipe
-                            LandscapeRecipeCard(
+                            RecipeItemCard(
                                 input = recipe,
-                                indexRecipe = indexRecipe,
                                 onClickToDetailsScreen = {
                                     navigateToDetails(
                                         recipe,
-                                        recipeNumber
+                                        1
                                     )
                                 },
-                                radius = MaterialTheme.dimens.radius.value
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 4.dp)
+                                    .heightIn(min = 190.dp)
                             )
                         }
                     }
@@ -270,9 +250,7 @@ fun LandscapeRecipesContentView(
             Box(modifier = Modifier.weight(0.2f)) {
                 Button(
                     onClick = {
-                        viewModel.getListRecipes(userToken)
-                        viewModel.updateRecipesIndex(updateIndexRecipe.value)
-
+                        viewModel.getListRecipes()
                     },
                     modifier = Modifier
                         .bounceClick()
