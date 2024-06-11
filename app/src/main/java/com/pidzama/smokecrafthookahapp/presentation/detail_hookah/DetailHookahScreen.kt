@@ -42,6 +42,7 @@ import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.R
 import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
 import com.pidzama.smokecrafthookahapp.navigation.MainScreen
+import com.pidzama.smokecrafthookahapp.presentation.common.DetailsRecipeItemCard
 import com.pidzama.smokecrafthookahapp.presentation.common.TopBarContent
 import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
 import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.common.LandscapeDetailRecipeCard
@@ -138,11 +139,14 @@ fun PortraitDetailView(
                     color = MaterialTheme.colorScheme.inverseSurface,
                     style = MaterialTheme.typography.headlineMedium,
                 )
-                PortraitDetailRecipeCard(
-                    input = recipe,
-                    numberRecipe = numberRecipe,
-                    radius = MaterialTheme.dimens.radius.value
+                DetailsRecipeItemCard(
+                    input = recipe
                 )
+//                PortraitDetailRecipeCard(
+//                    input = recipe,
+//                    numberRecipe = numberRecipe,
+//                    radius = MaterialTheme.dimens.radius.value
+//                )
             }
         }
         BoxWithConstraints(modifier = Modifier.weight(0.2f)) {

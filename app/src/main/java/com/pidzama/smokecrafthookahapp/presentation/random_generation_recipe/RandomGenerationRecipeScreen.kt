@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -40,6 +41,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.pidzama.smokecrafthookahapp.R
 import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
+import com.pidzama.smokecrafthookahapp.presentation.common.RecipeItemCard
 import com.pidzama.smokecrafthookahapp.presentation.common.TopBarContent
 import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
 import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.common.LandscapeRecipeCard
@@ -139,19 +141,32 @@ fun PortraitRecipesContentView(
                             modifier = Modifier,
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
                         ) {
-                            indexRecipe++
-                            val recipeNumber = indexRecipe
-                            PortraitRecipeCard(
+                            RecipeItemCard(
                                 input = recipe,
-                                indexRecipe = indexRecipe,
                                 onClickToDetailsScreen = {
                                     navigateToDetails(
                                         recipe,
-                                        recipeNumber
+                                        1
                                     )
                                 },
-                                radius = MaterialTheme.dimens.radius.value
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 4.dp)
+                                    .heightIn(min = 190.dp)
                             )
+//                            indexRecipe++
+//                            val recipeNumber = indexRecipe
+//                            PortraitRecipeCard(
+//                                input = recipe,
+//                                indexRecipe = indexRecipe,
+//                                onClickToDetailsScreen = {
+//                                    navigateToDetails(
+//                                        recipe,
+//                                        recipeNumber
+//                                    )
+//                                },
+//                                radius = MaterialTheme.dimens.radius.value
+//                            )
                         }
                     }
                 }
