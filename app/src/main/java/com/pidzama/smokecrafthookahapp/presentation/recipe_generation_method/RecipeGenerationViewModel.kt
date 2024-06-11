@@ -31,9 +31,6 @@ class RecipeGenerationViewModel @Inject constructor(
     val data: MutableStateFlow<Int>
         get() = _data
 
-    private val _token = MutableStateFlow("")
-    val token: StateFlow<String> = _token
-
     private val _res: MutableState<GenerateRecipeUiState> = mutableStateOf(GenerateRecipeUiState())
     val res: State<GenerateRecipeUiState> = _res
 
@@ -41,25 +38,14 @@ class RecipeGenerationViewModel @Inject constructor(
     val swipeIsLoading = _swipeIsLoading.asStateFlow()
 
     init {
-        getUserToken()
         useSwipe()
-        getListRecipes(
-            token = token.value
-        )
-        Log.d("MyLog", "token viewModel ${token.value}")
+        getListRecipes()
     }
 
-    fun getUserToken() {
-        viewModelScope.launch {
-            _token.value = dataStoreToken.getAccessJwt().toString()
-            Log.d("MyLog", "GET ACCESS JWT viewModel ${dataStoreToken.getAccessJwt().toString()}")
-        }
-    }
-
-    fun getListRecipes(token: String) {
+    fun getListRecipes() {
         try {
             viewModelScope.launch {
-                useCase.recipes.getListRecipes(token)
+                useCase.recipes.getListRecipes(dataStoreToken.getAccessJwt().toString())
                     .doOnSuccess {
                         _res.value = GenerateRecipeUiState(
                             data = it
@@ -85,10 +71,6 @@ class RecipeGenerationViewModel @Inject constructor(
         }
     }
 
-
-    fun updateRecipesIndex(newData: Int) {
-        _data.value = newData + 3
-    }
 
     fun useSwipe() {
         viewModelScope.launch {

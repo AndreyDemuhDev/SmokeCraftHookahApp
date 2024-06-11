@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
@@ -57,7 +59,6 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetSuccess
 fun DetailHookahScreen(
     navController: NavHostController = rememberNavController(),
     recipe: ModelRecipeItem,
-    numberRecipe: Int,
     viewModel: DetailHookahViewModel
 ) {
     Scaffold(
@@ -73,14 +74,12 @@ fun DetailHookahScreen(
                 PortraitDetailView(
                     navController = navController,
                     recipe = recipe,
-                    numberRecipe = numberRecipe,
                     viewModel = viewModel
                 )
             } else {
                 LandscapeDetailView(
                     navController = navController,
                     recipe = recipe,
-                    numberRecipe = numberRecipe,
                     viewModel = viewModel
                 )
             }
@@ -92,7 +91,6 @@ fun DetailHookahScreen(
 @Composable
 fun PortraitDetailView(
     navController: NavHostController,
-    numberRecipe: Int,
     recipe: ModelRecipeItem,
     viewModel: DetailHookahViewModel,
 ) {
@@ -140,7 +138,8 @@ fun PortraitDetailView(
                     style = MaterialTheme.typography.headlineMedium,
                 )
                 DetailsRecipeItemCard(
-                    input = recipe
+                    input = recipe,
+                    isLandscape = false
                 )
 //                PortraitDetailRecipeCard(
 //                    input = recipe,
@@ -197,7 +196,6 @@ fun PortraitDetailView(
 fun LandscapeDetailView(
     navController: NavHostController,
     recipe: ModelRecipeItem,
-    numberRecipe: Int,
     viewModel: DetailHookahViewModel,
 ) {
     var openDialogSuccess by remember { mutableStateOf(false) }
@@ -242,11 +240,12 @@ fun LandscapeDetailView(
                     color = MaterialTheme.colorScheme.inverseSurface,
                     style = MaterialTheme.typography.titleLarge,
                 )
-                LandscapeDetailRecipeCard(
-                    input = recipe,
-                    numberRecipe = numberRecipe,
-                    radius = MaterialTheme.dimens.radius.value
-                )
+                DetailsRecipeItemCard(input = recipe, isLandscape = true)
+//                LandscapeDetailRecipeCard(
+//                    input = recipe,
+//                    numberRecipe = numberRecipe,
+//                    radius = MaterialTheme.dimens.radius.value
+//                )
             }
         }
         Box(

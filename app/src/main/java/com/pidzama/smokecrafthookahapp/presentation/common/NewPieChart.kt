@@ -32,13 +32,11 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.drawText
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.withStyle
@@ -208,23 +206,6 @@ fun LegendRecipeItem(
                             )
                             .basicMarquee()
                     )
-//                    Text(
-//                        modifier = Modifier
-//                            .padding(
-//                                horizontal = 8.dp,
-//                                vertical = 4.dp
-//                            )
-//                            .basicMarquee(),
-//                        text = "${tabacco.name}, ${input.matched_tobaccos[index].brand} ${
-//                            if (isDetails) {
-//                                converterToWeight(
-//                                    tabacco.weight
-//                                )
-//                            } else ""
-//                        }",
-//                        style = MaterialTheme.typography.labelLarge,
-//                        color = setColorTaste(input.matched_tobaccos[index].taste_group)
-//                    )
                 }
             }
         }
@@ -304,27 +285,41 @@ fun RecipeItemCard(
 @Composable
 fun DetailsRecipeItemCard(
     input: ModelRecipeItem,
+    isLandscape: Boolean,
     modifier: Modifier = Modifier
 ) {
 
     Box(modifier = modifier) {
-        Column(
-            modifier = Modifier.padding(14.dp),
-            verticalArrangement = Arrangement.Center,
-        ) {
-            TitleRecipeItem(input = input, modifier = Modifier.fillMaxWidth())
-            LegendRecipeItem(input = input, isDetails = true)
-            PieChartRecipeItem(
-                input = input,
-                modifier = Modifier
-                    .size(200.dp)
-                    .align(Alignment.CenterHorizontally)
-                    .weight(0.5f)
-            )
+        if (isLandscape) {
+            Column {
+                TitleRecipeItem(input = input, modifier = Modifier.fillMaxWidth())
+                Row {
+                    LegendRecipeItem(input = input, isDetails = true)
+                    PieChartRecipeItem(
+                        input = input,
+                        modifier = Modifier
+                            .size(150.dp)
+                            .weight(0.5f)
+                    )
+                }
+            }
+        } else {
+            Column(
+                modifier = Modifier.padding(14.dp),
+                verticalArrangement = Arrangement.Center,
+            ) {
+                TitleRecipeItem(input = input, modifier = Modifier.fillMaxWidth())
+                LegendRecipeItem(input = input, isDetails = true)
+                PieChartRecipeItem(
+                    input = input,
+                    modifier = Modifier
+                        .size(200.dp)
+                        .align(Alignment.CenterHorizontally)
+                        .weight(0.5f)
+                )
+            }
         }
     }
-
-
 }
 
 //подсчет суммы компонентов в рецепте для отрисовки диаграммы

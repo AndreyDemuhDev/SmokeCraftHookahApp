@@ -1,6 +1,5 @@
 package com.pidzama.smokecrafthookahapp.presentation.detail_hookah
 
-//import com.pidzama.smokecrafthookahapp.data.repository.SmokeCraftRepository
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
