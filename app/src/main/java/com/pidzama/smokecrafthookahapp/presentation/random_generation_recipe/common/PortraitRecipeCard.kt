@@ -56,7 +56,6 @@ fun PortraitRecipeCard(
     input: ModelRecipeItem,
     onClickToDetailsScreen: () -> Unit,
     indexRecipe: Int,
-//    listTobaccoWeight: List<Taste>,
     radius: Float
 ) {
 
@@ -111,7 +110,6 @@ fun PortraitRecipeCard(
             ) {
                 RecipePieChartPortrait(
                     input = input,
-//                    listTobaccoWeight = input.taste,
                     radius = radius
                 )
             }

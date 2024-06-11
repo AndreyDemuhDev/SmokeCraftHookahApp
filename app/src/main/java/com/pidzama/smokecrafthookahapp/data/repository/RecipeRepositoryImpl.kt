@@ -1,6 +1,5 @@
 package com.pidzama.smokecrafthookahapp.data.repository
 
-import android.util.Log
 import com.pidzama.smokecrafthookahapp.data.local.RecipeDao
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubListItem
 import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
@@ -28,8 +27,6 @@ class RecipeRepositoryImpl @Inject constructor(
             apiService.getJwtTokenUser(login)
             jwtTokenManager.saveAccessJwt(response.access)
             jwtTokenManager.saveRefreshJwt(response.refresh)
-            Log.d("MyLog", "сохранил TOKEN access  =${response.access} ")
-            Log.d("MyLog", "сохранил TOKEN refresh =${response.refresh} ")
             dataStore.saveUserLogin(login.username)
             StatusAuth.Success(Unit)
         } catch (e: IOException) {

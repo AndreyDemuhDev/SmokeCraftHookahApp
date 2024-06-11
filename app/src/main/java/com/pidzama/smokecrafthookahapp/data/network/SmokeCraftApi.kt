@@ -12,11 +12,6 @@ import retrofit2.http.POST
 
 interface SmokeCraftApi {
 
-//    @POST("api/v1/auth/token/login")
-//    suspend fun loginUser(
-//        @Body loginRequest: AuthRequest
-//    ): AuthResponse
-
     @POST("api/v1/auth/jwt/create")
     suspend fun getJwtTokenUser(
         @Body loginRequest: AuthRequest
@@ -26,14 +21,6 @@ interface SmokeCraftApi {
     suspend fun getAllTobaccosList(
         @Header("Authorization") token: String
     ): Response<List<RandomRecipeSubListItem>>
-
-//    api/v1/storage/tobacco/get_random_recipes/
-//    api/v1/generator/
-//    api/v1/random_recept
-//    @GET("api/v1/random_recept")
-//    suspend fun getRandomGenerateRecipeList(
-//        @Header("Token") token: String
-//    ): Response<List<RandomRecipeSubList>>
 
     @GET("api/v1/random_recept")
     suspend fun getRandomGenerateRecipeList(
