@@ -3,6 +3,7 @@ package com.pidzama.smokecrafthookahapp.data.repository
 import com.pidzama.smokecrafthookahapp.data.local.RecipeDao
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubListItem
 import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
+import com.pidzama.smokecrafthookahapp.data.model.orders.OrdersItem
 import com.pidzama.smokecrafthookahapp.data.network.ApiState
 import com.pidzama.smokecrafthookahapp.data.network.SmokeCraftApi
 import com.pidzama.smokecrafthookahapp.data.remote.authorization.AuthRequest
@@ -54,6 +55,12 @@ class RecipeRepositoryImpl @Inject constructor(
     override suspend fun getListArchiveRecipes(): List<RandomRecipeSubListItem> {
         return recipeDao.getListArchiveTobaccos()
     }
+
+    override suspend fun getOrdersList(token: String): Flow<ApiState<List<OrdersItem>>> =
+        safeApiCall {
+            apiService.getOrdersList(token)
+        }
+
 
 //    override suspend fun insertRecipeToArchive(recipe: List<RandomRecipeSubListItem>) {
 //        return recipeDao.insertRecipeToDataBase(recipe)

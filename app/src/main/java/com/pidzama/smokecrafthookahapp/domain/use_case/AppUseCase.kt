@@ -6,5 +6,6 @@ class AppUseCase(
     val getAllTobaccosList: GetAllTobaccosListUseCase,
     val getAllRecipesInDataBaseUseCase: GetAllRecipesInDataBaseUseCase,
     val insertRecipeToArchiveUseCase: InsertRecipeToArchiveUseCase,
-    val reduceRecipeUseCase: ReduceRecipeUseCase
+    val reduceRecipeUseCase: ReduceRecipeUseCase,
+    val orders: OrdersUseCase,
 )
