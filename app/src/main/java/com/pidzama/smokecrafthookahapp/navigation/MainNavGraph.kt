@@ -8,7 +8,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
 import com.pidzama.smokecrafthookahapp.presentation.archive_orders.OrderArchiveScreen
-import com.pidzama.smokecrafthookahapp.presentation.create_order.CurrentOrders
+import com.pidzama.smokecrafthookahapp.presentation.current_order.CurrentOrderViewModel
+import com.pidzama.smokecrafthookahapp.presentation.current_order.CurrentOrders
 import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.DetailHookahScreen
 import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.DetailHookahViewModel
 import com.pidzama.smokecrafthookahapp.presentation.profile.ProfileScreen
@@ -38,7 +39,9 @@ fun MainNavGraph(
             )
         }
         composable(MainScreen.CurrentOrders.route) {
+            val viewModel = hiltViewModel<CurrentOrderViewModel>()
             CurrentOrders(
+                viewModel = viewModel,
                 navController = navController
             )
         }

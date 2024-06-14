@@ -2,6 +2,7 @@ package com.pidzama.smokecrafthookahapp.data.network
 
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubListItem
 import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
+import com.pidzama.smokecrafthookahapp.data.model.orders.OrdersItem
 import com.pidzama.smokecrafthookahapp.data.remote.authorization.AuthRequest
 import com.pidzama.smokecrafthookahapp.presentation.auth.common.AuthToken
 import retrofit2.Response
@@ -26,6 +27,11 @@ interface SmokeCraftApi {
     suspend fun getRandomGenerateRecipeList(
         @Header("Token") token: String
     ): Response<List<ModelRecipeItem>>
+
+    @GET("api/v1/reservations")
+    suspend fun getOrdersList(
+        @Header ("Token") token: String
+    ): Response<List<OrdersItem>>
 
 //    @POST("api/v1/storage/reduce_tobacco/")
 //    suspend fun reduceRecipe(

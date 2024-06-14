@@ -101,7 +101,8 @@ object AppModule {
             getAllTobaccosList = GetAllTobaccosListUseCase(recipeRepository),
             getAllRecipesInDataBaseUseCase = GetAllRecipesInDataBaseUseCase(recipeRepository),
             insertRecipeToArchiveUseCase = InsertRecipeToArchiveUseCase(recipeRepository),
-            reduceRecipeUseCase = ReduceRecipeUseCase(recipeRepository)
+            reduceRecipeUseCase = ReduceRecipeUseCase(recipeRepository),
+            orders = OrdersUseCase(recipeRepository)
         )
     }
 

@@ -9,9 +9,6 @@ import com.google.gson.JsonObject
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class RandomRecipeSubList: ArrayList<RandomRecipeSubListItem>()
-
-
 @Entity(tableName = "Tobaccos")
 data class RandomRecipeSubListItem(
     val best_before_date: String,
