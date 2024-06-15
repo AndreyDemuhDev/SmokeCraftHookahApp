@@ -8,13 +8,13 @@ data class ModelRecipeItem(
     val matched_tobaccos: List<MatchedTobacco>,
     val name: String,
     val taste: List<Taste>
-):Parcelable
+) : Parcelable
 
 @Parcelize
 data class Taste(
     val name: String,
     val weight: Double
-):Parcelable
+) : Parcelable
 
 @Parcelize
 data class MatchedTobacco(
@@ -27,4 +27,5 @@ data class MatchedTobacco(
     val taste_group: String,
     val updated: String,
     val weight: Int
-):Parcelable
+) : Parcelable
+

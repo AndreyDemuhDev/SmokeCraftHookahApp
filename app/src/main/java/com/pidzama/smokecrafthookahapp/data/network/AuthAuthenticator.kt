@@ -22,27 +22,28 @@ class AuthAuthenticator @Inject constructor(
         val currentToken = runBlocking {
             tokenManager.getAccessJwt()
         }
-        val updatedToken = runBlocking {
-            tokenManager.getAccessJwt()
-        }
         val tokenUser = runBlocking { tokenManager.getRefreshJwt() }
-
-        val token = if (currentToken != updatedToken) updatedToken else {
-            val newSessionResponse = runBlocking {
-                refreshTokenService.refreshToken(RefreshTokenRequest(tokenUser.toString()))
+        synchronized(this) {
+            val updatedToken = runBlocking {
+                tokenManager.getAccessJwt()
             }
-            if (newSessionResponse.isSuccessful && newSessionResponse.body() != null) {
-                newSessionResponse.body()?.let { body ->
-                    runBlocking {
-                        tokenManager.saveAccessJwt(body.access)
-                    }
-                    body.access
+            val token = if (currentToken != updatedToken) updatedToken else {
+                val newSessionResponse = runBlocking {
+                    refreshTokenService.refreshToken(RefreshTokenRequest(tokenUser.toString()))
                 }
-            } else null
+                if (newSessionResponse.isSuccessful && newSessionResponse.body() != null) {
+                    newSessionResponse.body()?.let { body ->
+                        runBlocking {
+                            tokenManager.saveAccessJwt(body.access)
+                        }
+                        body.access
+                    }
+                } else null
+            }
+            return if (token != null) response.request.newBuilder()
+                .header(HEADER_AUTHORIZATION, "$TOKEN_TYPE $token")
+                .build() else null
         }
-        return if (token != null) response.request.newBuilder()
-            .header(HEADER_AUTHORIZATION, "$TOKEN_TYPE $token")
-            .build() else null
     }
 }
 

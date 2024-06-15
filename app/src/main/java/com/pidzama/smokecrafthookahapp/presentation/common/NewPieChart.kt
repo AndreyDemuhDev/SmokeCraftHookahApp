@@ -13,9 +13,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -44,7 +46,7 @@ import androidx.compose.ui.unit.center
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
-import com.pidzama.smokecrafthookahapp.utils.converterToWeight
+import com.pidzama.smokecrafthookahapp.utils.converterWeightToString
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -61,7 +63,7 @@ fun PieChartRecipeItem(
         MutableTransitionState(AnimatedCircleState.START)
             .apply { targetState = AnimatedCircleState.END }
     }
-    val stroke = with(LocalDensity.current) { Stroke(20.dp.toPx()) } //толщина линий диаграммы
+    val stroke = with(LocalDensity.current) { Stroke(15.dp.toPx()) } //толщина линий диаграммы
     val transition = updateTransition(currentState, label = "") //настрока перехода
     val angleOffset by transition.animateFloat(
         transitionSpec = {
@@ -124,10 +126,10 @@ fun PieChartRecipeItem(
                 textLayoutResult = textMeasureResult,
                 color = setColorTaste(input.matched_tobaccos[index].taste_group),
                 topLeft = Offset(
-                    -textCenter.x + center.x + (innerRadius + stroke.width * 1.8f) * cos(
+                    -textCenter.x + center.x + (innerRadius + stroke.width * 2.2f) * cos(
                         textPosition
                     ),
-                    -textCenter.y + center.y + (innerRadius + stroke.width * 1.3f) * sin(
+                    -textCenter.y + center.y + (innerRadius + stroke.width * 1.5f) * sin(
                         textPosition
                     )
                 )
@@ -191,7 +193,7 @@ fun LegendRecipeItem(
                                 ) {
                                     append(
                                         " ${
-                                            converterToWeight(
+                                            converterWeightToString(
                                                 tabacco.weight
                                             )
                                         }"
@@ -268,14 +270,16 @@ fun RecipeItemCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             TitleRecipeItem(input = input, modifier = Modifier.fillMaxWidth())
-            Row {
-                LegendRecipeItem(input = input, isDetails = false, modifier = Modifier.weight(0.5f))
+            Row(horizontalArrangement = Arrangement.SpaceAround) {
+                LegendRecipeItem(input = input, isDetails = false, modifier = Modifier.weight(0.4f))
+                Spacer(modifier = Modifier.width(8.dp))
                 PieChartRecipeItem(
                     input = input,
                     modifier = Modifier
                         .size(100.dp)
                         .weight(0.5f)
                         .align(Alignment.CenterVertically)
+
                 )
             }
         }

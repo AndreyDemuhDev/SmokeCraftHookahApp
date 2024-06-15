@@ -4,6 +4,8 @@ import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubListItem
 import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
 import com.pidzama.smokecrafthookahapp.data.model.orders.OrdersItem
 import com.pidzama.smokecrafthookahapp.data.remote.authorization.AuthRequest
+import com.pidzama.smokecrafthookahapp.data.remote.reduce.ReduceRecipeRequest
+import com.pidzama.smokecrafthookahapp.data.remote.reduce.ReduceRecipeResponse
 import com.pidzama.smokecrafthookahapp.presentation.auth.common.AuthToken
 import retrofit2.Response
 import retrofit2.http.Body
@@ -33,8 +35,13 @@ interface SmokeCraftApi {
         @Header ("Token") token: String
     ): Response<List<OrdersItem>>
 
-//    @POST("api/v1/storage/reduce_tobacco/")
-//    suspend fun reduceRecipe(
-//        @Body recipe: NewRecipeItem
-//    ): Response<ReduceRecipeResponse>
+//    @POST("")
+//    suspend fun reserveRecipe(
+//        @Body loginRequest: AuthRequest
+//    ):
+
+    @POST("/api/v1/storage/tobacco-reduce/reduce/")
+    suspend fun reduceRecipe(
+        @Body recipe: List<ReduceRecipeRequest>
+    ): ReduceRecipeResponse
 }
