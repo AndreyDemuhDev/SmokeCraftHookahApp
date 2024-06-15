@@ -20,7 +20,7 @@ import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
 import com.pidzama.smokecrafthookahapp.presentation.common.setColorTaste
 import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.common.RecipePieChartLandscape
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
-import com.pidzama.smokecrafthookahapp.utils.converterToWeight
+import com.pidzama.smokecrafthookahapp.utils.converterWeightToString
 
 @Composable
 fun LandscapeDetailRecipeCard(
@@ -94,7 +94,7 @@ fun LegendDetailRecipeLandscape(
                             bottom = MaterialTheme.dimens.extraSmall,
                             end = MaterialTheme.dimens.small2
                         ),
-                        text = converterToWeight(tobacco.weight),
+                        text = converterWeightToString(tobacco.weight),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.outlineVariant
                     )

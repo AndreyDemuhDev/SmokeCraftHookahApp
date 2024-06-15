@@ -47,7 +47,7 @@ import com.pidzama.smokecrafthookahapp.R
 import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
 import com.pidzama.smokecrafthookahapp.presentation.common.setColorTaste
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
-import com.pidzama.smokecrafthookahapp.utils.converterToWeight
+import com.pidzama.smokecrafthookahapp.utils.converterWeightToString
 
 @Composable
 fun PortraitDetailRecipeCard(
@@ -122,7 +122,7 @@ fun LegendDetailRecipePortrait(
                             bottom = MaterialTheme.dimens.extraSmall,
                             end = MaterialTheme.dimens.small2
                         ),
-                        text = converterToWeight(input.taste[index].weight),
+                        text = converterWeightToString(input.taste[index].weight),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.outlineVariant
                     )

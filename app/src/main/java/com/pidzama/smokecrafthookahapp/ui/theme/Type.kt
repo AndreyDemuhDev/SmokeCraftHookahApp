@@ -26,7 +26,7 @@ val CompactSmallTypography = androidx.compose.material3.Typography(
         fontWeight = FontWeight.Bold
     ),
     titleLarge = TextStyle(
-        fontSize = 14.sp,
+        fontSize = 13.sp,
         fontFamily = Manrope,
         fontWeight = FontWeight.Bold
     ),

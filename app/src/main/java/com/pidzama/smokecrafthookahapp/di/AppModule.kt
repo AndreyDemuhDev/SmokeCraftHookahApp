@@ -12,12 +12,18 @@ import com.pidzama.smokecrafthookahapp.data.network.RefreshTokenService
 import com.pidzama.smokecrafthookahapp.data.network.SmokeCraftApi
 import com.pidzama.smokecrafthookahapp.data.repository.DataStoreRepository
 import com.pidzama.smokecrafthookahapp.data.repository.JwtTokenDataStore
-import com.pidzama.smokecrafthookahapp.domain.repository.RecipeRepository
 import com.pidzama.smokecrafthookahapp.data.repository.RecipeRepositoryImpl
 import com.pidzama.smokecrafthookahapp.domain.model.RecipeMapper
-import com.pidzama.smokecrafthookahapp.domain.use_case.*
+import com.pidzama.smokecrafthookahapp.domain.repository.RecipeRepository
+import com.pidzama.smokecrafthookahapp.domain.use_case.AppUseCase
+import com.pidzama.smokecrafthookahapp.domain.use_case.GetAllRecipesInDataBaseUseCase
+import com.pidzama.smokecrafthookahapp.domain.use_case.GetAllTobaccosListUseCase
+import com.pidzama.smokecrafthookahapp.domain.use_case.InsertRecipeToArchiveUseCase
+import com.pidzama.smokecrafthookahapp.domain.use_case.LoginUseCase
+import com.pidzama.smokecrafthookahapp.domain.use_case.OrdersUseCase
+import com.pidzama.smokecrafthookahapp.domain.use_case.RecipesUseCase
+import com.pidzama.smokecrafthookahapp.domain.use_case.ReduceRecipeUseCase
 import com.pidzama.smokecrafthookahapp.utils.Constants.Database.NAME_DATABASE
-//import com.pidzama.smokecrafthookahapp.data.repository.SmokeCraftRepository
 import com.pidzama.smokecrafthookahapp.utils.Constants.Network.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -35,21 +41,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-//    @Provides
-//    @Singleton
-//    fun provideHookahApi(): SmokeCraftApi {
-//        return Retrofit.Builder()
-//            .client(
-//                OkHttpClient.Builder()
-//                    .addInterceptor(HttpLoggingInterceptor().apply {
-//                        level = HttpLoggingInterceptor.Level.BODY
-//                    }).build()
-//            )
-//            .baseUrl(BASE_URL)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//            .create(SmokeCraftApi::class.java)
-//    }
 
     //создаем экземпляр ретрофита для авторизированного юзера
     @[Provides Singleton]

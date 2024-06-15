@@ -21,7 +21,6 @@ class AccessTokenInterceptor @Inject constructor(
         }
         val request = chain.request().newBuilder()
         request.addHeader(HEADER_AUTHORIZATION, "$TOKEN_TYPE $token")
-        Log.d("MyLog", "AccessTokenInterceptor TOKEN = $token")
         return chain.proceed(request.build())
     }
 }

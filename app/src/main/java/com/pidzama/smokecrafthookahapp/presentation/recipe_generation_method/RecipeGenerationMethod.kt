@@ -90,7 +90,6 @@ fun PortraitCurrentOrderScreen(
         ) {
             Button(
                 onClick = {
-//                    openToastInfo = true
                     navController.navigate(MainScreen.ChooseGenerateRecipe.route)
                           },
                 modifier = Modifier

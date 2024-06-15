@@ -6,7 +6,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -32,7 +31,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
@@ -43,14 +41,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.R
 import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
+import com.pidzama.smokecrafthookahapp.data.remote.reduce.ReduceRecipeRequest
 import com.pidzama.smokecrafthookahapp.navigation.MainScreen
 import com.pidzama.smokecrafthookahapp.presentation.common.DetailsRecipeItemCard
 import com.pidzama.smokecrafthookahapp.presentation.common.TopBarContent
 import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
-import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.common.LandscapeDetailRecipeCard
-import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.common.PortraitDetailRecipeCard
 import com.pidzama.smokecrafthookahapp.ui.theme.ScreenOrientation
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
+import com.pidzama.smokecrafthookahapp.utils.convertWeightToInt
 import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetSuccess
 
 
@@ -61,6 +59,21 @@ fun DetailHookahScreen(
     recipe: ModelRecipeItem,
     viewModel: DetailHookahViewModel
 ) {
+
+
+    val reduceRecipe = emptyList<ReduceRecipeRequest>().toMutableList()
+
+    recipe.matched_tobaccos.forEachIndexed { index, tobacco ->
+        reduceRecipe.add(
+            ReduceRecipeRequest(
+                recipe.matched_tobaccos[index].id,
+                convertWeightToInt((recipe.taste[index].weight))
+            )
+        )
+    }
+
+    Log.d("MyLog", "reduceRecipe $reduceRecipe")
+
     Scaffold(
         topBar = {
             TopBarContent(
@@ -74,6 +87,7 @@ fun DetailHookahScreen(
                 PortraitDetailView(
                     navController = navController,
                     recipe = recipe,
+                    reduceRecipe = reduceRecipe,
                     viewModel = viewModel
                 )
             } else {
@@ -92,6 +106,7 @@ fun DetailHookahScreen(
 fun PortraitDetailView(
     navController: NavHostController,
     recipe: ModelRecipeItem,
+    reduceRecipe: List<ReduceRecipeRequest>,
     viewModel: DetailHookahViewModel,
 ) {
 
@@ -141,11 +156,6 @@ fun PortraitDetailView(
                     input = recipe,
                     isLandscape = false
                 )
-//                PortraitDetailRecipeCard(
-//                    input = recipe,
-//                    numberRecipe = numberRecipe,
-//                    radius = MaterialTheme.dimens.radius.value
-//                )
             }
         }
         BoxWithConstraints(modifier = Modifier.weight(0.2f)) {
@@ -153,8 +163,7 @@ fun PortraitDetailView(
                 Button(
                     onClick = {
                         openDialogSuccess = true
-                        Log.d("MyLog", "РЕЦЕПТ=========Detail=>${recipe} ")
-//                        viewModel.reduceRecipe(recipe)
+                        viewModel.reduceRecipe(recipe = reduceRecipe)
                         navController.navigate(MainScreen.CurrentOrders.route)
 //                        viewModel.insertRecipes(recipe)
                     },
@@ -198,6 +207,18 @@ fun LandscapeDetailView(
     recipe: ModelRecipeItem,
     viewModel: DetailHookahViewModel,
 ) {
+
+    val reduceRecipe = mutableListOf<ReduceRecipeRequest>()
+
+    recipe.matched_tobaccos.forEachIndexed { index, matchedTobacco ->
+        reduceRecipe.add(
+            ReduceRecipeRequest(
+                id = matchedTobacco.id,
+                weight = convertWeightToInt(recipe.taste[index].weight)
+            )
+        )
+    }
+
     var openDialogSuccess by remember { mutableStateOf(false) }
 
     if (openDialogSuccess) {
@@ -241,11 +262,6 @@ fun LandscapeDetailView(
                     style = MaterialTheme.typography.titleLarge,
                 )
                 DetailsRecipeItemCard(input = recipe, isLandscape = true)
-//                LandscapeDetailRecipeCard(
-//                    input = recipe,
-//                    numberRecipe = numberRecipe,
-//                    radius = MaterialTheme.dimens.radius.value
-//                )
             }
         }
         Box(
@@ -257,7 +273,7 @@ fun LandscapeDetailView(
             Column(modifier = Modifier.padding(all = MaterialTheme.dimens.extraSmall)) {
                 Button(
                     onClick = {
-//                        viewModel.reduceRecipe(recipe)
+                        viewModel.reduceRecipe(recipe = reduceRecipe)
                         navController.navigate(MainScreen.CurrentOrders.route)
                         openDialogSuccess = true
                     },

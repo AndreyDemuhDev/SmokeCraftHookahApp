@@ -7,6 +7,8 @@ import com.pidzama.smokecrafthookahapp.data.model.orders.OrdersItem
 import com.pidzama.smokecrafthookahapp.data.network.ApiState
 import com.pidzama.smokecrafthookahapp.data.network.SmokeCraftApi
 import com.pidzama.smokecrafthookahapp.data.remote.authorization.AuthRequest
+import com.pidzama.smokecrafthookahapp.data.remote.reduce.ReduceRecipeRequest
+import com.pidzama.smokecrafthookahapp.data.remote.reduce.ReduceRecipeResponse
 import com.pidzama.smokecrafthookahapp.domain.repository.RecipeRepository
 import com.pidzama.smokecrafthookahapp.presentation.auth.common.StatusAuth
 import kotlinx.coroutines.flow.Flow
@@ -60,6 +62,10 @@ class RecipeRepositoryImpl @Inject constructor(
         safeApiCall {
             apiService.getOrdersList(token)
         }
+
+    override suspend fun reduceRecipe(recipe: List<ReduceRecipeRequest>): ReduceRecipeResponse {
+        return apiService.reduceRecipe(recipe)
+    }
 
 
 //    override suspend fun insertRecipeToArchive(recipe: List<RandomRecipeSubListItem>) {
