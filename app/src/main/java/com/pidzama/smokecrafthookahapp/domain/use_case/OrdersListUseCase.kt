@@ -6,11 +6,11 @@ import com.pidzama.smokecrafthookahapp.domain.repository.RecipeRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class OrdersUseCase @Inject constructor(
+class OrdersListUseCase @Inject constructor(
     private val repo: RecipeRepository,
 ) {
 
-    suspend fun getOrdersScreen(token: String): Flow<ApiState<List<OrdersItem>>> {
+    suspend fun getOrdersList(token: String): Flow<ApiState<List<OrdersItem>>> {
         return repo.getOrdersList(token)
     }
 }

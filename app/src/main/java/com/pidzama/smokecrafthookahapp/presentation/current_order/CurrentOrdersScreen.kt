@@ -1,6 +1,7 @@
 package com.pidzama.smokecrafthookahapp.presentation.current_order
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -17,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -45,8 +47,9 @@ import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun CurrentOrders(
+fun CurrentOrdersScreen(
     navController: NavHostController,
+    navigateToDetailOrder:(Int)-> Unit,
     viewModel: CurrentOrderViewModel,
     modifier: Modifier = Modifier
 ) {
@@ -71,6 +74,7 @@ fun CurrentOrders(
     ) { innerPadding ->
         OrderScreenState(
             state = state,
+            onClickOrder = { navigateToDetailOrder(it) },
             contentPadding = innerPadding
         )
     }
@@ -79,19 +83,21 @@ fun CurrentOrders(
 @Composable
 fun OrderScreenState(
     state: OrdersState,
+    onClickOrder: (Int) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
 
     val screenModifier = Modifier
         .fillMaxSize()
+        .padding(contentPadding)
         .then(modifier)
 
     when (state) {
         is OrdersState.Content -> {
             OrdersScreenContent(
                 state = state,
-                contentPadding = contentPadding,
+                onClickOrder = onClickOrder,
                 modifier = screenModifier
             )
         }
@@ -115,6 +121,7 @@ fun OrderScreenState(
 @Composable
 fun OrdersScreenContent(
     state: OrdersState.Content,
+    onClickOrder: (Int) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
@@ -123,7 +130,11 @@ fun OrdersScreenContent(
         contentPadding = contentPadding
     ) {
         items(state.data, key = { order -> order.id }) { order ->
-            CardItemOrder(order = order, modifier = Modifier.padding(12.dp))
+            CardItemOrder(
+                order = order,
+                onClickOrder = { onClickOrder(order.id) },
+                modifier = Modifier.padding(12.dp)
+            )
         }
     }
 }
@@ -133,6 +144,7 @@ fun OrderScreenEmpty(
     state: OrdersState.Empty,
     modifier: Modifier = Modifier
 ) {
+    Log.d("MyLog", "Экран Empty")
     Text(text = state.message, modifier = Modifier.then(modifier))
 }
 
@@ -141,6 +153,7 @@ fun OrderScreenError(
     state: OrdersState.Error,
     modifier: Modifier = Modifier
 ) {
+    Log.d("MyLog", "Экран Error")
     Text(text = state.error, modifier = Modifier.then(modifier))
 }
 
@@ -149,6 +162,7 @@ fun OrderScreenLoading(
     state: OrdersState.Loading,
     modifier: Modifier = Modifier
 ) {
+    Log.d("MyLog", "Экран Loading")
     Box(contentAlignment = Alignment.Center, modifier = Modifier.then(modifier)) {
         CircularProgressIndicator(
             modifier = Modifier
@@ -160,12 +174,15 @@ fun OrderScreenLoading(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardItemOrder(
     order: OrdersItem,
+    onClickOrder: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
+        onClick = onClickOrder,
         border = BorderStroke(
             width = MaterialTheme.dimens.dp_2,
             MaterialTheme.colorScheme.primary

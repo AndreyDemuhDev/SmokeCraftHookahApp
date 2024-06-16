@@ -1,6 +1,8 @@
 package com.pidzama.smokecrafthookahapp.navigation
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -9,9 +11,11 @@ import androidx.navigation.compose.composable
 import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
 import com.pidzama.smokecrafthookahapp.presentation.archive_orders.OrderArchiveScreen
 import com.pidzama.smokecrafthookahapp.presentation.current_order.CurrentOrderViewModel
-import com.pidzama.smokecrafthookahapp.presentation.current_order.CurrentOrders
+import com.pidzama.smokecrafthookahapp.presentation.current_order.CurrentOrdersScreen
 import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.DetailHookahScreen
 import com.pidzama.smokecrafthookahapp.presentation.detail_hookah.DetailHookahViewModel
+import com.pidzama.smokecrafthookahapp.presentation.detail_order.DetailOrderScreen
+import com.pidzama.smokecrafthookahapp.presentation.detail_order.DetailOrderViewModel
 import com.pidzama.smokecrafthookahapp.presentation.profile.ProfileScreen
 import com.pidzama.smokecrafthookahapp.presentation.profile.ProfileViewModel
 import com.pidzama.smokecrafthookahapp.presentation.random_generation_recipe.RandomGenerationRecipeScreen
@@ -40,8 +44,14 @@ fun MainNavGraph(
         }
         composable(MainScreen.CurrentOrders.route) {
             val viewModel = hiltViewModel<CurrentOrderViewModel>()
-            CurrentOrders(
+            CurrentOrdersScreen(
                 viewModel = viewModel,
+                navigateToDetailOrder = { id ->
+                    navigateToDetailsOrder(
+                        navController = navController,
+                        id = id
+                    )
+                },
                 navController = navController
             )
         }
@@ -69,13 +79,23 @@ fun MainNavGraph(
             val viewModel = hiltViewModel<DetailHookahViewModel>()
             val recipe =
                 navController.previousBackStackEntry?.savedStateHandle?.get<ModelRecipeItem?>("recipe")
-//            val recipeNumber =
-//                navController.previousBackStackEntry?.savedStateHandle?.get<Int?>("numberRecipe")
             if (recipe != null) {
                 DetailHookahScreen(
                     navController = navController,
                     recipe = recipe,
                     viewModel = viewModel
+                )
+            }
+        }
+        composable(route = MainScreen.DetailOrderScreen.route) {
+            val viewModel = hiltViewModel<DetailOrderViewModel>()
+            val id = navController.previousBackStackEntry?.savedStateHandle?.get<Int?>("id")
+            if (id != null) {
+                DetailOrderScreen(
+                    id = id,
+                    viewModel = viewModel,
+                    navController = navController,
+                    modifier = Modifier.fillMaxSize()
                 )
             }
         }
@@ -89,6 +109,7 @@ sealed class MainScreen(val route: String) {
     object OrderArchive : MainScreen("ORDER_ARCHIVE")
     object ChooseGenerateRecipe : MainScreen("CHOOSE_GENERATE_RECIPE")
     object DetailHookahScreen : MainScreen("DETAIL_HOOKAH_SCREEN")
+    object DetailOrderScreen : MainScreen("DETAIL_OREDER_SCREEN")
 }
 
 private fun navigateToDetails(
@@ -100,5 +121,15 @@ private fun navigateToDetails(
     navController.currentBackStackEntry?.savedStateHandle?.set("numberRecipe", numberRecipe)
     navController.navigate(
         route = MainScreen.DetailHookahScreen.route
+    )
+}
+
+private fun navigateToDetailsOrder(
+    navController: NavController,
+    id: Int,
+) {
+    navController.currentBackStackEntry?.savedStateHandle?.set("id", id)
+    navController.navigate(
+        route = MainScreen.DetailOrderScreen.route
     )
 }

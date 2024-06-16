@@ -7,6 +7,8 @@ import com.pidzama.smokecrafthookahapp.data.model.orders.OrdersItem
 import com.pidzama.smokecrafthookahapp.data.network.ApiState
 import com.pidzama.smokecrafthookahapp.data.network.SmokeCraftApi
 import com.pidzama.smokecrafthookahapp.data.remote.authorization.AuthRequest
+import com.pidzama.smokecrafthookahapp.data.remote.order.OrderRequest
+import com.pidzama.smokecrafthookahapp.data.remote.order.OrderResponse
 import com.pidzama.smokecrafthookahapp.data.remote.reduce.ReduceRecipeRequest
 import com.pidzama.smokecrafthookahapp.data.remote.reduce.ReduceRecipeResponse
 import com.pidzama.smokecrafthookahapp.domain.repository.RecipeRepository
@@ -49,11 +51,6 @@ class RecipeRepositoryImpl @Inject constructor(
             apiService.getRandomGenerateRecipeList(token = token)
         }
 
-//    override suspend fun reduceRecipe(recipe: RandomRecipeSubList): Flow<ApiState<ReduceRecipeResponse>> =
-//        safeApiCall {
-//            apiService.reduceRecipe(recipe = recipe)
-//        }
-
     override suspend fun getListArchiveRecipes(): List<RandomRecipeSubListItem> {
         return recipeDao.getListArchiveTobaccos()
     }
@@ -67,9 +64,13 @@ class RecipeRepositoryImpl @Inject constructor(
         return apiService.reduceRecipe(recipe)
     }
 
+    override suspend fun createOrder(order: OrderRequest): OrderResponse {
+        return apiService.createOrder(order = order)
+    }
 
-//    override suspend fun insertRecipeToArchive(recipe: List<RandomRecipeSubListItem>) {
-//        return recipeDao.insertRecipeToDataBase(recipe)
-//    }
+    override suspend fun getInfoOrder(id: Int): Flow<ApiState<OrderResponse>> =
+        safeApiCall {
+            apiService.getInfoOrder(id = id)
+        }
 
 }

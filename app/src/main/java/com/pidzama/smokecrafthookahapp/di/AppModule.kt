@@ -16,11 +16,13 @@ import com.pidzama.smokecrafthookahapp.data.repository.RecipeRepositoryImpl
 import com.pidzama.smokecrafthookahapp.domain.model.RecipeMapper
 import com.pidzama.smokecrafthookahapp.domain.repository.RecipeRepository
 import com.pidzama.smokecrafthookahapp.domain.use_case.AppUseCase
+import com.pidzama.smokecrafthookahapp.domain.use_case.CreateOrderUseCase
 import com.pidzama.smokecrafthookahapp.domain.use_case.GetAllRecipesInDataBaseUseCase
 import com.pidzama.smokecrafthookahapp.domain.use_case.GetAllTobaccosListUseCase
 import com.pidzama.smokecrafthookahapp.domain.use_case.InsertRecipeToArchiveUseCase
 import com.pidzama.smokecrafthookahapp.domain.use_case.LoginUseCase
-import com.pidzama.smokecrafthookahapp.domain.use_case.OrdersUseCase
+import com.pidzama.smokecrafthookahapp.domain.use_case.OrderInfoUseCase
+import com.pidzama.smokecrafthookahapp.domain.use_case.OrdersListUseCase
 import com.pidzama.smokecrafthookahapp.domain.use_case.RecipesUseCase
 import com.pidzama.smokecrafthookahapp.domain.use_case.ReduceRecipeUseCase
 import com.pidzama.smokecrafthookahapp.utils.Constants.Database.NAME_DATABASE
@@ -93,7 +95,9 @@ object AppModule {
             getAllRecipesInDataBaseUseCase = GetAllRecipesInDataBaseUseCase(recipeRepository),
             insertRecipeToArchiveUseCase = InsertRecipeToArchiveUseCase(recipeRepository),
             reduceRecipeUseCase = ReduceRecipeUseCase(recipeRepository),
-            orders = OrdersUseCase(recipeRepository)
+            ordersList = OrdersListUseCase(recipeRepository),
+            createOrder = CreateOrderUseCase(recipeRepository),
+            getInfoOrder = OrderInfoUseCase(recipeRepository)
         )
     }
 

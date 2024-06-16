@@ -7,7 +7,8 @@ import com.pidzama.smokecrafthookahapp.data.network.doOnFailure
 import com.pidzama.smokecrafthookahapp.data.network.doOnLoading
 import com.pidzama.smokecrafthookahapp.data.network.doOnSuccess
 import com.pidzama.smokecrafthookahapp.data.repository.JwtTokenDataStore
-import com.pidzama.smokecrafthookahapp.domain.use_case.OrdersUseCase
+import com.pidzama.smokecrafthookahapp.domain.use_case.AppUseCase
+import com.pidzama.smokecrafthookahapp.domain.use_case.OrdersListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CurrentOrderViewModel @Inject constructor(
-    private val useCase: OrdersUseCase,
+    private val useCase: AppUseCase,
     private val dataStoreToken: JwtTokenDataStore,
 ) : ViewModel() {
 
@@ -36,7 +37,7 @@ class CurrentOrderViewModel @Inject constructor(
     private fun getOrderList() {
         viewModelScope.launch {
             try {
-                useCase.getOrdersScreen(dataStoreToken.getAccessJwt().toString())
+                useCase.ordersList.getOrdersList(dataStoreToken.getAccessJwt().toString())
                     .doOnSuccess {
                         if (it.isNotEmpty()) {
                             _stateOrder.value = OrdersState.Content(it)
