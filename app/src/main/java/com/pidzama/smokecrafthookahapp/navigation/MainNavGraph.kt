@@ -1,6 +1,7 @@
 package com.pidzama.smokecrafthookahapp.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -27,12 +28,14 @@ import com.pidzama.smokecrafthookahapp.presentation.recipe_generation_method.Rec
 fun MainNavGraph(
     navController: NavHostController,
     darkTheme: Boolean, onThemeUpdated: () -> Unit,
-    viewModelMain: ProfileViewModel
+    viewModelMain: ProfileViewModel,
+    modifier: Modifier = Modifier
 ) {
     NavHost(
         navController = navController,
         route = Graph.MAIN,
-        startDestination = MainScreen.CurrentOrders.route
+        startDestination = MainScreen.CurrentOrders.route,
+        modifier = modifier
     ) {
         composable(MainScreen.Profile.route) {
             ProfileScreen(
@@ -52,7 +55,8 @@ fun MainNavGraph(
                         id = id
                     )
                 },
-                navController = navController
+                navController = navController,
+                modifier = Modifier.fillMaxSize()
             )
         }
         composable(MainScreen.RecipeGenerationMethod.route) {

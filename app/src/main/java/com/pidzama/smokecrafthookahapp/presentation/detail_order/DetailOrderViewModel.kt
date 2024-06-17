@@ -7,21 +7,23 @@ import com.pidzama.smokecrafthookahapp.data.network.doOnFailure
 import com.pidzama.smokecrafthookahapp.data.network.doOnLoading
 import com.pidzama.smokecrafthookahapp.data.network.doOnSuccess
 import com.pidzama.smokecrafthookahapp.data.remote.order.OrderResponse
+import com.pidzama.smokecrafthookahapp.data.repository.JwtTokenDataStore
 import com.pidzama.smokecrafthookahapp.domain.use_case.AppUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailOrderViewModel @Inject constructor(
-    private val useCase: AppUseCase
+    private val useCase: AppUseCase,
 ) : ViewModel() {
 
-    private val _detailOrderState = MutableStateFlow<DetailOrderState>(DetailOrderState.Initial)
+    private val _detailOrderState = MutableStateFlow(DetailOrderState.Initial)
     val detailOrderState: StateFlow<DetailOrderState>
         get() = _detailOrderState.asStateFlow()
 
@@ -31,24 +33,20 @@ class DetailOrderViewModel @Inject constructor(
             try {
                 useCase.getInfoOrder.getOrderInfo(id = id)
                     .doOnSuccess {
-                        Log.d("MyLog", "тут id $id")
                         _detailOrderState.value = DetailOrderState.Content(it)
                     }
                     .doOnFailure {
                         _detailOrderState.value = DetailOrderState.Error("Ошибка")
                     }
                     .doOnLoading {
-                        Log.d("MyLog", "тут id $id")
                         _detailOrderState.value = DetailOrderState.Loading
-                    }
+                    }.collect()
             } catch (e: HttpException) {
                 _detailOrderState.value = DetailOrderState.Error(error = "Ошибка соединения")
             } catch (e: Exception) {
                 _detailOrderState.value = DetailOrderState.Error(error = "Error")
             }
-
         }
-
     }
 
 }
@@ -67,6 +65,6 @@ sealed interface DetailOrderState {
     object Loading : DetailOrderState
 
     companion object {
-        val Initial = Loading
+        val Initial: DetailOrderState = Loading
     }
 }

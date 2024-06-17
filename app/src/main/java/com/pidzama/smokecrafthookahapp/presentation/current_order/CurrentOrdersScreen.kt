@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -49,7 +50,7 @@ import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 @Composable
 fun CurrentOrdersScreen(
     navController: NavHostController,
-    navigateToDetailOrder:(Int)-> Unit,
+    navigateToDetailOrder: (Int) -> Unit,
     viewModel: CurrentOrderViewModel,
     modifier: Modifier = Modifier
 ) {
@@ -67,7 +68,6 @@ fun CurrentOrdersScreen(
         floatingActionButton = {
             ButtonAddNewOrder(
                 onClick = { navController.navigate(MainScreen.RecipeGenerationMethod.route) },
-                modifier = Modifier.padding(bottom = 60.dp)
             )
         },
         modifier = modifier
@@ -75,7 +75,7 @@ fun CurrentOrdersScreen(
         OrderScreenState(
             state = state,
             onClickOrder = { navigateToDetailOrder(it) },
-            contentPadding = innerPadding
+            modifier = Modifier.padding(innerPadding)
         )
     }
 }
@@ -84,19 +84,19 @@ fun CurrentOrdersScreen(
 fun OrderScreenState(
     state: OrdersState,
     onClickOrder: (Int) -> Unit,
-    contentPadding: PaddingValues,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
 
     val screenModifier = Modifier
         .fillMaxSize()
-        .padding(contentPadding)
         .then(modifier)
 
     when (state) {
         is OrdersState.Content -> {
             OrdersScreenContent(
                 state = state,
+                contentPadding = contentPadding,
                 onClickOrder = onClickOrder,
                 modifier = screenModifier
             )

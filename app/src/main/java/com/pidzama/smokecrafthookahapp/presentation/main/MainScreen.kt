@@ -1,12 +1,22 @@
 package com.pidzama.smokecrafthookahapp.presentation.main
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
-import androidx.compose.material3.*
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -25,7 +35,6 @@ import com.pidzama.smokecrafthookahapp.presentation.common.nonComposableText
 import com.pidzama.smokecrafthookahapp.presentation.profile.ProfileViewModel
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
     navController: NavHostController = rememberNavController(),
@@ -35,21 +44,20 @@ fun MainScreen(
 
     Scaffold(
         bottomBar = { BottomBarApp(navController = navController) },
-        backgroundColor = MaterialTheme.colorScheme.background
-    ) {
-        Surface(
-            content = {
-                Column {
-                    MainNavGraph(
-                        navController = navController,
-                        darkTheme = darkTheme, onThemeUpdated = onThemeUpdated,
-                        viewModelMain = viewModelMain
-                    )
-                }
-            }
+        backgroundColor = MaterialTheme.colorScheme.background,
+        modifier = Modifier
+            .statusBarsPadding()
+            .navigationBarsPadding()
+    ) { innerPadding ->
+        MainNavGraph(
+            navController = navController,
+            darkTheme = darkTheme, onThemeUpdated = onThemeUpdated,
+            viewModelMain = viewModelMain,
+            modifier = Modifier.padding(innerPadding)
         )
     }
 }
+
 
 @Composable
 fun BottomBarApp(navController: NavHostController) {

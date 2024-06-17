@@ -24,10 +24,10 @@ interface RecipeRepository {
 
     suspend fun getOrdersList(token: String): Flow<ApiState<List<OrdersItem>>>
 
-    suspend fun reduceRecipe(recipe: List<ReduceRecipeRequest>):ReduceRecipeResponse
+    suspend fun reduceRecipe(recipe: List<ReduceRecipeRequest>): ReduceRecipeResponse
 
     suspend fun createOrder(order: OrderRequest): OrderResponse
 
-    suspend fun getInfoOrder(id: Int):Flow<ApiState<OrderResponse>>
+    suspend fun getInfoOrder(id: Int): Flow<ApiState<OrderResponse>>
 
 }
