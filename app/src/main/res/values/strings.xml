@@ -45,5 +45,7 @@
     <string name="count_hookah">"Количество кальянов: "</string>
     <string name="hookah">"Кальян "</string>
     <string name="create_new_order">"Создать новый заказ"</string>
+    <string name="add">"Добавить"</string>
+    <string name="close">"Закрыть"</string>
 
 </resources>
