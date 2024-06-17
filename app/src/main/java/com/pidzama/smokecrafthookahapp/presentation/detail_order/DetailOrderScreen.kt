@@ -1,13 +1,19 @@
 package com.pidzama.smokecrafthookahapp.presentation.detail_order
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -19,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.pidzama.smokecrafthookahapp.R
@@ -49,11 +56,6 @@ fun DetailOrderScreen(
                 canNavigateBack = true,
                 title = R.string.order
             )
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = { viewModel.getInfoOrder(id) }) {
-
-            }
         },
         bottomBar = { BottomBarApp(navController = navController) },
         modifier = modifier
@@ -106,7 +108,26 @@ fun DetailOrderContent(
     modifier: Modifier = Modifier
 ) {
 
-    OrderItemCard(input = state.data, onClickToDetailsScreen = { }, modifier = modifier)
+    Column(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
+        Text(
+            text = "Стол №${state.data.table_number}",
+            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.inverseSurface,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp)
+        )
+        OrderItemCard(
+            input = state.data,
+            title = R.string.hookah,
+            onClickToDetailsScreen = { },
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 190.dp)
+                .padding(vertical = 13.dp, horizontal = 16.dp)
+        )
+    }
 }
 
 

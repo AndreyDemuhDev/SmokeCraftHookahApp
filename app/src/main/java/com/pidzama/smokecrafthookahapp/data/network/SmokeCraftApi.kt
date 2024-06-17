@@ -55,6 +55,8 @@ interface SmokeCraftApi {
     ): OrderResponse
 
     //получение информации по заказу
-    @GET("api/v1/reservations/{id}/")
-    suspend fun getInfoOrder(@Path("id") id: Int): Response<OrderResponse>
+    @GET("/api/v1/reservations/{id}/")
+    suspend fun getInfoOrder(
+        @Path("id") id: Int
+    ): Response<OrderResponse>
 }

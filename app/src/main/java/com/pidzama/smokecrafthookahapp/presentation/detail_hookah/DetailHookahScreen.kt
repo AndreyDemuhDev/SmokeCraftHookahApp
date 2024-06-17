@@ -189,7 +189,7 @@ fun PortraitDetailView(
                 }
                 Spacer(modifier = Modifier.height(MaterialTheme.dimens.small1))
                 OutlinedButton(
-                    onClick = { navController.navigate(MainScreen.CurrentOrders.route) },
+                    onClick = { navController.popBackStack(MainScreen.CurrentOrders.route, false) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height((screenWidth / 8).dp),
@@ -281,6 +281,14 @@ fun LandscapeDetailView(
                 Button(
                     onClick = {
                         viewModel.reduceRecipe(recipe = reduceRecipe)
+                        viewModel.createOrder(
+                            order = OrderRequest(
+                                is_active = true,
+                                table_number = 1,
+                                hookah_count = 4,
+                                recipes = recipe.taste
+                            )
+                        )
                         navController.navigate(MainScreen.CurrentOrders.route)
                         openDialogSuccess = true
                     },
@@ -299,7 +307,7 @@ fun LandscapeDetailView(
                 }
                 Spacer(modifier = Modifier.height(MaterialTheme.dimens.small1))
                 OutlinedButton(
-                    onClick = { navController.navigate(MainScreen.CurrentOrders.route) },
+                    onClick = { navController.popBackStack(MainScreen.CurrentOrders.route, false) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(MaterialTheme.dimens.buttonHeight),
