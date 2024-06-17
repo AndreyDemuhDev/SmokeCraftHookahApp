@@ -42,6 +42,7 @@ import androidx.navigation.NavHostController
 import com.pidzama.smokecrafthookahapp.R
 import com.pidzama.smokecrafthookahapp.data.model.orders.OrdersItem
 import com.pidzama.smokecrafthookahapp.navigation.MainScreen
+import com.pidzama.smokecrafthookahapp.presentation.common.FloatingActionImageButton
 import com.pidzama.smokecrafthookahapp.presentation.common.TopBarContent
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 
@@ -66,7 +67,7 @@ fun CurrentOrdersScreen(
             )
         },
         floatingActionButton = {
-            ButtonAddNewOrder(
+            FloatingActionImageButton(
                 onClick = { navController.navigate(MainScreen.RecipeGenerationMethod.route) },
             )
         },
@@ -270,25 +271,4 @@ fun DescriptionCardOrder(
     }
 }
 
-@Composable
-fun ButtonAddNewOrder(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    FloatingActionButton(
-        onClick = onClick,
-        containerColor = MaterialTheme.colorScheme.primary,
-        contentColor = MaterialTheme.colorScheme.background,
-        modifier = modifier
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.add_plus),
-            contentDescription = stringResource(
-                id = R.string.create_new_order
-            ),
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.background),
-            modifier = Modifier.size(26.dp)
-        )
 
-    }
-}

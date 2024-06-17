@@ -1,7 +1,7 @@
 package com.pidzama.smokecrafthookahapp.presentation.detail_order
 
-import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,9 +12,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material3.CircularProgressIndicator
@@ -29,9 +26,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.pidzama.smokecrafthookahapp.R
+import com.pidzama.smokecrafthookahapp.presentation.common.ExtendedFloatingActionCustomButton
 import com.pidzama.smokecrafthookahapp.presentation.common.OrderItemCard
 import com.pidzama.smokecrafthookahapp.presentation.common.TopBarContent
-import com.pidzama.smokecrafthookahapp.presentation.main.BottomBarApp
 
 
 @Composable
@@ -45,7 +42,6 @@ fun DetailOrderScreen(
     val state by viewModel.detailOrderState.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
-        Log.d("MyLog", "ViewModel.getInfoOrder $id (тут id) ${viewModel.getInfoOrder(id)}")
         viewModel.getInfoOrder(id)
     }
 
@@ -57,7 +53,27 @@ fun DetailOrderScreen(
                 title = R.string.order
             )
         },
-        bottomBar = { BottomBarApp(navController = navController) },
+        floatingActionButton = {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+                horizontalAlignment = Alignment.End
+            ) {
+                ExtendedFloatingActionCustomButton(
+                    icon = R.drawable.ic_close,
+                    contentDescription = R.string.close,
+                    onClick = { },
+                    textColor = MaterialTheme.colorScheme.inverseSurface,
+                    backgroundColor = MaterialTheme.colorScheme.error
+                )
+                ExtendedFloatingActionCustomButton(
+                    icon = R.drawable.add_plus,
+                    contentDescription = R.string.add,
+                    onClick = { },
+                    textColor = MaterialTheme.colorScheme.inverseSurface,
+                    backgroundColor = MaterialTheme.colorScheme.primary
+                )
+            }
+        },
         modifier = modifier
             .statusBarsPadding()
             .navigationBarsPadding()
@@ -85,7 +101,6 @@ fun DetailOrderState(
         is DetailOrderState.Content -> {
             DetailOrderContent(
                 state = state,
-                contentPadding = contentPadding,
                 modifier = screenModifier
             )
         }
@@ -104,7 +119,6 @@ fun DetailOrderState(
 @Composable
 fun DetailOrderContent(
     state: DetailOrderState.Content,
-    contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
 
