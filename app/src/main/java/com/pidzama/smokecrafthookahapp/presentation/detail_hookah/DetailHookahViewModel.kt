@@ -3,6 +3,7 @@ package com.pidzama.smokecrafthookahapp.presentation.detail_hookah
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubListItem
+import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
 import com.pidzama.smokecrafthookahapp.data.network.doOnSuccess
 import com.pidzama.smokecrafthookahapp.data.remote.order.OrderRequest
 import com.pidzama.smokecrafthookahapp.data.remote.order.OrderResponse
@@ -22,6 +23,7 @@ class DetailHookahViewModel @Inject constructor(
 
     private val _listArchiveTobaccos = MutableStateFlow(emptyList<RandomRecipeSubListItem>())
     val listArchiveTobaccos: StateFlow<List<RandomRecipeSubListItem>> = _listArchiveTobaccos
+
 
     fun reduceRecipe(recipe: List<ReduceRecipeRequest>) {
         viewModelScope.launch {

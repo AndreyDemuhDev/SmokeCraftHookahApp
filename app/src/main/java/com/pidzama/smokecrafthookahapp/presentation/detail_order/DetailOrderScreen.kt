@@ -18,14 +18,19 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.pidzama.smokecrafthookahapp.R
+import com.pidzama.smokecrafthookahapp.navigation.MainScreen
+import com.pidzama.smokecrafthookahapp.presentation.common.CloseOrderAlertDialog
 import com.pidzama.smokecrafthookahapp.presentation.common.ExtendedFloatingActionCustomButton
 import com.pidzama.smokecrafthookahapp.presentation.common.OrderItemCard
 import com.pidzama.smokecrafthookahapp.presentation.common.TopBarContent
@@ -40,6 +45,13 @@ fun DetailOrderScreen(
 ) {
 
     val state by viewModel.detailOrderState.collectAsState()
+
+    val openAlertDialog: MutableState<Boolean> = rememberSaveable() { mutableStateOf(false) }
+
+    CloseOrderAlertDialog(
+        openAlertDialog,
+        action = {}
+    )
 
     LaunchedEffect(key1 = Unit) {
         viewModel.getInfoOrder(id)
@@ -61,14 +73,14 @@ fun DetailOrderScreen(
                 ExtendedFloatingActionCustomButton(
                     icon = R.drawable.ic_close,
                     contentDescription = R.string.close,
-                    onClick = { },
+                    onClick = { openAlertDialog.value = true },
                     textColor = MaterialTheme.colorScheme.inverseSurface,
                     backgroundColor = MaterialTheme.colorScheme.error
                 )
                 ExtendedFloatingActionCustomButton(
                     icon = R.drawable.add_plus,
                     contentDescription = R.string.add,
-                    onClick = { },
+                    onClick = { navController.navigate(MainScreen.RecipeGenerationMethod.route) },
                     textColor = MaterialTheme.colorScheme.inverseSurface,
                     backgroundColor = MaterialTheme.colorScheme.primary
                 )
