@@ -80,14 +80,16 @@ fun MainNavGraph(
                 })
         }
         composable(route = MainScreen.DetailHookahScreen.route) {
-            val viewModel = hiltViewModel<DetailHookahViewModel>()
+            val viewModelDetailHookah = hiltViewModel<DetailHookahViewModel>()
+            val viewModelDetailOrder = hiltViewModel<DetailOrderViewModel>()
             val recipe =
                 navController.previousBackStackEntry?.savedStateHandle?.get<ModelRecipeItem?>("recipe")
             if (recipe != null) {
                 DetailHookahScreen(
                     navController = navController,
                     recipe = recipe,
-                    viewModel = viewModel
+                    viewModelDetailHookah = viewModelDetailHookah,
+                    viewModelDetailOrder = viewModelDetailOrder
                 )
             }
         }
