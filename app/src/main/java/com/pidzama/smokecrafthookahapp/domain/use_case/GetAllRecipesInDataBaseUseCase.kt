@@ -1,6 +1,6 @@
 package com.pidzama.smokecrafthookahapp.domain.use_case
 
-import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubListItem
+import com.pidzama.smokecrafthookahapp.data.dto.RandomRecipeSubListItem
 import com.pidzama.smokecrafthookahapp.domain.repository.RecipeRepository
 import javax.inject.Inject
 

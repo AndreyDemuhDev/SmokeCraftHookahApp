@@ -1,8 +1,8 @@
 package com.pidzama.smokecrafthookahapp.domain.repository
 
-import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubListItem
-import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
-import com.pidzama.smokecrafthookahapp.data.model.orders.OrdersItem
+import com.pidzama.smokecrafthookahapp.data.dto.RandomRecipeSubListItem
+import com.pidzama.smokecrafthookahapp.data.dto.generate_model.ModelRecipeItem
+import com.pidzama.smokecrafthookahapp.data.dto.orders.OrdersItem
 import com.pidzama.smokecrafthookahapp.data.network.ApiState
 import com.pidzama.smokecrafthookahapp.data.remote.authorization.AuthRequest
 import com.pidzama.smokecrafthookahapp.data.remote.order.OrderRequest
@@ -29,5 +29,7 @@ interface RecipeRepository {
     suspend fun createOrder(order: OrderRequest): OrderResponse
 
     suspend fun getInfoOrder(id: Int): Flow<ApiState<OrderResponse>>
+
+    suspend fun deleteOrder(id: Int)
 
 }

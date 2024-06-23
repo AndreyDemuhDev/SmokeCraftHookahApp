@@ -6,16 +6,15 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
 import com.pidzama.smokecrafthookahapp.data.network.doOnFailure
 import com.pidzama.smokecrafthookahapp.data.network.doOnLoading
 import com.pidzama.smokecrafthookahapp.data.network.doOnSuccess
 import com.pidzama.smokecrafthookahapp.data.repository.JwtTokenDataStore
+import com.pidzama.smokecrafthookahapp.domain.entities.RecipeModelEntity
 import com.pidzama.smokecrafthookahapp.domain.use_case.AppUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -86,7 +85,7 @@ fun String.substringToken(token: String) =
     this.substring(1, token.length - 1)
 
 data class GenerateRecipeUiState(
-    val data: List<ModelRecipeItem> = emptyList(),
+    val data: List<RecipeModelEntity> = emptyList(),
     val error: String = "",
     val isLoading: Boolean = false
 )

@@ -47,6 +47,12 @@ class DetailOrderViewModel @Inject constructor(
         }
     }
 
+    fun deleteOrder(id: Int) {
+        viewModelScope.launch {
+            useCase.deleteOrder.deleteOrder(id = id)
+        }
+    }
+
 }
 
 

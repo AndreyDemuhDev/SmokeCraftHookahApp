@@ -1,13 +1,7 @@
-package com.pidzama.smokecrafthookahapp.data.model
+package com.pidzama.smokecrafthookahapp.data.dto
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverter
-import androidx.room.TypeConverters
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "Tobaccos")
 data class RandomRecipeSubListItem(

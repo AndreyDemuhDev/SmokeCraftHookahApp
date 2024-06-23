@@ -45,7 +45,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.center
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
+import com.pidzama.smokecrafthookahapp.domain.entities.RecipeModelEntity
 import com.pidzama.smokecrafthookahapp.utils.converterWeightToString
 import kotlin.math.cos
 import kotlin.math.sin
@@ -56,7 +56,7 @@ private const val DividerLengthInDegrees = 1.8f
 @OptIn(ExperimentalTextApi::class)
 @Composable
 fun PieChartRecipeItem(
-    input: ModelRecipeItem,
+    input: RecipeModelEntity,
     modifier: Modifier = Modifier
 ) {
     val currentState = remember {
@@ -82,10 +82,10 @@ fun PieChartRecipeItem(
     } //анимация угла смещения
 
     val textMeasurer = rememberTextMeasurer()               //настройка отображения текста
-    val textMeasureResults = remember(input.taste) {
-        input.taste.map {
+    val textMeasureResults = remember(input.tasteModel) {
+        input.tasteModel.map {
             textMeasurer.measure(
-                text = "${it.weight.toInt()} %",
+                text = "${it.weightTaste.toInt()} %",
                 style = TextStyle(
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
@@ -104,8 +104,8 @@ fun PieChartRecipeItem(
         val size = Size(innerRadius * 2, innerRadius * 2)   //размер диаграммы
         var startAngle = -90f                               //начальный угол отрисовки диаграммы
 
-        input.taste.calculationProportions {
-            it.weight.toFloat()
+        input.tasteModel.calculationProportions {
+            it.weightTaste.toFloat()
         }.forEachIndexed { index, proportion ->
             val sweep = proportion * angleOffset
             val textMeasureResult = textMeasureResults[index]
@@ -113,7 +113,7 @@ fun PieChartRecipeItem(
             val textCenter = textSize.center
             val textPosition = ((startAngle + sweep / 2)).degreeToAngle
             drawArc(
-                color = setColorTaste(input.matched_tobaccos[index].taste_group),
+                color = setColorTaste(input.tasteModel[index].groupTaste),
                 startAngle = startAngle + DividerLengthInDegrees / 2,
                 sweepAngle = sweep - DividerLengthInDegrees,
                 topLeft = topLeft,
@@ -124,7 +124,7 @@ fun PieChartRecipeItem(
 
             drawText(
                 textLayoutResult = textMeasureResult,
-                color = setColorTaste(input.matched_tobaccos[index].taste_group),
+                color = setColorTaste(input.tasteModel[index].groupTaste),
                 topLeft = Offset(
                     -textCenter.x + center.x + (innerRadius + stroke.width * 2.2f) * cos(
                         textPosition
@@ -142,7 +142,7 @@ fun PieChartRecipeItem(
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
 fun LegendRecipeItem(
-    input: ModelRecipeItem,
+    input: RecipeModelEntity,
     isDetails: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -150,13 +150,13 @@ fun LegendRecipeItem(
         Column(
             verticalArrangement = Arrangement.Top
         ) {
-            input.taste.forEachIndexed { index, tabacco ->
+            input.tasteModel.forEachIndexed { index, tabacco ->
                 Card(
                     modifier = Modifier
                         .padding(vertical = 4.dp),
                     border = BorderStroke(
                         width = 2.dp,
-                        color = setColorTaste(input.matched_tobaccos[index].taste_group)
+                        color = setColorTaste(tabacco.groupTaste)
                     ),
                     shape = MaterialTheme.shapes.small,
                     colors = CardDefaults.cardColors(
@@ -169,19 +169,19 @@ fun LegendRecipeItem(
                                 SpanStyle(
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight.W500,
-                                    color = setColorTaste(input.matched_tobaccos[index].taste_group)
+                                    color = setColorTaste(tabacco.groupTaste)
                                 )
                             ) {
-                                append("${tabacco.name}, ")
+                                append("${tabacco.nameTaste}, ")
                             }
                             withStyle(
                                 SpanStyle(
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight.W500,
-                                    color = setColorTaste(input.matched_tobaccos[index].taste_group)
+                                    color = setColorTaste(tabacco.groupTaste)
                                 )
                             ) {
-                                append(input.matched_tobaccos[index].brand)
+                                append(tabacco.brandTaste)
                             }
                             if (isDetails) {
                                 withStyle(
@@ -194,7 +194,7 @@ fun LegendRecipeItem(
                                     append(
                                         " ${
                                             converterWeightToString(
-                                                tabacco.weight
+                                                tabacco.weightTaste
                                             )
                                         }"
                                     )
@@ -217,7 +217,7 @@ fun LegendRecipeItem(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TitleRecipeItem(
-    input: ModelRecipeItem,
+    input: RecipeModelEntity,
     modifier: Modifier = Modifier
 ) {
     Text(
@@ -252,7 +252,7 @@ fun TitleRecipeItem(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecipeItemCard(
-    input: ModelRecipeItem,
+    input: RecipeModelEntity,
     onClickToDetailsScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -288,7 +288,7 @@ fun RecipeItemCard(
 
 @Composable
 fun DetailsRecipeItemCard(
-    input: ModelRecipeItem,
+    input: RecipeModelEntity,
     isLandscape: Boolean,
     modifier: Modifier = Modifier
 ) {

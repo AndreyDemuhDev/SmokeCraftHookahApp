@@ -1,8 +1,8 @@
 package com.pidzama.smokecrafthookahapp.data.network
 
-import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubListItem
-import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
-import com.pidzama.smokecrafthookahapp.data.model.orders.OrdersItem
+import com.pidzama.smokecrafthookahapp.data.dto.RandomRecipeSubListItem
+import com.pidzama.smokecrafthookahapp.data.dto.generate_model.ModelRecipeItem
+import com.pidzama.smokecrafthookahapp.data.dto.orders.OrdersItem
 import com.pidzama.smokecrafthookahapp.data.remote.authorization.AuthRequest
 import com.pidzama.smokecrafthookahapp.data.remote.order.OrderRequest
 import com.pidzama.smokecrafthookahapp.data.remote.order.OrderResponse
@@ -11,6 +11,7 @@ import com.pidzama.smokecrafthookahapp.data.remote.reduce.ReduceRecipeResponse
 import com.pidzama.smokecrafthookahapp.presentation.auth.common.AuthToken
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -57,6 +58,11 @@ interface SmokeCraftApi {
     //получение информации по заказу
     @GET("/api/v1/reservations/{id}/")
     suspend fun getInfoOrder(
+        @Path("id") id: Int
+    ): Response<OrderResponse>
+
+    @DELETE("/api/v1/reservations/{id}/")
+    suspend fun deleteOrder(
         @Path("id") id: Int
     ): Response<OrderResponse>
 }

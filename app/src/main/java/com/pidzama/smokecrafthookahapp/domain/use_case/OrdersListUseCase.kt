@@ -1,6 +1,6 @@
 package com.pidzama.smokecrafthookahapp.domain.use_case
 
-import com.pidzama.smokecrafthookahapp.data.model.orders.OrdersItem
+import com.pidzama.smokecrafthookahapp.data.dto.orders.OrdersItem
 import com.pidzama.smokecrafthookahapp.data.network.ApiState
 import com.pidzama.smokecrafthookahapp.domain.repository.RecipeRepository
 import kotlinx.coroutines.flow.Flow

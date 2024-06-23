@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material3.CircularProgressIndicator
@@ -50,7 +52,10 @@ fun DetailOrderScreen(
 
     CloseOrderAlertDialog(
         openAlertDialog,
-        action = {}
+        action = {
+            viewModel.deleteOrder(id)
+            navController.navigate(MainScreen.CurrentOrders.route)
+        }
     )
 
     LaunchedEffect(key1 = Unit) {
@@ -144,15 +149,19 @@ fun DetailOrderContent(
                 .fillMaxWidth()
                 .padding(vertical = 12.dp)
         )
-        OrderItemCard(
-            input = state.data,
-            title = R.string.hookah,
-            onClickToDetailsScreen = { },
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = 190.dp)
-                .padding(vertical = 13.dp, horizontal = 16.dp)
-        )
+        LazyColumn {
+            items(state.data.recipes) { item->
+                OrderItemCard(
+                    input = item,
+                    onClickToDetailsScreen = { },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 190.dp)
+                        .padding(vertical = 13.dp, horizontal = 16.dp)
+                )
+            }
+        }
+
     }
 }
 

@@ -25,7 +25,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,11 +40,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pidzama.smokecrafthookahapp.R
-import com.pidzama.smokecrafthookahapp.data.model.generate_model.MatchedTobacco
-import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
-import com.pidzama.smokecrafthookahapp.data.model.generate_model.Taste
 import com.pidzama.smokecrafthookahapp.data.remote.order.OrderRequest
 import com.pidzama.smokecrafthookahapp.data.remote.reduce.ReduceRecipeRequest
+import com.pidzama.smokecrafthookahapp.domain.entities.RecipeModelEntity
 import com.pidzama.smokecrafthookahapp.navigation.Graph
 import com.pidzama.smokecrafthookahapp.navigation.MainScreen
 import com.pidzama.smokecrafthookahapp.presentation.common.DetailsRecipeItemCard
@@ -62,61 +59,39 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetSuccess
 @Composable
 fun DetailHookahScreen(
     navController: NavHostController = rememberNavController(),
-    recipe: ModelRecipeItem,
+    recipe: RecipeModelEntity,
     viewModelDetailHookah: DetailHookahViewModel,
     viewModelDetailOrder: DetailOrderViewModel
 ) {
 
     val reduceRecipe = emptyList<ReduceRecipeRequest>().toMutableList()
 
-    val listRecipesOnOrder = listOf(
-        ModelRecipeItem(
-            name = "Клубника",
-            taste = listOf(
-                Taste(
-                    name = "Клубника",
-                    weight = 70.0
-                ),
-                Taste(
-                    name = "Мороженое",
-                    weight = 30.0
-                )
-            ),
-            matched_tobaccos = listOf(
-                MatchedTobacco(
-                    brand = "brand 1",
-                    created = "create",
-                    id = 1,
-                    is_active = true,
-                    organization = 1,
-                    taste = "Клубника",
-                    taste_group = "Фруктовые",
-                    updated = "update",
-                    weight = 10
-                ),
-                MatchedTobacco(
-                    brand = "brand 2",
-                    created = "create",
-                    id = 2,
-                    is_active = true,
-                    organization = 2,
-                    taste = "Манго",
-                    taste_group = "Ягодные",
-                    updated = "update",
-                    weight = 10
-                )
-            )
-        )
-    )
 
-    recipe.matched_tobaccos.forEachIndexed { index, tobacco ->
+    recipe.tasteModel.forEachIndexed { index, tobacco ->
         reduceRecipe.add(
             ReduceRecipeRequest(
-                recipe.matched_tobaccos[index].id,
-                convertWeightToInt((recipe.taste[index].weight))
+                recipe.tasteModel[index].idTaste,
+                convertWeightToInt((recipe.tasteModel[index].weightTaste))
             )
         )
     }
+
+//    recipe.tasteModel.forEachIndexed { index, taste ->
+//        reduceRecipe.add(
+//            RecipeModel(
+//                name = recipe.name,
+//                tasteModel = recipe.tasteModel.map {
+//                    RecipeModel.Taste(
+//                        idTaste = taste.idTaste,
+//                        nameTaste = taste.nameTaste,
+//                        weightTaste = taste.weightTaste,
+//                        brandTaste = taste.brandTaste,
+//                        tasteGroup = taste.tasteGroup
+//                    )
+//                }
+//            )
+//        )
+//    }
     Log.d("MyLog", "reduceRecipe $reduceRecipe")
 
     Scaffold(
@@ -132,7 +107,6 @@ fun DetailHookahScreen(
                 PortraitDetailView(
                     navController = navController,
                     recipe = recipe,
-                    listRecipes =listRecipesOnOrder,
                     reduceRecipe = reduceRecipe,
                     viewModel = viewModelDetailHookah
                 )
@@ -140,7 +114,6 @@ fun DetailHookahScreen(
                 LandscapeDetailView(
                     navController = navController,
                     recipe = recipe,
-                    listRecipes =listRecipesOnOrder,
                     viewModel = viewModelDetailHookah
                 )
             }
@@ -152,9 +125,8 @@ fun DetailHookahScreen(
 @Composable
 fun PortraitDetailView(
     navController: NavHostController,
-    recipe: ModelRecipeItem,
+    recipe: RecipeModelEntity,
     reduceRecipe: List<ReduceRecipeRequest>,
-    listRecipes: List<ModelRecipeItem>,
     viewModel: DetailHookahViewModel,
 ) {
 
@@ -216,8 +188,8 @@ fun PortraitDetailView(
                             order = OrderRequest(
                                 is_active = true,
                                 table_number = 3,
-                                hookah_count = 1,
-                                recipes = listRecipes
+                                hookah_count = recipe.tasteModel.size,
+                                recipes = listOf(recipe)
                             )
                         )
                         navController.navigate(MainScreen.CurrentOrders.route) {
@@ -262,21 +234,38 @@ fun PortraitDetailView(
 @Composable
 fun LandscapeDetailView(
     navController: NavHostController,
-    recipe: ModelRecipeItem,
-    listRecipes: List<ModelRecipeItem>,
+    recipe: RecipeModelEntity,
     viewModel: DetailHookahViewModel,
 ) {
 
     val reduceRecipe = mutableListOf<ReduceRecipeRequest>()
 
-    recipe.matched_tobaccos.forEachIndexed { index, matchedTobacco ->
+    recipe.tasteModel.forEachIndexed { index, tobacco ->
         reduceRecipe.add(
             ReduceRecipeRequest(
-                id = matchedTobacco.id,
-                weight = convertWeightToInt(recipe.taste[index].weight)
+                recipe.tasteModel[index].idTaste,
+                convertWeightToInt((recipe.tasteModel[index].weightTaste))
             )
         )
     }
+
+//    recipe.tasteModel.forEachIndexed { index, taste ->
+//        reduceRecipe.add(
+//            RecipeModel(
+//                name = recipe.name,
+//                tasteModel = recipe.tasteModel.map {
+//                    RecipeModel.Taste(
+//                        idTaste = taste.idTaste,
+//                        nameTaste = taste.nameTaste,
+//                        weightTaste = taste.weightTaste,
+//                        brandTaste = taste.brandTaste,
+//                        tasteGroup = taste.tasteGroup
+//                    )
+//                }
+//            )
+//        )
+//    }
+
 
     var openDialogSuccess by remember { mutableStateOf(false) }
 
@@ -337,8 +326,8 @@ fun LandscapeDetailView(
                             order = OrderRequest(
                                 is_active = true,
                                 table_number = 1,
-                                hookah_count = 4,
-                                recipes = listRecipes
+                                hookah_count = recipe.tasteModel.size,
+                                recipes = listOf(recipe)
                             )
                         )
                         navController.navigate(MainScreen.CurrentOrders.route)

@@ -1,7 +1,6 @@
 package com.pidzama.smokecrafthookahapp.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -9,7 +8,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
+import com.pidzama.smokecrafthookahapp.domain.entities.RecipeModelEntity
 import com.pidzama.smokecrafthookahapp.presentation.archive_orders.OrderArchiveScreen
 import com.pidzama.smokecrafthookahapp.presentation.current_order.CurrentOrderViewModel
 import com.pidzama.smokecrafthookahapp.presentation.current_order.CurrentOrdersScreen
@@ -83,7 +82,7 @@ fun MainNavGraph(
             val viewModelDetailHookah = hiltViewModel<DetailHookahViewModel>()
             val viewModelDetailOrder = hiltViewModel<DetailOrderViewModel>()
             val recipe =
-                navController.previousBackStackEntry?.savedStateHandle?.get<ModelRecipeItem?>("recipe")
+                navController.previousBackStackEntry?.savedStateHandle?.get<RecipeModelEntity?>("recipe")
             if (recipe != null) {
                 DetailHookahScreen(
                     navController = navController,
@@ -120,7 +119,7 @@ sealed class MainScreen(val route: String) {
 
 private fun navigateToDetails(
     navController: NavController,
-    recipe: ModelRecipeItem,
+    recipe: RecipeModelEntity,
     numberRecipe: Int
 ) {
     navController.currentBackStackEntry?.savedStateHandle?.set("recipe", recipe)

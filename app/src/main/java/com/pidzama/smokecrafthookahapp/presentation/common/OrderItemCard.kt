@@ -1,5 +1,6 @@
 package com.pidzama.smokecrafthookahapp.presentation.common
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -20,27 +21,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pidzama.smokecrafthookahapp.R
-import com.pidzama.smokecrafthookahapp.data.model.generate_model.Taste
-import com.pidzama.smokecrafthookahapp.data.remote.order.OrderResponse
+import com.pidzama.smokecrafthookahapp.domain.entities.RecipeModelEntity
 import com.pidzama.smokecrafthookahapp.utils.converterWeightToString
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrderItemCard(
-    input: OrderResponse,
-    @StringRes title: Int,
+    input: RecipeModelEntity,
     onClickToDetailsScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -57,13 +54,30 @@ fun OrderItemCard(
             verticalArrangement = Arrangement.Center,
         ) {
             Text(
-                text = stringResource(id = title),
-                style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.padding(vertical = 8.dp)
+                text = buildAnnotatedString {
+                    withStyle(
+                        SpanStyle(
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.W600,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    ) {
+                        append(stringResource(id = R.string.recipe))
+                    }
+                    withStyle(
+                        SpanStyle(
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.W600,
+                            color = MaterialTheme.colorScheme.inverseSurface
+                        )
+                    ) {
+                        append(" ${input.name}")
+                    }
+                }
             )
             Row(verticalAlignment = Alignment.Top) {
                 LegendOrderItem(
-                    input = input.recipes,
+                    input = input,
                     isDetails = false,
                     modifier = Modifier.weight(0.6f)
                 )
@@ -83,21 +97,22 @@ fun OrderItemCard(
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
 fun LegendOrderItem(
-    input: List<Taste>,
-    isDetails: Boolean,
+    input: RecipeModelEntity,
     modifier: Modifier = Modifier,
+    isDetails: Boolean = false,
 ) {
+    Log.d("MyLog", "Рецепт в деталях заказа $input")
     Box(modifier = modifier.padding(2.dp)) {
         Column(
             verticalArrangement = Arrangement.Top
         ) {
-            input.forEachIndexed { index, tabacco ->
+            input.tasteModel.forEachIndexed { index, tabacco ->
                 Card(
                     modifier = Modifier
                         .padding(vertical = 4.dp),
                     border = BorderStroke(
                         width = 2.dp,
-                        color = setColorTaste(tabacco.name)
+                        color = setColorTaste(tabacco.groupTaste)
                     ),
                     shape = MaterialTheme.shapes.small,
                     colors = CardDefaults.cardColors(
@@ -110,36 +125,25 @@ fun LegendOrderItem(
                                 SpanStyle(
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight.W500,
-                                    color = setColorTaste(tabacco.name)
+                                    color = setColorTaste(tabacco.groupTaste)
                                 )
                             ) {
-                                append("${tabacco.name}, ")
+                                append("${tabacco.nameTaste}, ")
                             }
                             withStyle(
                                 SpanStyle(
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight.W500,
-                                    color = setColorTaste(tabacco.name)
+                                    color = MaterialTheme.colorScheme.inverseSurface
                                 )
                             ) {
-                                append(tabacco.name)
-                            }
-                            if (isDetails) {
-                                withStyle(
-                                    SpanStyle(
-                                        fontSize = 16.sp,
-                                        fontWeight = FontWeight.W500,
-                                        color = Color.White
-                                    )
-                                ) {
-                                    append(
-                                        " ${
-                                            converterWeightToString(
-                                                tabacco.weight
-                                            )
-                                        }"
-                                    )
-                                }
+                                append(
+                                    " ${
+                                        converterWeightToString(
+                                            tabacco.weightTaste
+                                        )
+                                    }"
+                                )
                             }
                         },
                         modifier = Modifier
