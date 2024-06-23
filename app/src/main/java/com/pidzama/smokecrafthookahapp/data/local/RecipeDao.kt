@@ -2,7 +2,7 @@ package com.pidzama.smokecrafthookahapp.data.local
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubListItem
+import com.pidzama.smokecrafthookahapp.data.dto.RandomRecipeSubListItem
 
 @Dao
 interface RecipeDao {

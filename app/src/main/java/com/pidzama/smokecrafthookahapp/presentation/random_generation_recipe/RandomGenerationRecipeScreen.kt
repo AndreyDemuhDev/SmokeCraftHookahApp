@@ -40,7 +40,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.pidzama.smokecrafthookahapp.R
-import com.pidzama.smokecrafthookahapp.data.model.generate_model.ModelRecipeItem
+import com.pidzama.smokecrafthookahapp.domain.entities.RecipeModelEntity
 import com.pidzama.smokecrafthookahapp.presentation.common.RecipeItemCard
 import com.pidzama.smokecrafthookahapp.presentation.common.TopBarContent
 import com.pidzama.smokecrafthookahapp.presentation.common.bounceClick
@@ -53,7 +53,7 @@ import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 @Composable
 fun RandomGenerationRecipeScreen(
     navController: NavHostController = rememberNavController(),
-    navigateToDetails: (ModelRecipeItem, Int) -> Unit,
+    navigateToDetails: (RecipeModelEntity, Int) -> Unit,
     viewModel: RecipeGenerationViewModel
 ) {
 
@@ -88,7 +88,7 @@ fun RandomGenerationRecipeScreen(
 
 @Composable
 fun PortraitRecipesContentView(
-    navigateToDetails: (ModelRecipeItem, Int) -> Unit,
+    navigateToDetails: (RecipeModelEntity, Int) -> Unit,
     viewModel: RecipeGenerationViewModel,
 ) {
 
@@ -179,7 +179,7 @@ fun PortraitRecipesContentView(
 
 @Composable
 fun LandscapeRecipesContentView(
-    navigateToDetails: (ModelRecipeItem, Int) -> Unit,
+    navigateToDetails: (RecipeModelEntity, Int) -> Unit,
     viewModel: RecipeGenerationViewModel,
 ) {
 

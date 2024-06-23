@@ -5,6 +5,7 @@ import android.app.Application
 import androidx.room.Room
 import com.pidzama.smokecrafthookahapp.data.local.RecipeDao
 import com.pidzama.smokecrafthookahapp.data.local.RecipeDataBase
+import com.pidzama.smokecrafthookahapp.data.mapper.RecipeMapper
 import com.pidzama.smokecrafthookahapp.data.network.AccessTokenInterceptor
 import com.pidzama.smokecrafthookahapp.data.network.AuthAuthenticator
 import com.pidzama.smokecrafthookahapp.data.network.RefreshTokenInterceptor
@@ -13,12 +14,11 @@ import com.pidzama.smokecrafthookahapp.data.network.SmokeCraftApi
 import com.pidzama.smokecrafthookahapp.data.repository.DataStoreRepository
 import com.pidzama.smokecrafthookahapp.data.repository.JwtTokenDataStore
 import com.pidzama.smokecrafthookahapp.data.repository.RecipeRepositoryImpl
-import com.pidzama.smokecrafthookahapp.domain.model.RecipeMapper
 import com.pidzama.smokecrafthookahapp.domain.repository.RecipeRepository
 import com.pidzama.smokecrafthookahapp.domain.use_case.AppUseCase
 import com.pidzama.smokecrafthookahapp.domain.use_case.CreateOrderUseCase
+import com.pidzama.smokecrafthookahapp.domain.use_case.DeleteOrderUseCase
 import com.pidzama.smokecrafthookahapp.domain.use_case.GetAllRecipesInDataBaseUseCase
-import com.pidzama.smokecrafthookahapp.domain.use_case.GetAllTobaccosListUseCase
 import com.pidzama.smokecrafthookahapp.domain.use_case.InsertRecipeToArchiveUseCase
 import com.pidzama.smokecrafthookahapp.domain.use_case.LoginUseCase
 import com.pidzama.smokecrafthookahapp.domain.use_case.OrderInfoUseCase
@@ -91,13 +91,14 @@ object AppModule {
         return AppUseCase(
             login = LoginUseCase(recipeRepository),
             recipes = RecipesUseCase(recipeRepository, mapper),
-            getAllTobaccosList = GetAllTobaccosListUseCase(recipeRepository),
+//            getAllTobaccosList = GetAllTobaccosListUseCase(recipeRepository),
             getAllRecipesInDataBaseUseCase = GetAllRecipesInDataBaseUseCase(recipeRepository),
             insertRecipeToArchiveUseCase = InsertRecipeToArchiveUseCase(recipeRepository),
             reduceRecipeUseCase = ReduceRecipeUseCase(recipeRepository),
             ordersList = OrdersListUseCase(recipeRepository),
             createOrder = CreateOrderUseCase(recipeRepository),
-            getInfoOrder = OrderInfoUseCase(recipeRepository)
+            getInfoOrder = OrderInfoUseCase(recipeRepository),
+            deleteOrder = DeleteOrderUseCase(recipeRepository),
         )
     }
 

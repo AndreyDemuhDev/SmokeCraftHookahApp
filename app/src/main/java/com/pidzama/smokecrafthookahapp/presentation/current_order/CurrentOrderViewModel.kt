@@ -2,13 +2,12 @@ package com.pidzama.smokecrafthookahapp.presentation.current_order
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pidzama.smokecrafthookahapp.data.model.orders.OrdersItem
+import com.pidzama.smokecrafthookahapp.data.dto.orders.OrdersItem
 import com.pidzama.smokecrafthookahapp.data.network.doOnFailure
 import com.pidzama.smokecrafthookahapp.data.network.doOnLoading
 import com.pidzama.smokecrafthookahapp.data.network.doOnSuccess
 import com.pidzama.smokecrafthookahapp.data.repository.JwtTokenDataStore
 import com.pidzama.smokecrafthookahapp.domain.use_case.AppUseCase
-import com.pidzama.smokecrafthookahapp.domain.use_case.OrdersListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -42,7 +41,7 @@ class CurrentOrderViewModel @Inject constructor(
                         if (it.isNotEmpty()) {
                             _stateOrder.value = OrdersState.Content(it)
                         } else {
-                            _stateOrder.value = OrdersState.Empty(message = "Список заказо пуст")
+                            _stateOrder.value = OrdersState.Empty(message = "Список заказов пуст")
                         }
                     }
                     .doOnFailure {

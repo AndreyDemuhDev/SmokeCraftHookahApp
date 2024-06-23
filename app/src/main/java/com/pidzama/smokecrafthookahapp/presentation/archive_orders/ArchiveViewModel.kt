@@ -5,12 +5,11 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pidzama.smokecrafthookahapp.data.model.RandomRecipeSubListItem
+import com.pidzama.smokecrafthookahapp.data.dto.RandomRecipeSubListItem
 import com.pidzama.smokecrafthookahapp.data.network.doOnFailure
 import com.pidzama.smokecrafthookahapp.data.network.doOnSuccess
 import com.pidzama.smokecrafthookahapp.data.repository.DataStoreRepository
 import com.pidzama.smokecrafthookahapp.domain.use_case.AppUseCase
-import com.pidzama.smokecrafthookahapp.presentation.recipe_generation_method.substringToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -39,20 +38,20 @@ class ArchiveViewModel @Inject constructor(
     }
 
 
-    fun getAllTobaccosList(token: String) {
-        viewModelScope.launch {
-            useCase.getAllTobaccosList.getAllTobaccosList(token)
-                .doOnSuccess {
-                    _listAllTobaccos.value = ListTobaccosState(
-                        data = it
-                    )
-                }.doOnFailure {
-                    _listAllTobaccos.value = ListTobaccosState(
-                        error = it.message!!
-                    )
-                }.collect()
-        }
-    }
+//    fun getAllTobaccosList(token: String) {
+//        viewModelScope.launch {
+//            useCase.getAllTobaccosList.getAllTobaccosList(token)
+//                .doOnSuccess {
+//                    _listAllTobaccos.value = ListTobaccosState(
+//                        data = it
+//                    )
+//                }.doOnFailure {
+//                    _listAllTobaccos.value = ListTobaccosState(
+//                        error = it.message!!
+//                    )
+//                }.collect()
+//        }
+//    }
 
 //    fun getUserToken() {
 //        viewModelScope.launch {
