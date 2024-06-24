@@ -41,7 +41,7 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 @Composable
 fun RecipeGenerationMethodScreen(
-    navController: NavHostController = rememberNavController(),
+    onClickRandomGeneration: () -> Unit,
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
     Surface(
@@ -52,12 +52,13 @@ fun RecipeGenerationMethodScreen(
         content = {
             if (ScreenOrientation == Configuration.ORIENTATION_PORTRAIT) {
                 PortraitCurrentOrderScreen(
-                    navController = navController,
+                    onClickRandomGeneration = onClickRandomGeneration,
                     screenWidth = screenWidth,
                 )
             } else {
                 LandscapeCurrentOrderScreen(
-                    navController = navController,
+//                    navController = navController,
+                    onClickRandomGeneration = onClickRandomGeneration,
                     screenWidth = screenWidth,
                 )
             }
@@ -67,7 +68,8 @@ fun RecipeGenerationMethodScreen(
 
 @Composable
 fun PortraitCurrentOrderScreen(
-    navController: NavHostController,
+//    navController: NavHostController,
+    onClickRandomGeneration: () -> Unit,
     screenWidth: Int = LocalConfiguration.current.screenWidthDp,
 ) {
 
@@ -89,9 +91,7 @@ fun PortraitCurrentOrderScreen(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium1)
         ) {
             Button(
-                onClick = {
-                    navController.navigate(MainScreen.ChooseGenerateRecipe.route)
-                          },
+                onClick = onClickRandomGeneration,
                 modifier = Modifier
                     .bounceClick()
                     .fillMaxWidth()
@@ -138,7 +138,8 @@ fun PortraitCurrentOrderScreen(
 
 @Composable
 fun LandscapeCurrentOrderScreen(
-    navController: NavHostController,
+//    navController: NavHostController,
+    onClickRandomGeneration: () -> Unit,
     screenWidth: Int = LocalConfiguration.current.screenWidthDp
 ) {
     var openToastInfo by remember { mutableStateOf(false) }
@@ -161,7 +162,7 @@ fun LandscapeCurrentOrderScreen(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.small3)
         ) {
             Button(
-                onClick = { navController.navigate(MainScreen.ChooseGenerateRecipe.route) },
+                onClick = onClickRandomGeneration,
                 modifier = Modifier
                     .bounceClick()
                     .fillMaxWidth()

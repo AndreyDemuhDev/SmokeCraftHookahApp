@@ -36,6 +36,8 @@ fun MainNavGraph(
         startDestination = MainScreen.CurrentOrders.route,
         modifier = modifier
     ) {
+        val idOrder =
+            navController.previousBackStackEntry?.savedStateHandle?.get<Int?>("idOrder")
         composable(MainScreen.Profile.route) {
             ProfileScreen(
                 navController = navController,
@@ -49,9 +51,17 @@ fun MainNavGraph(
             CurrentOrdersScreen(
                 viewModel = viewModel,
                 navigateToDetailOrder = { id ->
-                    navigateToDetailsOrder(
+                    navigateWithIdOrder(
                         navController = navController,
-                        id = id
+                        idOrder = id,
+                        routeDestination = MainScreen.DetailOrderScreen.route
+                    )
+                },
+                onClickAddNewOrder = { id ->
+                    navigateWithIdOrder(
+                        navController = navController,
+                        idOrder = id,
+                        routeDestination = MainScreen.RecipeGenerationMethod.route
                     )
                 },
                 navController = navController,
@@ -60,7 +70,13 @@ fun MainNavGraph(
         }
         composable(MainScreen.RecipeGenerationMethod.route) {
             RecipeGenerationMethodScreen(
-                navController = navController,
+                onClickRandomGeneration = {
+                    navigateWithIdOrder(
+                        idOrder = idOrder ?: 0,
+                        navController = navController,
+                        routeDestination = MainScreen.ChooseGenerateRecipe.route
+                    )
+                }
             )
         }
         composable(MainScreen.OrderArchive.route) {
@@ -70,11 +86,11 @@ fun MainNavGraph(
             val viewModel = hiltViewModel<RecipeGenerationViewModel>()
             RandomGenerationRecipeScreen(navController = navController,
                 viewModel = viewModel,
-                navigateToDetails = { recipe, numberRecipe ->
-                    navigateToDetails(
+                navigateToDetails = { recipe, idRecipe ->
+                    navigateToDetailsRecipe(
                         navController = navController,
                         recipe = recipe,
-                        numberRecipe = numberRecipe
+                        idRecipe = idRecipe
                     )
                 })
         }
@@ -87,6 +103,7 @@ fun MainNavGraph(
                 DetailHookahScreen(
                     navController = navController,
                     recipe = recipe,
+                    idOrder=idOrder ?: 1,
                     viewModelDetailHookah = viewModelDetailHookah,
                     viewModelDetailOrder = viewModelDetailOrder
                 )
@@ -94,10 +111,17 @@ fun MainNavGraph(
         }
         composable(route = MainScreen.DetailOrderScreen.route) {
             val viewModel = hiltViewModel<DetailOrderViewModel>()
-            val id = navController.previousBackStackEntry?.savedStateHandle?.get<Int?>("id")
-            if (id != null) {
+            if (idOrder != null) {
                 DetailOrderScreen(
-                    id = id,
+                    id = idOrder,
+                    onClickCloseOrder = { navController.navigate(MainScreen.CurrentOrders.route) },
+                    onClickAddRecipe = {
+                        navigateWithIdOrder(
+                            navController = navController,
+                            routeDestination = MainScreen.RecipeGenerationMethod.route,
+                            idOrder = idOrder
+                        )
+                    },
                     viewModel = viewModel,
                     navController = navController,
                     modifier = Modifier.fillMaxSize()
@@ -117,24 +141,26 @@ sealed class MainScreen(val route: String) {
     object DetailOrderScreen : MainScreen("DETAIL_OREDER_SCREEN")
 }
 
-private fun navigateToDetails(
+private fun navigateToDetailsRecipe(
     navController: NavController,
     recipe: RecipeModelEntity,
-    numberRecipe: Int
+    idRecipe: Int
 ) {
     navController.currentBackStackEntry?.savedStateHandle?.set("recipe", recipe)
-    navController.currentBackStackEntry?.savedStateHandle?.set("numberRecipe", numberRecipe)
+    navController.currentBackStackEntry?.savedStateHandle?.set("idOrder", idRecipe)
     navController.navigate(
         route = MainScreen.DetailHookahScreen.route
     )
 }
 
-private fun navigateToDetailsOrder(
+private fun navigateWithIdOrder(
     navController: NavController,
-    id: Int,
+    routeDestination: String,
+    idOrder: Int,
 ) {
-    navController.currentBackStackEntry?.savedStateHandle?.set("id", id)
+    navController.currentBackStackEntry?.savedStateHandle?.set("idOrder", idOrder)
     navController.navigate(
-        route = MainScreen.DetailOrderScreen.route
+        route = routeDestination
     )
 }
+

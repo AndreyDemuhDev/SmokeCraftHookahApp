@@ -23,17 +23,17 @@ fun OrderArchiveScreen(
     viewModel: DetailHookahViewModel = hiltViewModel(),
     viewModelCurrent: ArchiveViewModel = hiltViewModel()
 ) {
-    val listOrdersRecipe = viewModel.listArchiveTobaccos.collectAsState()
+//    val listOrdersRecipe = viewModel.listArchiveTobaccos.collectAsState()
+//
+//    val listAllTobaccos = viewModelCurrent.listAllTobaccos.value.data
+//
+//    val groupListOrdersTobaccos = listOrdersRecipe.value.groupingBy { it.taste_group }.eachCount()
+//        .entries
+//        .sortedByDescending { it.value }
 
-    val listAllTobaccos = viewModelCurrent.listAllTobaccos.value.data
-
-    val groupListOrdersTobaccos = listOrdersRecipe.value.groupingBy { it.taste_group }.eachCount()
-        .entries
-        .sortedByDescending { it.value }
-
-    val groupListAllTobaccos = listAllTobaccos.groupingBy { it.taste_group }.eachCount()
-        .entries
-        .sortedByDescending { it.value }
+//    val groupListAllTobaccos = listAllTobaccos.groupingBy { it.taste_group }.eachCount()
+//        .entries
+//        .sortedByDescending { it.value }
 
     Surface(
         modifier = Modifier

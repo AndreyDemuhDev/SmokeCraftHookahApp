@@ -29,7 +29,7 @@ class RecipeRepositoryImpl @Inject constructor(
     override suspend fun loginUser(login: AuthRequest): StatusAuth<Unit> {
         return try {
             val response = apiService.getJwtTokenUser(login)
-            apiService.getJwtTokenUser(login)
+//            apiService.getJwtTokenUser(login)
             jwtTokenManager.saveAccessJwt(response.access)
             jwtTokenManager.saveRefreshJwt(response.refresh)
             dataStore.saveUserLogin(login.username)
