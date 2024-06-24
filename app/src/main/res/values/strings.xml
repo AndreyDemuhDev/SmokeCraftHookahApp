@@ -50,5 +50,6 @@
     <string name="close_order">"Закрыть заказ №"</string>
     <string name="sure_you_want_to_close_this_order">"Вы уверены, что хотите закрыть данный заказ?"</string>
     <string name="yes">"Да"</string>
+    <string name="enter_number_table">"Укажите номер столика:"</string>
 
 </resources>

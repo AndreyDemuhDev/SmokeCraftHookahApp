@@ -48,6 +48,7 @@ import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 fun CurrentOrdersScreen(
     navController: NavHostController,
     navigateToDetailOrder: (Int) -> Unit,
+    onClickAddNewOrder: (Int)-> Unit,
     viewModel: CurrentOrderViewModel,
     modifier: Modifier = Modifier
 ) {
@@ -64,7 +65,7 @@ fun CurrentOrdersScreen(
         },
         floatingActionButton = {
             FloatingActionImageButton(
-                onClick = { navController.navigate(MainScreen.RecipeGenerationMethod.route) },
+                onClick = { onClickAddNewOrder(0) },
             )
         },
         modifier = modifier

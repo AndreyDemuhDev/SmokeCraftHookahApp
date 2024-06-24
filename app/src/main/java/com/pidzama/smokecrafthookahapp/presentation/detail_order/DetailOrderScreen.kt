@@ -43,6 +43,8 @@ fun DetailOrderScreen(
     id: Int,
     viewModel: DetailOrderViewModel,
     navController: NavHostController,
+    onClickCloseOrder:()->Unit,
+    onClickAddRecipe:(Int)->Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -54,7 +56,7 @@ fun DetailOrderScreen(
         openAlertDialog,
         action = {
             viewModel.deleteOrder(id)
-            navController.navigate(MainScreen.CurrentOrders.route)
+            onClickCloseOrder()
         }
     )
 
@@ -85,7 +87,7 @@ fun DetailOrderScreen(
                 ExtendedFloatingActionCustomButton(
                     icon = R.drawable.add_plus,
                     contentDescription = R.string.add,
-                    onClick = { navController.navigate(MainScreen.RecipeGenerationMethod.route) },
+                    onClick = { onClickAddRecipe(id) },
                     textColor = MaterialTheme.colorScheme.inverseSurface,
                     backgroundColor = MaterialTheme.colorScheme.primary
                 )
