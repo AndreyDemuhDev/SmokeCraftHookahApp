@@ -103,9 +103,9 @@ fun MainNavGraph(
                 DetailHookahScreen(
                     navController = navController,
                     recipe = recipe,
-                    idOrder=idOrder ?: 1,
+                    idOrder = idOrder ?: 0,
                     viewModelDetailHookah = viewModelDetailHookah,
-                    viewModelDetailOrder = viewModelDetailOrder
+//                    viewModelDetailOrder = viewModelDetailOrder
                 )
             }
         }
@@ -147,7 +147,7 @@ private fun navigateToDetailsRecipe(
     idRecipe: Int
 ) {
     navController.currentBackStackEntry?.savedStateHandle?.set("recipe", recipe)
-    navController.currentBackStackEntry?.savedStateHandle?.set("idOrder", idRecipe)
+    navController.currentBackStackEntry?.savedStateHandle?.set("idRecipe", idRecipe)
     navController.navigate(
         route = MainScreen.DetailHookahScreen.route
     )

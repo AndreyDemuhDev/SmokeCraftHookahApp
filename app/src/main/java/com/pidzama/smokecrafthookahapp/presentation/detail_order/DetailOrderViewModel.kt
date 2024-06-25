@@ -2,10 +2,13 @@ package com.pidzama.smokecrafthookahapp.presentation.detail_order
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.Index
+import com.pidzama.smokecrafthookahapp.data.dto.orders.OrdersItem
 import com.pidzama.smokecrafthookahapp.data.network.doOnFailure
 import com.pidzama.smokecrafthookahapp.data.network.doOnLoading
 import com.pidzama.smokecrafthookahapp.data.network.doOnSuccess
 import com.pidzama.smokecrafthookahapp.data.remote.order.OrderResponse
+import com.pidzama.smokecrafthookahapp.domain.entities.RecipeModelEntity
 import com.pidzama.smokecrafthookahapp.domain.use_case.AppUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +28,19 @@ class DetailOrderViewModel @Inject constructor(
     val detailOrderState: StateFlow<DetailOrderState>
         get() = _detailOrderState.asStateFlow()
 
+
+//    private val _currentOrder = MutableStateFlow<OrderResponse>(OrderResponse())
+//    val currentOrder: StateFlow<OrderResponse>
+//        get() = _currentOrder.asStateFlow()
+//
+//
+//    fun getGetOrder(id: Int) {
+//        viewModelScope.launch {
+//            useCase.getInfoOrder.getOrderInfo(id).doOnSuccess {
+//                _currentOrder.value = it
+//            }
+//        }
+//    }
 
     fun getInfoOrder(id: Int) {
         viewModelScope.launch {

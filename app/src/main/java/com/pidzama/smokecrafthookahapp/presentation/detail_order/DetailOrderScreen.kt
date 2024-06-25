@@ -31,7 +31,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.pidzama.smokecrafthookahapp.R
-import com.pidzama.smokecrafthookahapp.navigation.MainScreen
 import com.pidzama.smokecrafthookahapp.presentation.common.CloseOrderAlertDialog
 import com.pidzama.smokecrafthookahapp.presentation.common.ExtendedFloatingActionCustomButton
 import com.pidzama.smokecrafthookahapp.presentation.common.OrderItemCard
@@ -43,8 +42,8 @@ fun DetailOrderScreen(
     id: Int,
     viewModel: DetailOrderViewModel,
     navController: NavHostController,
-    onClickCloseOrder:()->Unit,
-    onClickAddRecipe:(Int)->Unit,
+    onClickCloseOrder: () -> Unit,
+    onClickAddRecipe: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -67,7 +66,7 @@ fun DetailOrderScreen(
     Scaffold(
         topBar = {
             TopBarContent(
-                navController = navController,
+                onClickBack = {navController.popBackStack()},
                 canNavigateBack = true,
                 title = R.string.order
             )
@@ -152,7 +151,7 @@ fun DetailOrderContent(
                 .padding(vertical = 12.dp)
         )
         LazyColumn {
-            items(state.data.recipes) { item->
+            items(state.data.recipes) { item ->
                 OrderItemCard(
                     input = item,
                     onClickToDetailsScreen = { },
