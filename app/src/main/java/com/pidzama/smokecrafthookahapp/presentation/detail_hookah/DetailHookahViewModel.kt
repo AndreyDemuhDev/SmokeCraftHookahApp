@@ -11,6 +11,7 @@ import com.pidzama.smokecrafthookahapp.data.network.doOnSuccess
 import com.pidzama.smokecrafthookahapp.data.remote.order.OrderRequest
 import com.pidzama.smokecrafthookahapp.data.remote.order.OrderResponse
 import com.pidzama.smokecrafthookahapp.data.remote.reduce.ReduceRecipeRequest
+import com.pidzama.smokecrafthookahapp.data.repository.JwtTokenDataStore
 import com.pidzama.smokecrafthookahapp.domain.entities.RecipeModelEntity
 import com.pidzama.smokecrafthookahapp.domain.use_case.AppUseCase
 import com.pidzama.smokecrafthookahapp.presentation.detail_order.DetailOrderState
@@ -26,6 +27,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailHookahViewModel @Inject constructor(
     private val useCase: AppUseCase,
+    private val dataStoreToken: JwtTokenDataStore,
 ) : ViewModel() {
 
 //    private val _listArchiveTobaccos = MutableStateFlow(emptyList<RandomRecipeSubListItem>())
@@ -76,7 +78,11 @@ class DetailHookahViewModel @Inject constructor(
 
     fun updateOrder(id: Int, recipes: OrderRequest) {
         viewModelScope.launch {
-            useCase.createOrder.updateOrder(id = id, recipes = recipes)
+            useCase.createOrder.updateOrder(
+                id = id,
+                token = dataStoreToken.getAccessJwt().toString(),
+                recipes = recipes
+            )
         }
     }
 

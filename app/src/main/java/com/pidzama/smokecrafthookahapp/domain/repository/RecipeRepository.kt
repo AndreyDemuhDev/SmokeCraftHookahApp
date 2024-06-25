@@ -28,7 +28,7 @@ interface RecipeRepository {
 
     suspend fun createOrder(order: OrderRequest): OrderResponse
 
-    suspend fun updateOrder(id: Int, recipes: OrderRequest): OrderResponse
+    suspend fun updateOrder(id: Int, token: String, recipes: OrderRequest): OrderResponse
 
     suspend fun getInfoOrder(id: Int): Flow<ApiState<OrderResponse>>
 

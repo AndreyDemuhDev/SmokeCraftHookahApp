@@ -69,8 +69,8 @@ class RecipeRepositoryImpl @Inject constructor(
         return apiService.createOrder(order = order)
     }
 
-    override suspend fun updateOrder(id: Int, recipes: OrderRequest): OrderResponse {
-        return apiService.updateOrder(id = id, recipes = recipes)
+    override suspend fun updateOrder(id: Int, token: String, recipes: OrderRequest): OrderResponse {
+        return apiService.updateOrder(id = id, token = token, recipes = recipes)
     }
 
     override suspend fun getInfoOrder(id: Int): Flow<ApiState<OrderResponse>> =

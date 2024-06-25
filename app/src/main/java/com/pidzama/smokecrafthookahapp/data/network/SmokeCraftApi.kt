@@ -55,6 +55,7 @@ interface SmokeCraftApi {
     //обновление заказа
     @PATCH("/api/v1/reservations/{id}")
     suspend fun updateOrder(
+        @Header("Token") token: String,
         @Path(value = "id") id: Int,
         @Body recipes: OrderRequest
     ): OrderResponse
