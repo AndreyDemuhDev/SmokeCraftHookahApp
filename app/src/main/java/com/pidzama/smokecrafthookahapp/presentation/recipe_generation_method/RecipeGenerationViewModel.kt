@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -64,9 +65,13 @@ class RecipeGenerationViewModel @Inject constructor(
             }
         } catch (e: Exception) {
             _res.value = GenerateRecipeUiState(
-                error = e.message!!
+                error = "Ошибка"
             )
             Log.d("MyLog", "error $e")
+        } catch (e: SocketTimeoutException) {
+            _res.value = GenerateRecipeUiState(
+                error = "Сервер не отвечает"
+            )
         }
     }
 

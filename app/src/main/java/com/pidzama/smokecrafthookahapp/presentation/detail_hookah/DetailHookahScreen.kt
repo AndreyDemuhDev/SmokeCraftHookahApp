@@ -69,10 +69,8 @@ fun DetailHookahScreen(
     recipe: RecipeModelEntity,
     idOrder: Int,
     viewModelDetailHookah: DetailHookahViewModel,
-//    viewModelDetailOrder: DetailOrderViewModel,
 ) {
     viewModelDetailHookah.getInfoHookah(recipe, idOrder)
-
 
     val reduceRecipe = emptyList<ReduceRecipeRequest>().toMutableList()
 
@@ -84,7 +82,6 @@ fun DetailHookahScreen(
             )
         )
     }
-
 
     Log.d("MyLog", "reduce recipe $reduceRecipe")
 
@@ -101,30 +98,24 @@ fun DetailHookahScreen(
         },
         content = { innerPadding ->
             DetailHookahState(
-                navController = navController,
                 viewModelDetailHookah = viewModelDetailHookah,
                 state = state,
-//                recipe = recipe,
                 reduceRecipe = reduceRecipe,
                 onClickCancel = {
                     navController.popBackStack(MainScreen.CurrentOrders.route, false)
                 },
-//                onClickReduceRecipe = {
-//                    viewModelDetailHookah.reduceRecipe(recipe = reduceRecipe)
-//                    viewModelDetailHookah.createOrder(
-//                        order = OrderRequest(
-//                            is_active = true,
-//                            table_number = idOrder,
-//                            hookah_count = recipe.tasteModel.size,
-//                            recipes = listOf(recipe)
-//                        )
-//                    )
-//                    navController.navigate(MainScreen.CurrentOrders.route) {
-//                        popUpTo(Graph.MAIN)
-//                        launchSingleTop = true
-//                    }
-//                },
-                recipe = recipe,
+                onClickCreateOrder = {
+                    navController.navigate(MainScreen.CurrentOrders.route) {
+                        popUpTo(Graph.MAIN)
+                        launchSingleTop = true
+                    }
+                },
+                onClickUpdateOrder = {
+                    navController.navigate(MainScreen.CurrentOrders.route) {
+                        popUpTo(Graph.MAIN)
+                        launchSingleTop = true
+                    }
+                },
                 idOrder = idOrder,
                 modifier = Modifier.padding(innerPadding)
             )
@@ -135,28 +126,17 @@ fun DetailHookahScreen(
 
 @Composable
 fun PortraitDetailUpdateOrderView(
-    navController: NavHostController,
     recipe: RecipeModelEntity,
-    hookahCount: Int,
     tableNumber: Int,
     idOrder: Int,
-    reduceRecipe: List<ReduceRecipeRequest>,
-    listOrderRecipe: List<RecipeModelEntity>,
     onClickCancel: () -> Unit,
-//    onClickReduceRecipe: (List<ReduceRecipeRequest>, List<RecipeModelEntity>) -> Unit,
-    viewModelDetailHookah: DetailHookahViewModel,
+    onClickUpdateRecipe: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
     val screenWidth = LocalConfiguration.current.screenWidthDp
 //    val screenHeight = LocalConfiguration.current.screenHeightDp
     var openDialogSuccess by remember { mutableStateOf(false) }
-
-    Log.d("MyLog", "ID ORDER $idOrder")
-    Log.d("MyLog", "list order RECIPE $listOrderRecipe")
-    Log.d("MyLog", "Recipe in screen==>> $recipe")
-    Log.d("MyLog", "РЕЦЕПТ на СПИСАНИЕ==>> $reduceRecipe")
-
 
     if (openDialogSuccess) {
         openDialogSuccess = false
@@ -204,21 +184,7 @@ fun PortraitDetailUpdateOrderView(
                 Button(
                     onClick = {
                         openDialogSuccess = true
-//                        onClickReduceRecipe(reduceRecipe, listOrderRecipe)
-                        viewModelDetailHookah.reduceRecipe(recipe = reduceRecipe)
-                        viewModelDetailHookah.updateOrder(
-                            id = idOrder,
-                            recipes = OrderRequest(
-                                is_active = true,
-                                table_number = tableNumber,
-                                hookah_count = hookahCount,
-                                recipes = listOrderRecipe
-                            )
-                        )
-                        navController.navigate(MainScreen.CurrentOrders.route) {
-                            popUpTo(Graph.MAIN)
-                            launchSingleTop = true
-                        }
+                        onClickUpdateRecipe()
                     },
 //                    enabled = numberTable.isNotEmpty(),
                     modifier = Modifier
@@ -236,10 +202,7 @@ fun PortraitDetailUpdateOrderView(
                 }
                 Spacer(modifier = Modifier.height(MaterialTheme.dimens.small1))
                 OutlinedButton(
-                    onClick = {
-                        onClickCancel()
-//                        navController.popBackStack(MainScreen.CurrentOrders.route, false)
-                    },
+                    onClick = { onClickCancel() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height((screenWidth / 8).dp),
@@ -260,23 +223,21 @@ fun PortraitDetailUpdateOrderView(
 
 @Composable
 fun PortraitDetailCreateOrderView(
-    navController: NavHostController,
     recipe: RecipeModelEntity,
-    reduceRecipe: List<ReduceRecipeRequest>,
-    listOrderRecipe: List<RecipeModelEntity>,
+//    listOrderRecipe: List<RecipeModelEntity>,
+    tableNumber: String,
+    onChangeTableNumber: (String) -> Unit,
     onClickCancel: () -> Unit,
-//    onClickReduceRecipe: (List<ReduceRecipeRequest>, List<RecipeModelEntity>) -> Unit,
-    viewModelDetailHookah: DetailHookahViewModel,
+    onClickCreateOrder: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
     val screenWidth = LocalConfiguration.current.screenWidthDp
 //    val screenHeight = LocalConfiguration.current.screenHeightDp
     var openDialogSuccess by remember { mutableStateOf(false) }
-    var numberTable by rememberSaveable { mutableStateOf("5") }
 
-    Log.d("MyLog", "list order RECIPE $listOrderRecipe")
-    Log.d("MyLog", "Recipe in screen==>> $recipe")
+//    Log.d("MyLog", "list order RECIPE $listOrderRecipe")
+//    Log.d("MyLog", "Recipe in screen==>> $recipe")
 
     if (openDialogSuccess) {
         openDialogSuccess = false
@@ -301,10 +262,8 @@ fun PortraitDetailCreateOrderView(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 OutlinedTextField(
-                    value = numberTable,
-                    onValueChange = {
-                        numberTable = it
-                    },
+                    value = tableNumber,
+                    onValueChange = onChangeTableNumber,
                     textStyle = LocalTextStyle.current.copy(color = MaterialTheme.colorScheme.inverseSurface),
                     placeholder = {
                         Text(
@@ -341,20 +300,7 @@ fun PortraitDetailCreateOrderView(
                 Button(
                     onClick = {
                         openDialogSuccess = true
-//                        onClickReduceRecipe(reduceRecipe, listOrderRecipe)
-                        viewModelDetailHookah.reduceRecipe(recipe = reduceRecipe)
-                        viewModelDetailHookah.createOrder(
-                            order = OrderRequest(
-                                is_active = true,
-                                table_number = numberTable.toInt(),
-                                hookah_count = 1,
-                                recipes = listOrderRecipe
-                            )
-                        )
-                        navController.navigate(MainScreen.CurrentOrders.route) {
-                            popUpTo(Graph.MAIN)
-                            launchSingleTop = true
-                        }
+                        onClickCreateOrder()
                     },
 //                    enabled = numberTable.isNotEmpty(),
                     modifier = Modifier
@@ -372,10 +318,7 @@ fun PortraitDetailCreateOrderView(
                 }
                 Spacer(modifier = Modifier.height(MaterialTheme.dimens.small1))
                 OutlinedButton(
-                    onClick = {
-                        onClickCancel()
-//                        navController.popBackStack(MainScreen.CurrentOrders.route, false)
-                    },
+                    onClick = { onClickCancel() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height((screenWidth / 8).dp),
@@ -396,20 +339,15 @@ fun PortraitDetailCreateOrderView(
 
 @Composable
 fun LandscapeDetailUpdateOrderView(
-//    navController: NavHostController,
     recipe: RecipeModelEntity,
+    tableNumber: Int,
     idOrder: Int,
-//    reduceRecipe: List<ReduceRecipeRequest>,
-    listOrderRecipe: List<RecipeModelEntity>,
-    viewModelDetailHookah: DetailHookahViewModel,
     onClickCancel: () -> Unit,
-//    onClickReduceRecipe: (List<ReduceRecipeRequest>, List<RecipeModelEntity>) -> Unit,
+    onClickUpdateRecipe: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
     var openDialogSuccess by remember { mutableStateOf(false) }
-
-    var numberTable by rememberSaveable { mutableStateOf("") }
 
     if (openDialogSuccess) {
         openDialogSuccess = false
@@ -438,53 +376,20 @@ fun LandscapeDetailUpdateOrderView(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(modifier = Modifier.padding(MaterialTheme.dimens.small1))
-                if (idOrder == 0) {
-                    OutlinedTextField(
-                        value = numberTable,
-                        onValueChange = {
-                            numberTable = it
-                        },
-                        textStyle = LocalTextStyle.current.copy(color = MaterialTheme.colorScheme.inverseSurface),
-                        placeholder = {
-                            Text(
-                                text = stringResource(id = R.string.enter_number_table),
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onTertiary
-                            )
-                        },
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = MaterialTheme.colorScheme.onSecondary,
-                            unfocusedContainerColor = MaterialTheme.colorScheme.tertiaryContainer
-                        ),
-                        keyboardOptions = KeyboardOptions.Default.copy(
-                            imeAction = ImeAction.Next,
-                            keyboardType = KeyboardType.Number
-                        ),
-
-                        singleLine = true,
-                        maxLines = 1,
-                        shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(MaterialTheme.dimens.buttonHeight)
-                            .width(MaterialTheme.dimens.buttonWidth)
-                    )
-                } else {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(MaterialTheme.dimens.small3),
-                        text = "${stringResource(id = R.string.order)} №${(1..20).random()}/ ${
-                            stringResource(
-                                id = R.string.table
-                            )
-                        } №${(1..8).random()}",
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.inverseSurface,
-                        style = MaterialTheme.typography.titleLarge,
-                    )
-                    DetailsRecipeItemCard(input = recipe, isLandscape = true)
-                }
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(MaterialTheme.dimens.small3),
+                    text = "${stringResource(id = R.string.table)} №$tableNumber / ${
+                        stringResource(
+                            id = R.string.order
+                        )
+                    } №$idOrder",
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.inverseSurface,
+                    style = MaterialTheme.typography.titleLarge,
+                )
+                DetailsRecipeItemCard(input = recipe, isLandscape = true)
             }
         }
         Box(
@@ -496,20 +401,9 @@ fun LandscapeDetailUpdateOrderView(
             Column(modifier = Modifier.padding(all = MaterialTheme.dimens.extraSmall)) {
                 Button(
                     onClick = {
-//                        onClickReduceRecipe(reduceRecipe, listOrderRecipe)
-//                        viewModelDetailHookah.reduceRecipe(recipe = reduceRecipe)
-//                        viewModelDetailHookah.createOrder(
-//                            order = OrderRequest(
-//                                is_active = true,
-//                                table_number = 1,
-//                                hookah_count = recipe.tasteModel.size,
-//                                recipes = listOf(recipe)
-//                            )
-//                        )
-//                        navController.navigate(MainScreen.CurrentOrders.route)
                         openDialogSuccess = true
+                        onClickUpdateRecipe()
                     },
-                    enabled = numberTable.isNotEmpty(),
                     modifier = Modifier
                         .bounceClick()
                         .fillMaxWidth()
@@ -525,10 +419,7 @@ fun LandscapeDetailUpdateOrderView(
                 }
                 Spacer(modifier = Modifier.height(MaterialTheme.dimens.small1))
                 OutlinedButton(
-                    onClick = {
-//                        navController.popBackStack(MainScreen.CurrentOrders.route, false)
-                        onClickCancel()
-                    },
+                    onClick = { onClickCancel() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(MaterialTheme.dimens.buttonHeight),
@@ -549,19 +440,15 @@ fun LandscapeDetailUpdateOrderView(
 
 @Composable
 fun LandscapeDetailCreateOrderView(
-    navController: NavHostController,
     recipe: RecipeModelEntity,
-    reduceRecipe: List<ReduceRecipeRequest>,
-    listOrderRecipe: List<RecipeModelEntity>,
-    viewModelDetailHookah: DetailHookahViewModel,
+    tableNumber: String,
+    onChangeTableNumber: (String) -> Unit,
     onClickCancel: () -> Unit,
-//    onClickReduceRecipe: (List<ReduceRecipeRequest>, List<RecipeModelEntity>) -> Unit,
+    onClickCreateOrder: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
     var openDialogSuccess by remember { mutableStateOf(false) }
-
-    var numberTable by rememberSaveable { mutableStateOf("") }
 
     if (openDialogSuccess) {
         openDialogSuccess = false
@@ -591,10 +478,8 @@ fun LandscapeDetailCreateOrderView(
             ) {
                 Spacer(modifier = Modifier.padding(MaterialTheme.dimens.small1))
                 OutlinedTextField(
-                    value = numberTable,
-                    onValueChange = {
-                        numberTable = it
-                    },
+                    value = tableNumber,
+                    onValueChange = onChangeTableNumber,
                     textStyle = LocalTextStyle.current.copy(color = MaterialTheme.colorScheme.inverseSurface),
                     placeholder = {
                         Text(
@@ -620,6 +505,10 @@ fun LandscapeDetailCreateOrderView(
                         .height(MaterialTheme.dimens.buttonHeight)
                         .width(MaterialTheme.dimens.buttonWidth)
                 )
+                DetailsRecipeItemCard(
+                    input = recipe,
+                    isLandscape = true
+                )
             }
         }
         Box(
@@ -631,20 +520,10 @@ fun LandscapeDetailCreateOrderView(
             Column(modifier = Modifier.padding(all = MaterialTheme.dimens.extraSmall)) {
                 Button(
                     onClick = {
-//                        onClickReduceRecipe(reduceRecipe, listOrderRecipe)
-                        viewModelDetailHookah.reduceRecipe(recipe = reduceRecipe)
-                        viewModelDetailHookah.createOrder(
-                            order = OrderRequest(
-                                is_active = true,
-                                table_number = numberTable.toInt(),
-                                hookah_count = 1,
-                                recipes = listOf(recipe)
-                            )
-                        )
-                        navController.navigate(MainScreen.CurrentOrders.route)
                         openDialogSuccess = true
+                        onClickCreateOrder()
                     },
-                    enabled = numberTable.isNotEmpty(),
+                    enabled = tableNumber.isNotEmpty(),
                     modifier = Modifier
                         .bounceClick()
                         .fillMaxWidth()
@@ -660,10 +539,7 @@ fun LandscapeDetailCreateOrderView(
                 }
                 Spacer(modifier = Modifier.height(MaterialTheme.dimens.small1))
                 OutlinedButton(
-                    onClick = {
-//                        navController.popBackStack(MainScreen.CurrentOrders.route, false)
-                        onClickCancel()
-                    },
+                    onClick = { onClickCancel() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(MaterialTheme.dimens.buttonHeight),
@@ -685,13 +561,11 @@ fun LandscapeDetailCreateOrderView(
 fun DetailHookahState(
     viewModelDetailHookah: DetailHookahViewModel,
     state: DetailHookahState,
-    recipe: RecipeModelEntity,
-//    listOrderRecipe: List<RecipeModelEntity>,
+    onClickCreateOrder: () -> Unit,
+    onClickUpdateOrder: () -> Unit,
     onClickCancel: () -> Unit,
-//    onClickReduceRecipe: (List<ReduceRecipeRequest>, List<RecipeModelEntity>) -> Unit,
     reduceRecipe: List<ReduceRecipeRequest>,
     idOrder: Int,
-    navController: NavHostController,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
@@ -701,30 +575,69 @@ fun DetailHookahState(
         .then(modifier)
     when (state) {
         is DetailHookahState.ContentRecipeWithOrder -> {
+            val recipeInScreen = state.data         //рецепт
+            val listRecipesInOrder =
+                listOf(recipeInScreen).toMutableList() //список рецептов в заказе который отправляем на сервак
+            val currentOrder =
+                state.orderData.recipes.toMutableList()      //текущий рецепт на экране
+            val hookahCount = state.orderData.recipes.size        //количество кальянов в заказе
+            val tableNumber = state.orderData.table_number         //номер стола
+            listRecipesInOrder.addAll(currentOrder)
+
+            Log.d("MyLog", "Рецепт => $recipeInScreen")
+            Log.d("MyLog", "Список заказанных рецептов (WITH ORDER) => $listRecipesInOrder")
+            Log.d("MyLog", "Номер Заказа $idOrder")
+
             DetailHookahScreenContentRecipeWithOrder(
                 state = state,
-                viewModelDetailHookah = viewModelDetailHookah,
-                recipe = recipe,
-                idOrder = idOrder,
-                reduceRecipe = reduceRecipe,
-                navController = navController,
-//                listOrderRecipe = listOrderRecipe,
+                recipe = recipeInScreen,
+                onClickUpdateRecipe = {
+                    viewModelDetailHookah.updateOrder(
+                        id = idOrder,
+                        recipes = OrderRequest(
+                            is_active = true,
+                            table_number = tableNumber,
+                            hookah_count = hookahCount,
+                            recipes = listRecipesInOrder
+                        )
+                    )
+                    onClickUpdateOrder()
+                },
+                tableNumber = tableNumber,
                 onClickCancel = onClickCancel,
-//                onClickReduceRecipe = onClickReduceRecipe,
                 modifier = screenModifier,
             )
         }
 
         is DetailHookahState.ContentOnlyRecipe -> {
+            val recipeInScreen = state.data                 //рецепт который создаем
+            val listRecipesInOrder =
+                listOf(recipeInScreen).toMutableList() //рецепт отправляем на сервер
+            var tableNumber by rememberSaveable {
+                mutableStateOf("")
+            }
+
+            Log.d("MyLog", "Рецепт => $recipeInScreen")
+            Log.d("MyLog", "Список заказанных рецептов (ONLY RECIPE) => $listRecipesInOrder")
+            Log.d("MyLog", "Номер Заказа $idOrder")
+
             DetailHookahScreenContentOnlyRecipe(
-                state = state,
-                viewModelDetailHookah = viewModelDetailHookah,
-                recipe = recipe,
-                reduceRecipe = reduceRecipe,
-                navController = navController,
-//                listOrderRecipe = listOrderRecipe,
+                recipe = recipeInScreen,
+                onClickCreateOrder = {
+                    viewModelDetailHookah.reduceRecipe(recipe = reduceRecipe)
+                    viewModelDetailHookah.createOrder(
+                        order = OrderRequest(
+                            is_active = true,
+                            table_number = tableNumber.toInt(),
+                            hookah_count = 1,
+                            recipes = listRecipesInOrder
+                        )
+                    )
+                    onClickCreateOrder()
+                },
+                tableNumber = tableNumber,
+                onChangeTableNumber = { tableNumber = it },
                 onClickCancel = onClickCancel,
-//                onClickReduceRecipe = onClickReduceRecipe,
                 modifier = screenModifier,
             )
         }
@@ -743,56 +656,30 @@ fun DetailHookahState(
 @Composable
 fun DetailHookahScreenContentRecipeWithOrder(
     state: DetailHookahState.ContentRecipeWithOrder,
-    viewModelDetailHookah: DetailHookahViewModel,
     onClickCancel: () -> Unit,
-//    onClickReduceRecipe: (List<ReduceRecipeRequest>, List<RecipeModelEntity>) -> Unit,
+    onClickUpdateRecipe: () -> Unit,
+    tableNumber: Int,
     recipe: RecipeModelEntity,
-//    listOrderRecipe: List<RecipeModelEntity>,
-    idOrder: Int,
-    reduceRecipe: List<ReduceRecipeRequest>,
-    navController: NavHostController,
     modifier: Modifier = Modifier,
 ) {
-
-
-    val recipeInScreen = state.data
-    val listRecipesInOrder = listOf(recipe).toMutableList()
-    val currentOrder = state.orderData.recipes.toMutableList()
-    val hookahCount = state.orderData.recipes.size
-    val tableNumber = state.orderData.table_number
-    listRecipesInOrder.addAll(currentOrder)
-
-
-    Log.d("MyLog", "Текущий ЗАКАЗ через ЗАКАЗ ====> $currentOrder")
-    Log.d(
-        "MyLog",
-        "Обновленный лист заказа со всеми рецептами через ЗАКАЗ ====> $listRecipesInOrder"
-    )
-
+    val idOrder = state.orderData.id
 
     if (ScreenOrientation == Configuration.ORIENTATION_PORTRAIT) {
         PortraitDetailUpdateOrderView(
-            navController = navController,
-            recipe = recipeInScreen,
-            hookahCount = hookahCount,
+            recipe = recipe,
             tableNumber = tableNumber,
-            idOrder = state.orderData.id,
-            reduceRecipe = reduceRecipe,
-            listOrderRecipe = listRecipesInOrder,
-            viewModelDetailHookah = viewModelDetailHookah,
+            onClickUpdateRecipe = onClickUpdateRecipe,
+            idOrder = idOrder,
             onClickCancel = onClickCancel,
-//            onClickReduceRecipe = onClickReduceRecipe,
             modifier = modifier,
         )
     } else {
         LandscapeDetailUpdateOrderView(
-            recipe = state.data,
+            recipe = recipe,
+            tableNumber = tableNumber,
+            onClickUpdateRecipe = onClickUpdateRecipe,
             idOrder = idOrder,
-//            reduceRecipe = reduceRecipe,
-            listOrderRecipe = listRecipesInOrder,
             onClickCancel = onClickCancel,
-//            onClickReduceRecipe = onClickReduceRecipe,
-            viewModelDetailHookah = viewModelDetailHookah,
             modifier = modifier,
         )
     }
@@ -801,47 +688,30 @@ fun DetailHookahScreenContentRecipeWithOrder(
 
 @Composable
 fun DetailHookahScreenContentOnlyRecipe(
-    state: DetailHookahState.ContentOnlyRecipe,
-    viewModelDetailHookah: DetailHookahViewModel,
-    onClickCancel: () -> Unit,
-//    onClickReduceRecipe: (List<ReduceRecipeRequest>, List<RecipeModelEntity>) -> Unit,
     recipe: RecipeModelEntity,
-//    listOrderRecipe: List<RecipeModelEntity>,
-    reduceRecipe: List<ReduceRecipeRequest>,
-    navController: NavHostController,
+    onClickCancel: () -> Unit,
+    onClickCreateOrder: () -> Unit,
+    tableNumber: String,
+    onChangeTableNumber: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
-    val recipeInScreen = state.data
-    val listRecipesInOrder = listOf(recipe).toMutableList()
-
-    Log.d("MyLog", "Текущий ЗАКАЗ Create Content only====> $recipeInScreen")
-    Log.d(
-        "MyLog",
-        "Обновленный лист заказа со всеми рецептами Create Content only ====> $listRecipesInOrder"
-    )
-
-
     if (ScreenOrientation == Configuration.ORIENTATION_PORTRAIT) {
         PortraitDetailCreateOrderView(
-            navController = navController,
-            recipe = recipeInScreen,
-            reduceRecipe = reduceRecipe,
-            listOrderRecipe = listRecipesInOrder,
-            viewModelDetailHookah = viewModelDetailHookah,
+            tableNumber = tableNumber,
+            onChangeTableNumber = onChangeTableNumber,
+            recipe = recipe,
+            onClickCreateOrder = onClickCreateOrder,
             onClickCancel = onClickCancel,
-//            onClickReduceRecipe = onClickReduceRecipe,
             modifier = modifier,
         )
     } else {
         LandscapeDetailCreateOrderView(
-            navController = navController,
-            recipe = recipeInScreen,
-            reduceRecipe = reduceRecipe,
-            listOrderRecipe = listRecipesInOrder,
+            tableNumber = tableNumber,
+            onChangeTableNumber = onChangeTableNumber,
+            recipe = recipe,
+            onClickCreateOrder = onClickCreateOrder,
             onClickCancel = onClickCancel,
-//            onClickReduceRecipe = onClickReduceRecipe,
-            viewModelDetailHookah = viewModelDetailHookah,
             modifier = modifier,
         )
     }

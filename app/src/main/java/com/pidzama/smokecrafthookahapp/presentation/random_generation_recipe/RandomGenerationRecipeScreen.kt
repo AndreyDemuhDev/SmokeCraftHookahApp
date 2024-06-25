@@ -197,7 +197,7 @@ fun LandscapeRecipesContentView(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(id = R.string.error_connection),
+                text = result.error,
                 style = MaterialTheme.typography.titleLarge
             )
             Spacer(modifier = Modifier.height(MaterialTheme.dimens.small2))
