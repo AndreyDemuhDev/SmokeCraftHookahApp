@@ -37,7 +37,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.pidzama.smokecrafthookahapp.R
 import com.pidzama.smokecrafthookahapp.data.dto.orders.OrdersItem
-import com.pidzama.smokecrafthookahapp.navigation.MainScreen
 import com.pidzama.smokecrafthookahapp.presentation.common.FloatingActionImageButton
 import com.pidzama.smokecrafthookahapp.presentation.common.TopBarContent
 import com.pidzama.smokecrafthookahapp.ui.theme.dimens
@@ -58,7 +57,7 @@ fun CurrentOrdersScreen(
     Scaffold(
         topBar = {
             TopBarContent(
-                navController = navController,
+                onClickBack = {navController.popBackStack()},
                 canNavigateBack = false,
                 title = R.string.current_orders
             )

@@ -2,6 +2,7 @@ package com.pidzama.smokecrafthookahapp.presentation.detail_hookah
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.yml.charts.common.extensions.isNotNull
 import com.pidzama.smokecrafthookahapp.data.dto.RandomRecipeSubListItem
 import com.pidzama.smokecrafthookahapp.data.dto.generate_model.ModelRecipeItem
 import com.pidzama.smokecrafthookahapp.data.network.doOnFailure
@@ -35,9 +36,28 @@ class DetailHookahViewModel @Inject constructor(
         get() = _detailHookahState.asStateFlow()
 
 
-    fun getInfoHookah(recipe: RecipeModelEntity) {
+    fun getInfoHookah(recipe: RecipeModelEntity, idOrder: Int) {
         viewModelScope.launch {
-            _detailHookahState.value = DetailHookahState.Content(recipe)
+            try {
+                if (idOrder <= 0) {
+                    _detailHookahState.value = DetailHookahState.ContentOnlyRecipe(recipe)
+                } else {
+                    useCase.getInfoOrder.getOrderInfo(id = idOrder)
+                        .doOnSuccess { order ->
+                            _detailHookahState.value =
+                                DetailHookahState.ContentRecipeWithOrder(recipe, order)
+                        }
+                        .doOnFailure {
+                            _detailHookahState.value = DetailHookahState.Error("Ошибка")
+                        }.doOnLoading {
+                            _detailHookahState.value = DetailHookahState.Loading
+                        }.collect()
+                }
+            } catch (e: HttpException) {
+                _detailHookahState.value = DetailHookahState.Error(error = "Ошибка соединения")
+            } catch (e: Exception) {
+                _detailHookahState.value = DetailHookahState.Error(error = "Error")
+            }
         }
     }
 
@@ -54,12 +74,23 @@ class DetailHookahViewModel @Inject constructor(
         }
     }
 
+    fun updateOrder(id: Int, recipes: OrderRequest) {
+        viewModelScope.launch {
+            useCase.createOrder.updateOrder(id = id, recipes = recipes)
+        }
+    }
+
 }
 
 sealed interface DetailHookahState {
 
-    data class Content(
-        val data: RecipeModelEntity
+    data class ContentOnlyRecipe(
+        val data: RecipeModelEntity,
+    ) : DetailHookahState
+
+    data class ContentRecipeWithOrder(
+        val data: RecipeModelEntity,
+        val orderData: OrderResponse
     ) : DetailHookahState
 
     data class Error(

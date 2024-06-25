@@ -63,7 +63,7 @@ fun RandomGenerationRecipeScreen(
     Scaffold(
         topBar = {
             TopBarContent(
-                navController = navController,
+                onClickBack = { navController.popBackStack() },
                 canNavigateBack = true,
                 title = R.string.recipes
             )

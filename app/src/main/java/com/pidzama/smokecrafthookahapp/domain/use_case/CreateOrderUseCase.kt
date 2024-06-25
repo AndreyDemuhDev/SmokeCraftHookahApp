@@ -12,4 +12,8 @@ class CreateOrderUseCase @Inject constructor(
     suspend fun createOrder(order: OrderRequest): OrderResponse {
         return repo.createOrder(order = order)
     }
+
+    suspend fun updateOrder(id: Int, recipes: OrderRequest): OrderResponse {
+        return repo.updateOrder(id = id, recipes = recipes)
+    }
 }

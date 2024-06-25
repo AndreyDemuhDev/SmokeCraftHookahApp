@@ -2,19 +2,23 @@ package com.pidzama.smokecrafthookahapp.presentation.common
 
 import androidx.annotation.StringRes
 import androidx.compose.material.IconButton
-import androidx.compose.material3.*
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
 import com.pidzama.smokecrafthookahapp.R
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarContent(
-    navController: NavHostController,
+    onClickBack: () -> Unit,
     canNavigateBack: Boolean,
     @StringRes title: Int,
     modifier: Modifier = Modifier
@@ -29,7 +33,7 @@ fun TopBarContent(
         },
         navigationIcon = {
             if (canNavigateBack) {
-                IconButton(onClick = { navController.popBackStack() }) {
+                IconButton(onClick = onClickBack) {
                     Icon(
                         painter = painterResource(id = R.drawable.arrow_left),
                         contentDescription = "arrow_left"

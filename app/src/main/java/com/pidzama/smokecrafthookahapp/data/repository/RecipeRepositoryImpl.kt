@@ -49,7 +49,7 @@ class RecipeRepositoryImpl @Inject constructor(
 
     override suspend fun getListRecipes(token: String): Flow<ApiState<List<ModelRecipeItem>>> =
         safeApiCall {
-              apiService.getRandomGenerateRecipeList(token = token)
+            apiService.getRandomGenerateRecipeList(token = token)
         }
 
     override suspend fun getListArchiveRecipes(): List<RandomRecipeSubListItem> {
@@ -67,6 +67,10 @@ class RecipeRepositoryImpl @Inject constructor(
 
     override suspend fun createOrder(order: OrderRequest): OrderResponse {
         return apiService.createOrder(order = order)
+    }
+
+    override suspend fun updateOrder(id: Int, recipes: OrderRequest): OrderResponse {
+        return apiService.updateOrder(id = id, recipes = recipes)
     }
 
     override suspend fun getInfoOrder(id: Int): Flow<ApiState<OrderResponse>> =
