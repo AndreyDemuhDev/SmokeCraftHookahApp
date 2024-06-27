@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -47,7 +49,7 @@ import com.pidzama.smokecrafthookahapp.ui.theme.dimens
 fun CurrentOrdersScreen(
     navController: NavHostController,
     navigateToDetailOrder: (Int) -> Unit,
-    onClickAddNewOrder: (Int)-> Unit,
+    onClickAddNewOrder: (Int) -> Unit,
     viewModel: CurrentOrderViewModel,
     modifier: Modifier = Modifier
 ) {
@@ -57,7 +59,7 @@ fun CurrentOrdersScreen(
     Scaffold(
         topBar = {
             TopBarContent(
-                onClickBack = {navController.popBackStack()},
+                onClickBack = { navController.popBackStack() },
                 canNavigateBack = false,
                 title = R.string.current_orders
             )
@@ -142,7 +144,14 @@ fun OrderScreenEmpty(
     modifier: Modifier = Modifier
 ) {
     Log.d("MyLog", "Экран Empty")
-    Text(text = state.message, modifier = Modifier.then(modifier))
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.then(modifier)
+    ) {
+        Image(painter = painterResource(id = R.drawable.empty_storage), contentDescription = null)
+        Text(text = state.message, style = MaterialTheme.typography.titleLarge)
+    }
 }
 
 @Composable

@@ -9,6 +9,7 @@ import com.pidzama.smokecrafthookahapp.data.remote.order.OrderRequest
 import com.pidzama.smokecrafthookahapp.data.remote.order.OrderResponse
 import com.pidzama.smokecrafthookahapp.data.remote.reduce.ReduceRecipeRequest
 import com.pidzama.smokecrafthookahapp.data.remote.reduce.ReduceRecipeResponse
+import com.pidzama.smokecrafthookahapp.domain.entities.RecipeModelEntity
 import com.pidzama.smokecrafthookahapp.presentation.auth.common.StatusAuth
 import kotlinx.coroutines.flow.Flow
 
@@ -28,7 +29,7 @@ interface RecipeRepository {
 
     suspend fun createOrder(order: OrderRequest): OrderResponse
 
-    suspend fun updateOrder(id: Int, token: String, recipes: OrderRequest): OrderResponse
+    suspend fun updateOrder(id: Int, order: OrderRequest):OrderResponse
 
     suspend fun getInfoOrder(id: Int): Flow<ApiState<OrderResponse>>
 

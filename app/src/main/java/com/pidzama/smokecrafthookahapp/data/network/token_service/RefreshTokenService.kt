@@ -1,4 +1,4 @@
-package com.pidzama.smokecrafthookahapp.data.network
+package com.pidzama.smokecrafthookahapp.data.network.token_service
 
 import com.pidzama.smokecrafthookahapp.data.remote.authorization.RefreshTokenRequest
 import com.pidzama.smokecrafthookahapp.data.remote.authorization.RefreshTokenResponse

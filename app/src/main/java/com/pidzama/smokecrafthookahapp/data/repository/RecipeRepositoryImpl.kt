@@ -11,6 +11,7 @@ import com.pidzama.smokecrafthookahapp.data.remote.order.OrderRequest
 import com.pidzama.smokecrafthookahapp.data.remote.order.OrderResponse
 import com.pidzama.smokecrafthookahapp.data.remote.reduce.ReduceRecipeRequest
 import com.pidzama.smokecrafthookahapp.data.remote.reduce.ReduceRecipeResponse
+import com.pidzama.smokecrafthookahapp.domain.entities.RecipeModelEntity
 import com.pidzama.smokecrafthookahapp.domain.repository.RecipeRepository
 import com.pidzama.smokecrafthookahapp.presentation.auth.common.StatusAuth
 import kotlinx.coroutines.flow.Flow
@@ -29,7 +30,6 @@ class RecipeRepositoryImpl @Inject constructor(
     override suspend fun loginUser(login: AuthRequest): StatusAuth<Unit> {
         return try {
             val response = apiService.getJwtTokenUser(login)
-//            apiService.getJwtTokenUser(login)
             jwtTokenManager.saveAccessJwt(response.access)
             jwtTokenManager.saveRefreshJwt(response.refresh)
             dataStore.saveUserLogin(login.username)
@@ -69,8 +69,8 @@ class RecipeRepositoryImpl @Inject constructor(
         return apiService.createOrder(order = order)
     }
 
-    override suspend fun updateOrder(id: Int, token: String, recipes: OrderRequest): OrderResponse {
-        return apiService.updateOrder(id = id, token = token, recipes = recipes)
+    override suspend fun updateOrder(id: Int, order: OrderRequest): OrderResponse {
+        return apiService.updateOrder(id = id, order = order)
     }
 
     override suspend fun getInfoOrder(id: Int): Flow<ApiState<OrderResponse>> =

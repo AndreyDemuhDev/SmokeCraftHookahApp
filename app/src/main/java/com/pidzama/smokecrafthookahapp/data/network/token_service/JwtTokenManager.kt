@@ -1,4 +1,4 @@
-package com.pidzama.smokecrafthookahapp.data.network
+package com.pidzama.smokecrafthookahapp.data.network.token_service
 
 //контракт по управлению токенами
 interface JwtTokenManager {

@@ -51,5 +51,6 @@
     <string name="sure_you_want_to_close_this_order">"Are you sure you want to close this order?"</string>
     <string name="yes">"Да"</string>
     <string name="enter_number_table">"Enter table number:"</string>
+    <string name="add_to_order">"Add to order"</string>
 
 </resources>
