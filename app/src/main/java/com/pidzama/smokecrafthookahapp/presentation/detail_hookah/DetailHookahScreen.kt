@@ -135,7 +135,6 @@ fun PortraitDetailUpdateOrderView(
 ) {
 
     val screenWidth = LocalConfiguration.current.screenWidthDp
-//    val screenHeight = LocalConfiguration.current.screenHeightDp
     var openDialogSuccess by remember { mutableStateOf(false) }
 
     if (openDialogSuccess) {
@@ -186,7 +185,6 @@ fun PortraitDetailUpdateOrderView(
                         openDialogSuccess = true
                         onClickUpdateRecipe()
                     },
-//                    enabled = numberTable.isNotEmpty(),
                     modifier = Modifier
                         .bounceClick()
                         .fillMaxWidth()
@@ -195,7 +193,7 @@ fun PortraitDetailUpdateOrderView(
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
                 ) {
                     Text(
-                        text = stringResource(id = R.string.write_off),
+                        text = stringResource(id = R.string.add_to_order),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onBackground,
                     )
@@ -236,8 +234,6 @@ fun PortraitDetailCreateOrderView(
 //    val screenHeight = LocalConfiguration.current.screenHeightDp
     var openDialogSuccess by remember { mutableStateOf(false) }
 
-//    Log.d("MyLog", "list order RECIPE $listOrderRecipe")
-//    Log.d("MyLog", "Recipe in screen==>> $recipe")
 
     if (openDialogSuccess) {
         openDialogSuccess = false
@@ -302,7 +298,7 @@ fun PortraitDetailCreateOrderView(
                         openDialogSuccess = true
                         onClickCreateOrder()
                     },
-//                    enabled = numberTable.isNotEmpty(),
+                    enabled = tableNumber.isNotEmpty(),
                     modifier = Modifier
                         .bounceClick()
                         .fillMaxWidth()
@@ -580,13 +576,14 @@ fun DetailHookahState(
                 listOf(recipeInScreen).toMutableList() //список рецептов в заказе который отправляем на сервак
             val currentOrder =
                 state.orderData.recipes.toMutableList()      //текущий рецепт на экране
-            val hookahCount = state.orderData.recipes.size        //количество кальянов в заказе
+            val hookahCount = state.orderData.recipes.size + 1       //количество кальянов в заказе
             val tableNumber = state.orderData.table_number         //номер стола
             listRecipesInOrder.addAll(currentOrder)
-
             Log.d("MyLog", "Рецепт => $recipeInScreen")
             Log.d("MyLog", "Список заказанных рецептов (WITH ORDER) => $listRecipesInOrder")
             Log.d("MyLog", "Номер Заказа $idOrder")
+            Log.d("MyLog", "Количество кальянов $hookahCount")
+            Log.d("MyLog", "Номер столика $tableNumber")
 
             DetailHookahScreenContentRecipeWithOrder(
                 state = state,
@@ -594,7 +591,7 @@ fun DetailHookahState(
                 onClickUpdateRecipe = {
                     viewModelDetailHookah.updateOrder(
                         id = idOrder,
-                        recipes = OrderRequest(
+                        order = OrderRequest(
                             is_active = true,
                             table_number = tableNumber,
                             hookah_count = hookahCount,

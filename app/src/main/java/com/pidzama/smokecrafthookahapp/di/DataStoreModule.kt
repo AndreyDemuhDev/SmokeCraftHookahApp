@@ -7,7 +7,7 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import com.pidzama.smokecrafthookahapp.data.network.JwtTokenManager
+import com.pidzama.smokecrafthookahapp.data.network.token_service.JwtTokenManager
 import com.pidzama.smokecrafthookahapp.data.repository.DataStoreRepository
 import com.pidzama.smokecrafthookahapp.data.repository.JwtTokenDataStore
 import com.pidzama.smokecrafthookahapp.utils.Constants.DataStorePreferences.AUTH_PREFERENCES

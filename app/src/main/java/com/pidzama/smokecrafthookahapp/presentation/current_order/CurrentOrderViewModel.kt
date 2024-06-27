@@ -9,6 +9,7 @@ import com.pidzama.smokecrafthookahapp.data.network.doOnSuccess
 import com.pidzama.smokecrafthookahapp.data.repository.JwtTokenDataStore
 import com.pidzama.smokecrafthookahapp.domain.use_case.AppUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,7 +35,7 @@ class CurrentOrderViewModel @Inject constructor(
 
 
     private fun getOrderList() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 useCase.ordersList.getOrdersList(dataStoreToken.getAccessJwt().toString())
                     .doOnSuccess {

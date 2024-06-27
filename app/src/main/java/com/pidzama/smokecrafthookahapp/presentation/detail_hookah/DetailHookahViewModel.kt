@@ -1,5 +1,6 @@
 package com.pidzama.smokecrafthookahapp.presentation.detail_hookah
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.yml.charts.common.extensions.isNotNull
@@ -27,7 +28,6 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailHookahViewModel @Inject constructor(
     private val useCase: AppUseCase,
-    private val dataStoreToken: JwtTokenDataStore,
 ) : ViewModel() {
 
 //    private val _listArchiveTobaccos = MutableStateFlow(emptyList<RandomRecipeSubListItem>())
@@ -66,22 +66,24 @@ class DetailHookahViewModel @Inject constructor(
 
     fun reduceRecipe(recipe: List<ReduceRecipeRequest>) {
         viewModelScope.launch {
+            Log.d("MyLog", "Списываем заказ $recipe")
             useCase.reduceRecipeUseCase.reduceRecipe(recipe = recipe)
         }
     }
 
     fun createOrder(order: OrderRequest) {
         viewModelScope.launch {
+            Log.d("MyLog", "Создаем заказ")
             useCase.createOrder.createOrder(order = order)
         }
     }
 
-    fun updateOrder(id: Int, recipes: OrderRequest) {
+    fun updateOrder(id: Int, order: OrderRequest) {
         viewModelScope.launch {
+            Log.d("MyLog", "Обновляем заказ")
             useCase.createOrder.updateOrder(
                 id = id,
-                token = dataStoreToken.getAccessJwt().toString(),
-                recipes = recipes
+                order = order
             )
         }
     }

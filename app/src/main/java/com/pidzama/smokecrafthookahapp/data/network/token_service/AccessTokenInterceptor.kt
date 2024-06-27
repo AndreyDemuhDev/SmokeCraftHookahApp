@@ -1,14 +1,13 @@
-package com.pidzama.smokecrafthookahapp.data.network
+package com.pidzama.smokecrafthookahapp.data.network.token_service
 
-import android.util.Log
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
 
-//сетевой перехватчик для refresh токена
-//Этот перехватчик будет использоваться для предоставления токена обновления
-class RefreshTokenInterceptor @Inject constructor(
+//сетевой перехватчик для access токена
+//этот перехватчик будет использоваться для предоставления токена доступа
+class AccessTokenInterceptor @Inject constructor(
     private val tokenManager: JwtTokenManager,
 ) : Interceptor {
     companion object {
@@ -17,7 +16,7 @@ class RefreshTokenInterceptor @Inject constructor(
     }
     override fun intercept(chain: Interceptor.Chain): Response {
         val token = runBlocking {
-            tokenManager.getRefreshJwt()
+            tokenManager.getAccessJwt()
         }
         val request = chain.request().newBuilder()
         request.addHeader(HEADER_AUTHORIZATION, "$TOKEN_TYPE $token")

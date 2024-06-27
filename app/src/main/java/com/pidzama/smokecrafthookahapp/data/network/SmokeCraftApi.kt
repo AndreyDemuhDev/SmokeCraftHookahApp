@@ -12,8 +12,6 @@ import com.pidzama.smokecrafthookahapp.presentation.auth.common.AuthToken
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
@@ -53,11 +51,10 @@ interface SmokeCraftApi {
     ): ReduceRecipeResponse
 
     //обновление заказа
-    @PATCH("/api/v1/reservations/{id}")
+    @PATCH("/api/v1/reservations/{id}/")
     suspend fun updateOrder(
-        @Header("Token") token: String,
-        @Path(value = "id") id: Int,
-        @Body recipes: OrderRequest
+        @Path("id") id: Int,
+        @Body order: OrderRequest
     ): OrderResponse
 
     //оформление заказа
