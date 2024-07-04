@@ -72,7 +72,7 @@ fun DetailHookahScreen(
 ) {
     viewModelDetailHookah.getInfoHookah(recipe, idOrder)
 
-    val reduceRecipe = emptyList<ReduceRecipeRequest>().toMutableList()
+    val reduceRecipe = listOf<ReduceRecipeRequest>().toMutableList()
 
     recipe.tasteModel.forEachIndexed { index, tobacco ->
         reduceRecipe.add(
@@ -589,6 +589,7 @@ fun DetailHookahState(
                 state = state,
                 recipe = recipeInScreen,
                 onClickUpdateRecipe = {
+                    viewModelDetailHookah.reduceRecipe(reduceRecipe)
                     viewModelDetailHookah.updateOrder(
                         id = idOrder,
                         order = OrderRequest(

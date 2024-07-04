@@ -309,7 +309,7 @@ fun DetailsRecipeItemCard(
             }
         } else {
             Column(
-                modifier = Modifier.padding(14.dp),
+//                modifier = Modifier.padding(14.dp),
                 verticalArrangement = Arrangement.Center,
             ) {
                 TitleRecipeItem(input = input, modifier = Modifier.fillMaxWidth())
