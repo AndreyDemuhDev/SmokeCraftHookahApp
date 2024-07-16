@@ -1,5 +1,6 @@
 package com.pidzama.smokecrafthookahapp.presentation.detail_order
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.Index
@@ -28,19 +29,6 @@ class DetailOrderViewModel @Inject constructor(
     val detailOrderState: StateFlow<DetailOrderState>
         get() = _detailOrderState.asStateFlow()
 
-
-//    private val _currentOrder = MutableStateFlow<OrderResponse>(OrderResponse())
-//    val currentOrder: StateFlow<OrderResponse>
-//        get() = _currentOrder.asStateFlow()
-//
-//
-//    fun getGetOrder(id: Int) {
-//        viewModelScope.launch {
-//            useCase.getInfoOrder.getOrderInfo(id).doOnSuccess {
-//                _currentOrder.value = it
-//            }
-//        }
-//    }
 
     fun getInfoOrder(id: Int) {
         viewModelScope.launch {
@@ -71,7 +59,7 @@ class DetailOrderViewModel @Inject constructor(
 
 }
 
-
+@Immutable
 sealed interface DetailOrderState {
 
     data class Content(

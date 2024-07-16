@@ -75,7 +75,6 @@ class RecipeGenerationViewModel @Inject constructor(
         }
     }
 
-
     fun useSwipe() {
         viewModelScope.launch {
             _swipeIsLoading.value = true

@@ -33,7 +33,7 @@ interface SmokeCraftApi {
     ): Response<List<RandomRecipeSubListItem>>
 
     //список случайных рецептов
-    @GET("api/v1/random_recept")
+    @GET("api/v1/recept/random_recept/")
     suspend fun getRandomGenerateRecipeList(
         @Header("Token") token: String
     ): Response<List<ModelRecipeItem>>

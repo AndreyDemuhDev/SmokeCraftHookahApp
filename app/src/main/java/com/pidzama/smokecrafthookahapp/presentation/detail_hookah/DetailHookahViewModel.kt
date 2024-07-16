@@ -1,6 +1,7 @@
 package com.pidzama.smokecrafthookahapp.presentation.detail_hookah
 
 import android.util.Log
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.yml.charts.common.extensions.isNotNull
@@ -90,6 +91,7 @@ class DetailHookahViewModel @Inject constructor(
 
 }
 
+@Immutable
 sealed interface DetailHookahState {
 
     data class ContentOnlyRecipe(
