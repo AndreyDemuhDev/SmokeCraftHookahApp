@@ -26,7 +26,6 @@ class RecipeRepositoryImpl @Inject constructor(
     private val dataStore: DataStoreRepository,
 ) : RecipeRepository, SafeDataRepository() {
 
-
     override suspend fun loginUser(login: AuthRequest): StatusAuth<Unit> {
         return try {
             val response = apiService.getJwtTokenUser(login)
@@ -40,13 +39,7 @@ class RecipeRepositoryImpl @Inject constructor(
             StatusAuth.Error("${e.message}")
         }
     }
-
-    override suspend fun getAllTobaccosList(token: String): Flow<ApiState<List<RandomRecipeSubListItem>>> =
-        safeApiCall {
-            apiService.getAllTobaccosList(token = token)
-        }
-
-
+    
     override suspend fun getListRecipes(token: String): Flow<ApiState<List<ModelRecipeItem>>> =
         safeApiCall {
             apiService.getRandomGenerateRecipeList(token = token)

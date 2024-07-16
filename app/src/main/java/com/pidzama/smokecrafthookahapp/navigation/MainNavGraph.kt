@@ -136,7 +136,7 @@ sealed class MainScreen(val route: String) {
     object OrderArchive : MainScreen("ORDER_ARCHIVE")
     object ChooseGenerateRecipe : MainScreen("CHOOSE_GENERATE_RECIPE")
     object DetailHookahScreen : MainScreen("DETAIL_HOOKAH_SCREEN")
-    object DetailOrderScreen : MainScreen("DETAIL_OREDER_SCREEN")
+    object DetailOrderScreen : MainScreen("DETAIL_ORDER_SCREEN")
 }
 
 private fun navigateToDetailsRecipe(
@@ -148,7 +148,9 @@ private fun navigateToDetailsRecipe(
     navController.currentBackStackEntry?.savedStateHandle?.set("idRecipe", idRecipe)
     navController.navigate(
         route = MainScreen.DetailHookahScreen.route
-    )
+    ) {
+        launchSingleTop = true
+    }
 }
 
 private fun navigateWithIdOrder(
@@ -159,6 +161,8 @@ private fun navigateWithIdOrder(
     navController.currentBackStackEntry?.savedStateHandle?.set("idOrder", idOrder)
     navController.navigate(
         route = routeDestination
-    )
+    ) {
+        launchSingleTop = true
+    }
 }
 

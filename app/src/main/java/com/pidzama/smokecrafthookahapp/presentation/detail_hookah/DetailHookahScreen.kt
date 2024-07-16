@@ -85,7 +85,6 @@ fun DetailHookahScreen(
 
     Log.d("MyLog", "reduce recipe $reduceRecipe")
 
-
     val state by viewModelDetailHookah.detailHookahState.collectAsState()
 
     Scaffold(
@@ -222,7 +221,6 @@ fun PortraitDetailUpdateOrderView(
 @Composable
 fun PortraitDetailCreateOrderView(
     recipe: RecipeModelEntity,
-//    listOrderRecipe: List<RecipeModelEntity>,
     tableNumber: String,
     onChangeTableNumber: (String) -> Unit,
     onClickCancel: () -> Unit,
@@ -231,9 +229,7 @@ fun PortraitDetailCreateOrderView(
 ) {
 
     val screenWidth = LocalConfiguration.current.screenWidthDp
-//    val screenHeight = LocalConfiguration.current.screenHeightDp
     var openDialogSuccess by remember { mutableStateOf(false) }
-
 
     if (openDialogSuccess) {
         openDialogSuccess = false
@@ -257,6 +253,7 @@ fun PortraitDetailCreateOrderView(
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.small2))
                 OutlinedTextField(
                     value = tableNumber,
                     onValueChange = onChangeTableNumber,
@@ -273,8 +270,8 @@ fun PortraitDetailCreateOrderView(
                         unfocusedContainerColor = MaterialTheme.colorScheme.tertiaryContainer
                     ),
                     keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Next,
-                        keyboardType = KeyboardType.Number,
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Done
                     ),
                     singleLine = true,
                     maxLines = 1,
@@ -284,7 +281,7 @@ fun PortraitDetailCreateOrderView(
                         .height(MaterialTheme.dimens.buttonHeight)
                         .width(MaterialTheme.dimens.buttonWidth)
                 )
-
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.small2))
                 DetailsRecipeItemCard(
                     input = recipe,
                     isLandscape = false
@@ -489,10 +486,9 @@ fun LandscapeDetailCreateOrderView(
                         unfocusedContainerColor = MaterialTheme.colorScheme.tertiaryContainer
                     ),
                     keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Next,
-                        keyboardType = KeyboardType.Number
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Done
                     ),
-
                     singleLine = true,
                     maxLines = 1,
                     shape = RoundedCornerShape(MaterialTheme.dimens.cornerShape),

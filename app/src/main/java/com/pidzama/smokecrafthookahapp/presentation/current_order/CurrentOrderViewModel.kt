@@ -1,5 +1,6 @@
 package com.pidzama.smokecrafthookahapp.presentation.current_order
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pidzama.smokecrafthookahapp.data.dto.orders.OrdersItem
@@ -33,7 +34,6 @@ class CurrentOrderViewModel @Inject constructor(
         getOrderList()
     }
 
-
     private fun getOrderList() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -60,7 +60,7 @@ class CurrentOrderViewModel @Inject constructor(
     }
 }
 
-
+@Immutable
 sealed interface OrdersState {
 
     data class Content(
