@@ -28,3 +28,6 @@ Android приложение для оптимизации складских о
 и многое другое.
 
 ## Превью проекта
+<p align="center"> 
+<img width="200" height="400" src="https://github.com/AndreyDemuhDev/SmokeCraftHookahApp/blob/master/start_screen_logo.png">
+</p>
