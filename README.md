@@ -28,6 +28,6 @@ Android приложение для оптимизации складских о
 и многое другое.
 
 ## Превью проекта
-<p align="center"> 
-<img width="200" height="400" src="https://github.com/AndreyDemuhDev/SmokeCraftHookahApp/blob/master/start_screen_logo.png">
-</p>
+|Экран авторизации|Текущи заказы|Генерация рецептов|Создание заказа|Текущий заказ|
+|:-:|:-:|:-:|:-:|:-:|
+|<img width="200" height="320" src="https://github.com/AndreyDemuhDev/SmokeCraftHookahApp/blob/master/sign_in.png">|<img width="200" height="320" src="https://github.com/AndreyDemuhDev/SmokeCraftHookahApp/blob/master/list_orders.png">|<img width="200" height="320" src="https://github.com/AndreyDemuhDev/SmokeCraftHookahApp/blob/master/generate_order.png">|<img width="200" height="320" src="https://github.com/AndreyDemuhDev/SmokeCraftHookahApp/blob/master/create_order.png">|<img width="200" height="320" src="https://github.com/AndreyDemuhDev/SmokeCraftHookahApp/blob/master/current_order.png">|
